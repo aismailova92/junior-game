@@ -1,76 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Junior Club</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Junior Club</title>
 </head>
 
-<body style="font-family: Arial; text-align: center; padding: 20px; background: #f5f7fb;">
+<body style="
+  margin:0;
+  font-family: Arial;
+  background: linear-gradient(180deg, #eaf2ff, #ffffff);
+">
 
-  <h1>🎮 Junior Club</h1>
-  <h2 id="points">⭐ Points: 0</h2>
+<div style="padding:20px;">
 
-  <!-- TAP -->
-  <button onclick="tap()" style="
-    padding: 15px 25px;
-    font-size: 18px;
-    border-radius: 12px;
-    background: #007BFF;
-    color: white;
-    border: none;
-    margin-bottom: 20px;
+  <h2>👋 Hi, Amina</h2>
+
+  <!-- CARD -->
+  <div style="
+    background: linear-gradient(135deg, #007BFF, #00c6ff);
+    border-radius: 20px;
+    padding:20px;
+    color:white;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
   ">
-    TAP 🚀
-  </button>
-
-  <hr>
-
-  <!-- TASKS -->
-  <h3>🎯 Daily Tasks</h3>
-
-  <div id="tasks">
-
-    <div style="background:white; padding:15px; margin:10px; border-radius:12px;">
-      🧠 Complete Quiz  
-      <br> +20 ⭐  
-      <br><br>
-      <button onclick="completeTask(20)">Done</button>
-    </div>
-
-    <div style="background:white; padding:15px; margin:10px; border-radius:12px;">
-      🏦 Find ATM  
-      <br> +30 ⭐  
-      <br><br>
-      <button onclick="completeTask(30)">Done</button>
-    </div>
-
-    <div style="background:white; padding:15px; margin:10px; border-radius:12px;">
-      💬 Talk with parent  
-      <br> +25 ⭐  
-      <br><br>
-      <button onclick="completeTask(25)">Done</button>
-    </div>
-
+    <h3>💳 Junior Card</h3>
+    <h1 id="points">⭐ 0</h1>
+    <p>Level 1</p>
   </div>
 
-  <script>
-    let points = 0;
+  <br>
 
-    function tap() {
-      points++;
-      updatePoints();
-    }
+  <!-- STREAK -->
+  <div style="
+    background:white;
+    padding:15px;
+    border-radius:15px;
+  ">
+    🔥 3 day streak
+  </div>
 
-    function completeTask(value) {
-      points += value;
-      updatePoints();
-      alert("🎉 Task completed! +" + value + " points");
-    }
+  <br>
 
-    function updatePoints() {
-      document.getElementById("points").innerText = "⭐ Points: " + points;
-    }
-  </script>
+  <!-- TASK -->
+  <div style="
+    background:white;
+    padding:15px;
+    border-radius:15px;
+  ">
+    🎯 Daily Task  
+    <br> +20 ⭐  
+    <br><br>
+    <button onclick="addPoints(20)">Start 🚀</button>
+  </div>
+
+</div>
+
+<script>
+let points = 0;
+
+function addPoints(value){
+  points += value;
+  document.getElementById("points").innerText = "⭐ " + points;
+}
+</script>
 
 </body>
 </html>
