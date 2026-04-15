@@ -1,68 +1,283 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Junior Club</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #eaf2ff 0%, #ffffff 100%);
+      color: #1f2937;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    .screen {
+      display: none;
+      padding: 20px 16px 24px;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #6b7280;
+      margin: 0 0 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    .hero-card {
+      background: linear-gradient(135deg, #0057ff 0%, #33b8ff 100%);
+      color: #ffffff;
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 12px 28px rgba(0, 87, 255, 0.28);
+    }
+
+    .hero-card h2,
+    .hero-card p {
+      margin: 0;
+    }
+
+    .hero-points {
+      font-size: 32px;
+      font-weight: 700;
+      margin: 14px 0 6px;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .row .card {
+      flex: 1;
+    }
+
+    .task-title,
+    .reward-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0 0 6px;
+    }
+
+    .muted {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .reward-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .badge {
+      text-align: center;
+      padding: 18px 12px;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .badge.locked {
+      opacity: 0.45;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 10px 10px 14px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .nav-btn {
+      border: none;
+      background: transparent;
+      border-radius: 14px;
+      padding: 10px 6px;
+      font-size: 12px;
+      color: #6b7280;
+      cursor: pointer;
+    }
+
+    .nav-btn.active {
+      background: #e8f1ff;
+      color: #0057ff;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .confirm-btn,
+    .small-btn {
+      margin-top: 10px;
+      border: none;
+      background: #0057ff;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .small-btn.secondary {
+      background: #f3f4f6;
+      color: #111827;
+    }
+  </style>
 </head>
+<body>
+  <div class="app">
+    <!-- HOME -->
+    <section id="home" class="screen active">
+      <h1 class="title">Home</h1>
+      <p class="subtitle">Welcome back to Junior Club</p>
 
-<body style="
-  margin:0;
-  font-family: Arial;
-  background: linear-gradient(180deg, #eaf2ff, #ffffff);
-">
+      <div class="hero-card">
+        <h2>💳 Junior Card</h2>
+        <div class="hero-points">⭐ 240</div>
+        <p>Level 3 • Keep going</p>
+      </div>
 
-<div style="padding:20px;">
+      <div class="row">
+        <div class="card">
+          <div class="task-title">🔥 Streak</div>
+          <div>5 days</div>
+        </div>
+        <div class="card">
+          <div class="task-title">🎯 Goal</div>
+          <div>500 points</div>
+        </div>
+      </div>
 
-  <h2>👋 Hi, Amina</h2>
+      <div class="card">
+        <div class="task-title">Today's Mission</div>
+        <div class="muted">Complete one task and earn points.</div>
+      </div>
+    </section>
 
-  <!-- CARD -->
-  <div style="
-    background: linear-gradient(135deg, #007BFF, #00c6ff);
-    border-radius: 20px;
-    padding:20px;
-    color:white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  ">
-    <h3>💳 Junior Card</h3>
-    <h1 id="points">⭐ 0</h1>
-    <p>Level 1</p>
+    <!-- TASKS -->
+    <section id="tasks" class="screen">
+      <h1 class="title">Tasks</h1>
+      <p class="subtitle">Daily tasks and missions</p>
+
+      <div class="card">
+        <div class="task-title">🧠 Complete Quiz</div>
+        <div class="muted">Reward: +20 ⭐</div>
+      </div>
+
+      <div class="card">
+        <div class="task-title">🏦 Find nearest ATM</div>
+        <div class="muted">Reward: +30 ⭐</div>
+      </div>
+
+      <div class="card">
+        <div class="task-title">💬 Talk with parent</div>
+        <div class="muted">Reward: +25 ⭐</div>
+      </div>
+    </section>
+
+    <!-- REWARDS -->
+    <section id="rewards" class="screen">
+      <h1 class="title">Rewards</h1>
+      <p class="subtitle">Your badges and medals</p>
+
+      <div class="reward-grid">
+        <div class="badge">🏆 First Step</div>
+        <div class="badge">🔥 3-Day Streak</div>
+        <div class="badge locked">🧠 Quiz Master</div>
+        <div class="badge locked">💰 Smart Saver</div>
+      </div>
+    </section>
+
+    <!-- PARENT -->
+    <section id="parent" class="screen">
+      <h1 class="title">Parent</h1>
+      <p class="subtitle">Child progress and confirmations</p>
+
+      <div class="card">
+        <div class="task-title">Amina's Progress</div>
+        <div class="muted">Tasks completed this week: 5</div>
+        <div class="muted">Points earned: 240 ⭐</div>
+      </div>
+
+      <div class="card">
+        <div class="task-title">Pending Confirmation</div>
+        <div class="muted">Helped at home</div>
+        <button class="confirm-btn">Confirm task</button>
+      </div>
+    </section>
   </div>
 
-  <br>
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="showTab('home', this)">
+      <span class="nav-icon">🏠</span>
+      Home
+    </button>
+    <button class="nav-btn" onclick="showTab('tasks', this)">
+      <span class="nav-icon">🎯</span>
+      Tasks
+    </button>
+    <button class="nav-btn" onclick="showTab('rewards', this)">
+      <span class="nav-icon">🏆</span>
+      Rewards
+    </button>
+    <button class="nav-btn" onclick="showTab('parent', this)">
+      <span class="nav-icon">👨‍👩‍👧</span>
+      Parent
+    </button>
+  </nav>
 
-  <!-- STREAK -->
-  <div style="
-    background:white;
-    padding:15px;
-    border-radius:15px;
-  ">
-    🔥 3 day streak
-  </div>
+  <script>
+    function showTab(tabId, button) {
+      const screens = document.querySelectorAll('.screen');
+      const buttons = document.querySelectorAll('.nav-btn');
 
-  <br>
+      screens.forEach(screen => screen.classList.remove('active'));
+      buttons.forEach(btn => btn.classList.remove('active'));
 
-  <!-- TASK -->
-  <div style="
-    background:white;
-    padding:15px;
-    border-radius:15px;
-  ">
-    🎯 Daily Task  
-    <br> +20 ⭐  
-    <br><br>
-    <button onclick="addPoints(20)">Start 🚀</button>
-  </div>
-
-</div>
-
-<script>
-let points = 0;
-
-function addPoints(value){
-  points += value;
-  document.getElementById("points").innerText = "⭐ " + points;
-}
-</script>
-
+      document.getElementById(tabId).classList.add('active');
+      button.classList.add('active');
+    }
+  </script>
 </body>
 </html>
