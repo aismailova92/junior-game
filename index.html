@@ -1,31 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Junior Game</title>
+  <title>Junior Club</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body style="font-family: Arial; text-align: center; padding: 40px;">
+<body style="font-family: Arial; text-align: center; padding: 20px; background: #f5f7fb;">
 
   <h1>🎮 Junior Club</h1>
   <h2 id="points">⭐ Points: 0</h2>
 
+  <!-- TAP -->
   <button onclick="tap()" style="
-    padding: 20px;
-    font-size: 20px;
+    padding: 15px 25px;
+    font-size: 18px;
     border-radius: 12px;
     background: #007BFF;
     color: white;
     border: none;
+    margin-bottom: 20px;
   ">
     TAP 🚀
   </button>
+
+  <hr>
+
+  <!-- TASKS -->
+  <h3>🎯 Daily Tasks</h3>
+
+  <div id="tasks">
+
+    <div style="background:white; padding:15px; margin:10px; border-radius:12px;">
+      🧠 Complete Quiz  
+      <br> +20 ⭐  
+      <br><br>
+      <button onclick="completeTask(20)">Done</button>
+    </div>
+
+    <div style="background:white; padding:15px; margin:10px; border-radius:12px;">
+      🏦 Find ATM  
+      <br> +30 ⭐  
+      <br><br>
+      <button onclick="completeTask(30)">Done</button>
+    </div>
+
+    <div style="background:white; padding:15px; margin:10px; border-radius:12px;">
+      💬 Talk with parent  
+      <br> +25 ⭐  
+      <br><br>
+      <button onclick="completeTask(25)">Done</button>
+    </div>
+
+  </div>
 
   <script>
     let points = 0;
 
     function tap() {
       points++;
+      updatePoints();
+    }
+
+    function completeTask(value) {
+      points += value;
+      updatePoints();
+      alert("🎉 Task completed! +" + value + " points");
+    }
+
+    function updatePoints() {
       document.getElementById("points").innerText = "⭐ Points: " + points;
     }
   </script>
