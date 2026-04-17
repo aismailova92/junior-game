@@ -220,6 +220,516 @@
     .toast.show {
       opacity: 1;
     }
+    .home-screen {
+  padding: 0 0 100px;
+  background: #f3f5f8;
+}
+
+.home-hero {
+  background: linear-gradient(180deg, #0c2f84 0%, #0a2a78 65%, #0a2a78 100%);
+  padding: 18px 16px 28px;
+  color: white;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.user-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #f4b400;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+
+.hello-text {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.level-text {
+  font-size: 13px;
+  color: rgba(255,255,255,0.82);
+}
+
+.streak-pill {
+  min-width: 108px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 22px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(6px);
+}
+
+.streak-icon {
+  font-size: 18px;
+}
+
+.streak-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.1;
+}
+
+.streak-value {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.junior-card {
+  background: linear-gradient(135deg, rgba(120,180,230,0.35) 0%, rgba(60,120,220,0.38) 100%);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.mini-chip-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mini-chip {
+  width: 34px;
+  height: 24px;
+  border-radius: 6px;
+  background: #d7dbe4;
+  position: relative;
+}
+
+.mini-chip::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 14px;
+  border-radius: 8px;
+  background: #f2b933;
+  top: 5px;
+  left: 8px;
+}
+
+.card-brand {
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.9);
+}
+
+.card-level {
+  background: rgba(255,255,255,0.24);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.card-name {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 10px 0 26px;
+}
+
+.points-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-points {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+.points-star {
+  font-size: 28px;
+}
+
+.card-balance-label {
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.82);
+}
+
+.card-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.22);
+  margin: 16px 0;
+}
+
+.card-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.stat-bubble {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.08);
+  padding: 10px 12px;
+  border-radius: 16px;
+  min-width: 120px;
+}
+
+.stat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.1;
+}
+
+.stat-value {
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.home-content {
+  padding: 14px 16px 0;
+  margin-top: -4px;
+}
+
+.section-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #13254b;
+  margin: 14px 0 12px;
+}
+
+.quiz-card {
+  background: linear-gradient(135deg, #31e0c8 0%, #33d9d2 100%);
+  border-radius: 22px;
+  padding: 18px 16px 16px;
+  box-shadow: 0 10px 24px rgba(34, 211, 238, 0.18);
+  margin-bottom: 16px;
+  position: relative;
+}
+
+.quiz-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.quiz-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.quiz-title {
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.quiz-subtitle {
+  color: rgba(255,255,255,0.92);
+  margin-top: 4px;
+  font-size: 15px;
+}
+
+.quiz-arrow {
+  position: absolute;
+  top: 22px;
+  right: 18px;
+  color: white;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.quiz-footer {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.quiz-badge {
+  background: rgba(255,255,255,0.24);
+  color: white;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.quiz-reward {
+  background: #ffbf00;
+  color: white;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.simple-action-card {
+  background: white;
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.action-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #eef2f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.action-texts {
+  flex: 1;
+}
+
+.action-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #11254d;
+}
+
+.action-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.action-arrow {
+  font-size: 28px;
+  color: #7c8597;
+}
+
+.progress-card-large {
+  background: white;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  margin-bottom: 18px;
+}
+
+.progress-top-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.mini-label {
+  font-size: 11px;
+  color: #98a2b3;
+  margin-bottom: 4px;
+}
+
+.progress-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #102750;
+}
+
+.progress-percent-block {
+  text-align: right;
+}
+
+.progress-percent {
+  font-size: 22px;
+  font-weight: 800;
+  color: #123b8f;
+}
+
+.progress-small {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.progress-track-large {
+  height: 12px;
+  border-radius: 999px;
+  background: #dfe4ea;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill-large {
+  width: 68%;
+  height: 100%;
+  background: linear-gradient(90deg, #163a8d 0%, #1b58b8 45%, #1dd4c7 100%);
+  border-radius: 999px;
+}
+
+.progress-dot {
+  position: absolute;
+  top: 50%;
+  left: 68%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  background: #37e0cb;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.benefits-card {
+  background: #f8fbff;
+  border: 1px solid #c6dbf5;
+  border-radius: 22px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.benefits-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #11254d;
+  margin-bottom: 16px;
+}
+
+.cashback-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.cashback-tag {
+  background: white;
+  border-radius: 16px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 10px rgba(15,23,42,0.06);
+  font-weight: 600;
+  color: #243b63;
+}
+
+.benefit-note {
+  background: #eef3f9;
+  border: 1px solid #d9e4f0;
+  border-radius: 18px;
+  padding: 14px 16px;
+  color: #5b6d88;
+  font-size: 14px;
+}
+
+.cta-card {
+  background: linear-gradient(135deg, #0e2e84 0%, #2c9fe8 100%);
+  border-radius: 28px;
+  padding: 26px 20px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 16px 30px rgba(14, 46, 132, 0.24);
+}
+
+.cta-icon-wrap {
+  width: 74px;
+  height: 74px;
+  margin: 0 auto 18px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.cta-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.cta-subtitle {
+  font-size: 15px;
+  line-height: 1.45;
+  color: rgba(255,255,255,0.92);
+  margin-bottom: 22px;
+}
+
+.cta-button {
+  background: white;
+  color: #17377f;
+  border: none;
+  border-radius: 18px;
+  padding: 16px 22px;
+  font-size: 16px;
+  font-weight: 800;
+  width: 100%;
+  cursor: pointer;
+  margin-bottom: 14px;
+}
+
+.cta-features {
+  font-size: 13px;
+  color: rgba(255,255,255,0.88);
+}
+
+@media (max-width: 390px) {
+  .card-points {
+    font-size: 48px;
+  }
+
+  .quiz-title {
+    font-size: 21px;
+  }
+
+  .progress-title {
+    font-size: 16px;
+  }
+}
   </style>
 </head>
 <body>
@@ -227,62 +737,140 @@
 
   <div class="app">
     <!-- HOME -->
-    <section id="home" class="screen active">
-      <h1 class="title">Home</h1>
-      <p class="subtitle">Welcome back to Junior Club</p>
-      <div style="text-align:center; margin-bottom: 20px;">
-<img 
-  id="bear"
-  src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
-  style="
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #fff, #eaf2ff);
-    padding: 12px;
-    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-    transition: transform 0.3s ease;
-  "
-/>
-  <div style="margin-top:10px; font-weight:700; font-size:16px;">
-    🧸 Junior Hero
+<section id="home" class="screen active home-screen">
+  <div class="home-hero">
+    <div class="topbar">
+      <div class="user-info">
+        <div class="avatar">AK</div>
+        <div>
+          <div class="hello-text">Hello, Alex! 👋</div>
+          <div class="level-text">Level 5 Explorer ⭐</div>
+        </div>
+      </div>
+
+      <div class="streak-pill">
+        <div class="streak-icon">🔥</div>
+        <div>
+          <div class="streak-label">Streak</div>
+          <div class="streak-value">7 days</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="junior-card">
+      <div class="card-top">
+        <div class="mini-chip-row">
+          <div class="mini-chip"></div>
+          <span class="card-brand">ACCESSBANK JUNIOR</span>
+        </div>
+        <div class="card-level">Level 5 ⭐</div>
+      </div>
+
+      <div class="card-name">Alex Kim</div>
+
+      <div class="points-row">
+        <div id="heroPoints" class="card-points">2,450</div>
+        <div class="points-star">⭐</div>
+      </div>
+
+      <div class="card-balance-label">YOUR POINTS BALANCE</div>
+
+      <div class="card-divider"></div>
+
+      <div class="card-stats">
+        <div class="stat-bubble">
+          <div class="stat-icon">🎯</div>
+          <div>
+            <div class="stat-label">NEXT LEVEL</div>
+            <div class="stat-value">550 pts</div>
+          </div>
+        </div>
+
+        <div class="stat-bubble">
+          <div class="stat-icon">🏆</div>
+          <div>
+            <div class="stat-label">BADGES</div>
+            <div class="stat-value">4/9</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div style="font-size:13px; color:#6b7280;">
-    Level 3 Explorer
+
+  <div class="home-content">
+    <div class="section-label">🎮 Daily Missions</div>
+
+    <div class="quiz-card">
+      <div class="quiz-left">
+        <div class="quiz-icon">🧠</div>
+        <div>
+          <div class="quiz-title">Quiz of the Day</div>
+          <div class="quiz-subtitle">Test your knowledge!</div>
+        </div>
+      </div>
+      <div class="quiz-arrow">›</div>
+      <div class="quiz-footer">
+        <div class="quiz-badge">● NEW TODAY</div>
+        <div class="quiz-reward">+30 ⭐</div>
+      </div>
+    </div>
+
+    <div class="simple-action-card">
+      <div class="action-icon">🎯</div>
+      <div class="action-texts">
+        <div class="action-title">Daily Tasks</div>
+        <div class="action-subtitle">3 tasks available</div>
+      </div>
+      <div class="action-arrow">›</div>
+    </div>
+
+    <div class="section-label">📊 Your Progress</div>
+
+    <div class="progress-card-large">
+      <div class="progress-top-row">
+        <div>
+          <div class="mini-label">NEXT LEVEL</div>
+          <div class="progress-title">Level 6 Champion 👑</div>
+        </div>
+        <div class="progress-percent-block">
+          <div class="progress-percent">68%</div>
+          <div class="progress-small">550 pts to go</div>
+        </div>
+      </div>
+
+      <div class="progress-track-large">
+        <div class="progress-fill-large"></div>
+        <div class="progress-dot"></div>
+      </div>
+    </div>
+
+    <div class="section-label">💳 Card Benefits</div>
+
+    <div class="benefits-card">
+      <div class="benefits-title">Choose Your Cashback Categories</div>
+
+      <div class="cashback-tags">
+        <div class="cashback-tag">🎬 Cinema</div>
+        <div class="cashback-tag">🚗 Transport</div>
+        <div class="cashback-tag">☕ Cafes</div>
+      </div>
+
+      <div class="benefit-note">
+        ✨ Unlock real cashback rewards when you get your Junior Card
+      </div>
+    </div>
+
+    <div class="cta-card">
+      <div class="cta-icon-wrap">💳</div>
+      <div class="cta-title">Get Your Real Junior Card!</div>
+      <div class="cta-subtitle">
+        Turn your points into real rewards and start managing your own money like a hero!
+      </div>
+      <button class="cta-button">Request Card Now</button>
+      <div class="cta-features">• Free Delivery &nbsp;&nbsp; • Parent Controls</div>
+    </div>
   </div>
-</div>
-
-      <div class="hero-card">
-        <h2>💳 Junior Card</h2>
-        <div id="heroPoints" class="hero-points">⭐ 240</div>
-        <p>Level 3 • Keep going</p>
-      </div>
-
-      <div class="row">
-        <div class="card">
-          <div class="task-title">🔥 Streak</div>
-          <div>5 days</div>
-        </div>
-        <div class="card">
-          <div class="task-title">🎯 Goal</div>
-          <div>500 points</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="task-title">Today's Mission</div>
-        <div class="muted">Complete tasks and earn points.</div>
-      </div>
-
-      <div class="card">
-        <div class="task-title">📈 Daily Progress</div>
-        <div id="progressText" class="muted">0 of 3 tasks completed</div>
-        <div class="progress-bar">
-          <div id="progressFill" class="progress-fill"></div>
-        </div>
-      </div>
-    </section>
-
+</section>
     <!-- TASKS -->
     <section id="tasks" class="screen">
       <h1 class="title">Tasks</h1>
@@ -407,7 +995,7 @@
     }
 
     function updateUI() {
-      document.getElementById('heroPoints').textContent = `⭐ ${points}`;
+      document.getElementById('heroPoints').textContent = points.toLocaleString();
       document.getElementById('parentPointsText').textContent = `Points earned: ${points} ⭐`;
 
       const completedCount = Object.values(tasks).filter(Boolean).length;
