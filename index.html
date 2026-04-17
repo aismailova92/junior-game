@@ -231,17 +231,19 @@
       <h1 class="title">Home</h1>
       <p class="subtitle">Welcome back to Junior Club</p>
       <div style="text-align:center; margin-bottom: 20px;">
-  <img 
-    src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
-    style="
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #fff, #eaf2ff);
-      padding: 12px;
-      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-    "
-  />
+<img 
+  id="bear"
+  src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
+  style="
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fff, #eaf2ff);
+    padding: 12px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+  "
+/>
   <div style="margin-top:10px; font-weight:700; font-size:16px;">
     🧸 Junior Hero
   </div>
@@ -360,6 +362,11 @@
   </nav>
 
   <script>
+    const bearStates = {
+  normal: "https://cdn-icons-png.flaticon.com/512/616/616408.png",
+  happy: "https://cdn-icons-png.flaticon.com/512/742/742751.png",
+  super: "https://cdn-icons-png.flaticon.com/512/616/616430.png"
+};
     let points = 240;
 
     const tasks = {
@@ -396,6 +403,7 @@
 
       updateUI();
       showToast(`🎉 Task completed! +${reward} ⭐`);
+      reactBear("happy");
     }
 
     function updateUI() {
@@ -409,6 +417,9 @@
       document.getElementById('progressText').textContent = `${completedCount} of ${totalTasks} tasks completed`;
       document.getElementById('progressFill').style.width = `${percent}%`;
       document.getElementById('parentTasksText').textContent = `Tasks completed this week: ${completedCount}`;
+      if (points >= 300) {
+  reactBear("super");
+}
     }
 
     function showToast(message) {
@@ -419,6 +430,19 @@
       setTimeout(() => {
         toast.classList.remove('show');
       }, 1800);
+      function reactBear(state) {
+  const bear = document.getElementById("bear");
+
+  bear.src = bearStates[state];
+
+  // небольшая анимация
+  bear.style.transform = "scale(1.2)";
+
+  setTimeout(() => {
+    bear.style.transform = "scale(1)";
+    bear.src = bearStates.normal;
+  }, 1200);
+}
     }
 
     updateUI();
