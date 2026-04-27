@@ -998,13 +998,13 @@
     <h1 class="title">🎯 Tasks</h1>
     <p class="subtitle">Complete missions and earn points</p>
 
-    <div id="task-quiz" class="card task-card">
-      <div class="task-title">🧠 Quiz of the Day</div>
-      <div class="muted">Answer 1 question</div>
-      <div class="muted">Reward: +20 ⭐</div>
-      <button id="btn-quiz" class="small-btn" onclick="completeTask('quiz', 20)">Start</button>
-      <div id="status-quiz"></div>
-    </div>
+   <div id="task-quiz" class="card task-card">
+  <div class="task-title">🧠 Quiz of the Day</div>
+  <div id="quizTaskDescription" class="muted">Answer 3 questions and get max reward</div>
+  <div id="quizTaskReward" class="muted">Reward: +30 ⭐</div>
+  <button id="btn-quiz" class="small-btn" onclick="startQuizFromTasks()">Start Quiz</button>
+  <div id="status-quiz"></div>
+</div>
 
     <div id="task-atm" class="card task-card">
       <div class="task-title">🏦 Find ATM</div>
@@ -1181,6 +1181,15 @@ if (savedQuizDate === today) {
   if (buttons[tabMap[tabId]]) {
     buttons[tabMap[tabId]].classList.add('active');
   }
+}
+
+function startQuizFromTasks() {
+  if (quizCompleted) {
+    showToast("✅ Quiz already completed today");
+    return;
+  }
+
+  goToTab("quiz");
 }
     
     function completeTask(taskId, reward) {
@@ -1388,8 +1397,9 @@ function finishQuiz() {
     quizCard.classList.add("completed");
   }
 
-  updateHomeQuizCard();
-  updateUI();
+updateHomeQuizCard();
+updateQuizTaskCard();
+updateUI();
 
   setTimeout(() => {
     goToTab("home");
@@ -1417,6 +1427,32 @@ function updateHomeQuizCard() {
   }
 }
 
+function updateQuizTaskCard() {
+  const quizButton = document.getElementById("btn-quiz");
+  const quizStatus = document.getElementById("status-quiz");
+  const quizDescription = document.getElementById("quizTaskDescription");
+  const quizReward = document.getElementById("quizTaskReward");
+  const quizCard = document.getElementById("task-quiz");
+
+  if (!quizButton || !quizStatus || !quizDescription || !quizReward || !quizCard) return;
+
+  if (quizCompleted) {
+    quizButton.disabled = true;
+    quizButton.textContent = "Completed";
+    quizDescription.textContent = "Quiz completed for today";
+    quizReward.textContent = "Come back tomorrow for a new quiz 🌟";
+    quizStatus.innerHTML = '<span class="status">✅ Completed today</span>';
+    quizCard.classList.add("completed");
+  } else {
+    quizButton.disabled = false;
+    quizButton.textContent = "Start Quiz";
+    quizDescription.textContent = "Answer 3 questions and get max reward";
+    quizReward.textContent = "Reward: +30 ⭐";
+    quizStatus.innerHTML = "";
+    quizCard.classList.remove("completed");
+  }
+}
+    
 function resetQuiz() {
   quizCompleted = false;
   quizScore = 0;
@@ -1446,13 +1482,15 @@ function resetQuiz() {
 
   showToast("🔄 Quiz reset");
 
-  loadQuestion();
-  updateHomeQuizCard();
-  updateUI();
+loadQuestion();
+updateHomeQuizCard();
+updateQuizTaskCard();
+updateUI();
 }
     
 loadQuestion();
 updateHomeQuizCard();
+updateQuizTaskCard();
 updateUI();
     
   </script>
