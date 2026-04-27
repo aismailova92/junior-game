@@ -111,6 +111,12 @@
       opacity: 0.45;
     }
 
+.badge.unlocked {
+  background: linear-gradient(135deg, #ffe066, #ffffff);
+  border: 2px solid gold;
+  transform: scale(1.05);
+}
+    
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -936,55 +942,74 @@
 
       <div id="task-quiz" class="card task-card">
         <div class="task-title">🧠 Complete Quiz</div>
-        <div class="muted">Reward: +20 ⭐</div>
-        <button id="btn-quiz" class="small-btn" onclick="completeTask('quiz', 20)">Done</button>
-        <div id="status-quiz"></div>
-      </div>
+<h1 class="title">🎯 Tasks</h1>
+<p class="subtitle">Complete missions and earn points</p>
 
-      <div id="task-atm" class="card task-card">
-        <div class="task-title">🏦 Find nearest ATM</div>
-        <div class="muted">Reward: +30 ⭐</div>
-        <button id="btn-atm" class="small-btn" onclick="completeTask('atm', 30)">Done</button>
-        <div id="status-atm"></div>
-      </div>
+<div id="task-quiz" class="card task-card">
+  <div class="task-title">🧠 Quiz of the Day</div>
+  <div class="muted">Answer 1 question</div>
+  <div class="muted">Reward: +20 ⭐</div>
+  <button id="btn-quiz" class="small-btn" onclick="completeTask('quiz', 20)">Start</button>
+  <div id="status-quiz"></div>
+</div>
 
-      <div id="task-parent" class="card task-card">
-        <div class="task-title">💬 Talk with parent</div>
-        <div class="muted">Reward: +25 ⭐</div>
-        <button id="btn-parent" class="small-btn" onclick="completeTask('parent', 25)">Done</button>
-        <div id="status-parent"></div>
-      </div>
+<div id="task-atm" class="card task-card">
+  <div class="task-title">🏦 Find ATM</div>
+  <div class="muted">Locate nearest ATM</div>
+  <div class="muted">Reward: +30 ⭐</div>
+  <button id="btn-atm" class="small-btn" onclick="completeTask('atm', 30)">Start</button>
+  <div id="status-atm"></div>
+</div>
+
+<div id="task-parent" class="card task-card">
+  <div class="task-title">💬 Talk with Parent</div>
+  <div class="muted">Discuss spending</div>
+  <div class="muted">Reward: +25 ⭐</div>
+  <button id="btn-parent" class="small-btn" onclick="completeTask('parent', 25)">Start</button>
+  <div id="status-parent"></div>
+</div>
     </section>
 
     <!-- REWARDS -->
     <section id="rewards" class="screen">
-      <h1 class="title">Rewards</h1>
-      <p class="subtitle">Your badges and medals</p>
+<h1 class="title">🏆 Rewards</h1>
+<p class="subtitle">Unlock achievements</p>
 
-      <div class="reward-grid">
-        <div class="badge">🏆 First Step</div>
-        <div class="badge">🔥 3-Day Streak</div>
-        <div class="badge locked">🧠 Quiz Master</div>
-        <div class="badge locked">💰 Smart Saver</div>
-      </div>
+<div class="reward-grid">
+  <div id="badge-first-step" class="badge locked">🏆 First Step</div>
+  <div id="badge-task-master" class="badge locked">🔥 Task Master</div>
+  <div class="badge locked">🧠 Quiz Genius</div>
+  <div class="badge locked">💰 Smart Saver</div>
+</div>
+
+<div class="card">
+  <div class="task-title">Your Progress</div>
+  <div id="rewardText" class="muted">Complete tasks to unlock rewards</div>
+</div>
     </section>
 
     <!-- PARENT -->
     <section id="parent" class="screen">
-      <h1 class="title">Parent</h1>
-      <p class="subtitle">Child progress and confirmations</p>
+<h1 class="title">👨‍👩‍👧 Parent</h1>
+<p class="subtitle">Control and approve tasks</p>
 
-      <div class="card">
-        <div class="task-title">Amina's Progress</div>
-        <div id="parentTasksText" class="muted">Tasks completed this week: 0</div>
-        <div id="parentPointsText" class="muted">Points earned: 240 ⭐</div>
-      </div>
+<div class="card">
+  <div class="task-title">Child Progress</div>
+  <div id="parentTasksText" class="muted">Tasks completed: 0</div>
+  <div id="parentPointsText" class="muted">Points earned: 0 ⭐</div>
+</div>
 
-      <div class="card">
-        <div class="task-title">Pending Confirmation</div>
-        <div class="muted">Helped at home</div>
-        <button class="confirm-btn">Confirm task</button>
-      </div>
+<div class="card">
+  <div class="task-title">Pending Approval</div>
+  <div class="muted">Helped at home</div>
+  <button class="confirm-btn">Confirm Task</button>
+</div>
+
+<div class="card">
+  <div class="task-title">💳 Junior Card</div>
+  <div class="muted">Order real card for your child</div>
+  <button class="confirm-btn" onclick="requestCard()">Order Card</button>
+</div>
     </section>
   </div>
 
@@ -1083,8 +1108,33 @@ function updateUI() {
   if (points >= 300) {
     reactBear("super");
   }
+  updateRewards(completedCount);
 }
 
+    function updateRewards(completedCount) {
+  const first = document.getElementById("badge-first-step");
+  const master = document.getElementById("badge-task-master");
+  const text = document.getElementById("rewardText");
+
+  if (completedCount >= 1) {
+    first.classList.remove("locked");
+    first.classList.add("unlocked");
+  }
+
+  if (completedCount >= 3) {
+    master.classList.remove("locked");
+    master.classList.add("unlocked");
+  }
+
+  if (completedCount === 0) {
+    text.innerText = "Complete 1 task to unlock reward";
+  } else if (completedCount < 3) {
+    text.innerText = "Almost there! Complete all tasks";
+  } else {
+    text.innerText = "Amazing! All rewards unlocked 🎉";
+  }
+}
+    
 function showToast(message) {
   const toast = document.getElementById('toast');
   toast.textContent = message;
