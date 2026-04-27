@@ -1360,8 +1360,12 @@ function finishQuiz() {
   document.getElementById("nextQuestionBtn").style.display = "none";
   document.getElementById("finishQuizBtn").style.display = "none";
 
-  document.getElementById("quizResult").innerHTML +=
-    `<br><br>🏁 Quiz completed! Score: ${quizScore}/3` +
+  document.getElementById("quizCounter").textContent = "Today's quiz completed";
+  document.getElementById("question").textContent = "Quiz finished 🎉";
+  document.getElementById("answers").innerHTML = "";
+
+  document.getElementById("quizResult").innerHTML =
+    `🏁 Quiz completed! Score: ${quizScore}/3` +
     (bonus > 0 ? `<br>🏆 Perfect bonus: +20 ⭐` : "") +
     `<br><br>Come back tomorrow for a new quiz 🌟`;
 
@@ -1378,9 +1382,37 @@ function finishQuiz() {
     quizCard.classList.add("completed");
   }
 
+  updateHomeQuizCard();
   updateUI();
+
+  setTimeout(() => {
+    goToTab("home");
+  }, 900);
 }
+
+function updateHomeQuizCard() {
+  const quizTitle = document.querySelector(".quiz-card .quiz-title");
+  const quizSubtitle = document.querySelector(".quiz-card .quiz-subtitle");
+  const quizBadge = document.querySelector(".quiz-card .quiz-badge");
+  const quizReward = document.querySelector(".quiz-card .quiz-reward");
+
+  if (!quizTitle || !quizSubtitle || !quizBadge || !quizReward) return;
+
+  if (quizCompleted) {
+    quizTitle.textContent = "Quiz completed ✅";
+    quizSubtitle.textContent = "Come back tomorrow for a new quiz 🌟";
+    quizBadge.textContent = "DONE TODAY";
+    quizReward.textContent = "✅";
+  } else {
+    quizTitle.textContent = "Quiz of the Day";
+    quizSubtitle.textContent = "Test your knowledge!";
+    quizBadge.textContent = "● NEW TODAY";
+    quizReward.textContent = "+30 ⭐";
+  }
+}
+    
 loadQuestion();
+updateHomeQuizCard();
 updateUI();
     
   </script>
