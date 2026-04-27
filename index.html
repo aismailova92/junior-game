@@ -1175,15 +1175,15 @@
       status.innerHTML = '<span class="status">✅ Completed</span>';
       card.classList.add('completed');
       
-    function requestCard() {
-      showToast("💳 Card request form will be added soon");
-      }
-      
       updateUI();
       showToast(`🎉 Task completed! +${reward} ⭐`);
       reactBear("happy");
     }
 
+function requestCard() {
+  showToast("💳 Card request form will be added soon");
+}
+    
 function updateUI() {
   document.getElementById('heroPoints').textContent = points.toLocaleString();
   document.getElementById('parentPointsText').textContent = `Points earned: ${points} ⭐`;
@@ -1341,9 +1341,11 @@ function finishQuiz() {
     quizCard.classList.add("completed");
   }
 
-loadQuestion();
 updateUI();
 }
+
+loadQuestion();
+updateUI();
     
   </script>
 </body>
