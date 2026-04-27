@@ -1111,6 +1111,12 @@
 
 let dailyTaskCompleted = false;
 
+const tasks = {
+  quiz: false,
+  atm: false,
+  parent: false
+};
+
 if (savedTaskDate === today) {
   dailyTaskCompleted = true;
   tasks.atm = true;
@@ -1118,14 +1124,8 @@ if (savedTaskDate === today) {
 
 if (savedQuizDate === today) {
   quizCompleted = true;
+  tasks.quiz = true;
 }
-
-    const tasks = {
-      quiz: false,
-      atm: false,
-      parent: false
-    };
-
     const quizQuestions = [
   {
     question: "What should you NEVER share with anyone?",
@@ -1160,8 +1160,9 @@ if (savedQuizDate === today) {
     correctIndex: 0,
     explanation: "It is smart to think before spending money."
   }
+];
 
-     const dailyTasksList = [
+const dailyTasksList = [
   {
     id: "atm",
     title: "🏦 Find ATM",
@@ -1589,7 +1590,6 @@ function resetQuiz() {
 localStorage.removeItem("quizDate");
 localStorage.removeItem("taskDate");
 dailyTaskCompleted = false;
-atmCompleted = false;
 tasks.atm = false;
 
   // сброс задания
