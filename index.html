@@ -716,7 +716,46 @@
   font-size: 13px;
   color: rgba(255,255,255,0.88);
 }
+.bear-hero {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 22px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
 
+.bear-img {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffffff, #eaf2ff);
+  padding: 10px;
+  box-shadow: 0 10px 22px rgba(0,0,0,0.16);
+  transition: transform 0.3s ease;
+}
+
+.bear-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: white;
+}
+
+.bear-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.78);
+}
+    
+.clickable-card {
+  cursor: pointer;
+}
+
+.clickable-card:active {
+  transform: scale(0.99);
+}    
 @media (max-width: 390px) {
   .card-points {
     font-size: 48px;
@@ -739,6 +778,18 @@
     <!-- HOME -->
 <section id="home" class="screen active home-screen">
   <div class="home-hero">
+    <div class="bear-hero">
+  <img 
+    id="bear"
+    src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
+    alt="Junior Hero"
+    class="bear-img"
+  />
+  <div class="bear-text">
+    <div class="bear-title">🧸 Junior Hero</div>
+    <div class="bear-subtitle">Your money adventure buddy</div>
+  </div>
+</div>
     <div class="topbar">
       <div class="user-info">
         <div class="avatar">AK</div>
@@ -807,7 +858,7 @@
   <div class="home-content">
     <div class="section-label">🎮 Daily Missions</div>
 
-    <div class="quiz-card">
+   <div class="quiz-card clickable-card" onclick="goToTab('tasks')">
       <div class="quiz-left">
         <div class="quiz-icon">🧠</div>
         <div>
@@ -822,7 +873,7 @@
       </div>
     </div>
 
-    <div class="simple-action-card">
+    <div class="simple-action-card clickable-card" onclick="goToTab('tasks')">
       <div class="action-icon">🎯</div>
       <div class="action-texts">
         <div class="action-title">Daily Tasks</div>
@@ -980,7 +1031,27 @@
       document.getElementById(tabId).classList.add('active');
       button.classList.add('active');
     }
+    function goToTab(tabId) {
+  const screens = document.querySelectorAll('.screen');
+  const buttons = document.querySelectorAll('.nav-btn');
 
+  screens.forEach(screen => screen.classList.remove('active'));
+  buttons.forEach(btn => btn.classList.remove('active'));
+
+  document.getElementById(tabId).classList.add('active');
+
+  const tabMap = {
+    home: 0,
+    tasks: 1,
+    rewards: 2,
+    parent: 3
+  };
+
+  if (buttons[tabMap[tabId]]) {
+    buttons[tabMap[tabId]].classList.add('active');
+  }
+}
+    
     function completeTask(taskId, reward) {
       if (tasks[taskId]) return;
 
@@ -1001,36 +1072,34 @@
       reactBear("happy");
     }
 
-    function updateUI() {
-      document.getElementById('heroPoints').textContent = points.toLocaleString();
-      document.getElementById('parentPointsText').textContent = `Points earned: ${points} ⭐`;
+function updateUI() {
+  document.getElementById('heroPoints').textContent = points.toLocaleString();
+  document.getElementById('parentPointsText').textContent = `Points earned: ${points} ⭐`;
 
-      const completedCount = Object.values(tasks).filter(Boolean).length;
-      const totalTasks = Object.keys(tasks).length;
-      const percent = (completedCount / totalTasks) * 100;
+  const completedCount = Object.values(tasks).filter(Boolean).length;
 
-      document.getElementById('progressText').textContent = `${completedCount} of ${totalTasks} tasks completed`;
-      document.getElementById('progressFill').style.width = `${percent}%`;
-      document.getElementById('parentTasksText').textContent = `Tasks completed this week: ${completedCount}`;
-      if (points >= 300) {
-  reactBear("super");
+  document.getElementById('parentTasksText').textContent = `Tasks completed this week: ${completedCount}`;
+
+  if (points >= 300) {
+    reactBear("super");
+  }
 }
-    }
 
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.classList.add('show');
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
 
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 1800);
-      function reactBear(state) {
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 1800);
+}
+
+function reactBear(state) {
   const bear = document.getElementById("bear");
+  if (!bear) return;
 
   bear.src = bearStates[state];
-
-  // небольшая анимация
   bear.style.transform = "scale(1.2)";
 
   setTimeout(() => {
@@ -1038,7 +1107,6 @@
     bear.src = bearStates.normal;
   }, 1200);
 }
-    }
 
     updateUI();
   </script>
