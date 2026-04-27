@@ -1006,13 +1006,15 @@
   <div id="status-quiz"></div>
 </div>
 
-    <div id="task-atm" class="card task-card">
-      <div class="task-title">🏦 Find ATM</div>
-      <div class="muted">Locate nearest ATM</div>
-      <div class="muted"> +50 ⭐</div>
-      <button id="btn-atm" class="small-btn" onclick="completeTask('atm', 30)">Start</button>
-      <div id="status-atm"></div>
-    </div>
+ <div id="task-atm" class="card task-card">
+  <div class="task-title">🏦 Find ATM</div>
+  <div id="atmTaskDescription" class="muted">Find the nearest ATM around you</div>
+  <div id="atmTaskReward" class="muted">Reward: +30 ⭐</div>
+
+  <button id="btn-atm" class="small-btn" onclick="completeATMTask()">Find ATM</button>
+
+  <div id="status-atm"></div>
+</div>
 
     <div id="task-parent" class="card task-card">
       <div class="task-title">💬 Talk with Parent</div>
@@ -1104,7 +1106,15 @@
     let quizCompleted = false;
 
     const today = new Date().toISOString().slice(0, 10);
-const savedQuizDate = localStorage.getItem("quizDate");
+    const savedQuizDate = localStorage.getItem("quizDate");
+    const savedATMDate = localStorage.getItem("atmDate");
+
+let atmCompleted = false;
+
+if (savedATMDate === today) {
+  atmCompleted = true;
+  tasks.atm = true;
+}
 
 if (savedQuizDate === today) {
   quizCompleted = true;
@@ -1190,6 +1200,56 @@ function startQuizFromTasks() {
   }
 
   goToTab("quiz");
+}
+
+    function completeATMTask() {
+  if (atmCompleted) {
+    showToast("✅ ATM task already completed today");
+    return;
+  }
+
+  atmCompleted = true;
+  tasks.atm = true;
+
+  points += 30;
+
+  localStorage.setItem("atmDate", today);
+
+  showToast("🏦 ATM found! +30 ⭐");
+  reactBear("happy");
+
+  updateATMTaskCard();
+  updateUI();
+}
+
+    function updateATMTaskCard() {
+  const btn = document.getElementById("btn-atm");
+  const status = document.getElementById("status-atm");
+  const desc = document.getElementById("atmTaskDescription");
+  const reward = document.getElementById("atmTaskReward");
+  const card = document.getElementById("task-atm");
+
+  if (!btn || !status || !desc || !reward || !card) return;
+
+  if (atmCompleted) {
+    btn.disabled = true;
+    btn.textContent = "Completed";
+
+    desc.textContent = "ATM task completed for today";
+    reward.textContent = "Come back tomorrow for new mission 🌟";
+
+    status.innerHTML = '<span class="status">✅ Completed today</span>';
+    card.classList.add("completed");
+  } else {
+    btn.disabled = false;
+    btn.textContent = "Find ATM";
+
+    desc.textContent = "Find the nearest ATM around you";
+    reward.textContent = "Reward: +30 ⭐";
+
+    status.innerHTML = "";
+    card.classList.remove("completed");
+  }
 }
     
     function completeTask(taskId, reward) {
@@ -1458,7 +1518,10 @@ function resetQuiz() {
   quizScore = 0;
   currentQuestionIndex = 0;
 
-  localStorage.removeItem("quizDate");
+localStorage.removeItem("quizDate");
+localStorage.removeItem("atmDate");
+atmCompleted = false;
+tasks.atm = false;
 
   // сброс задания
   tasks.quiz = false;
@@ -1485,12 +1548,14 @@ function resetQuiz() {
 loadQuestion();
 updateHomeQuizCard();
 updateQuizTaskCard();
+updateATMTaskCard();
 updateUI();
 }
     
 loadQuestion();
 updateHomeQuizCard();
 updateQuizTaskCard();
+updateATMTaskCard();
 updateUI();
     
   </script>
