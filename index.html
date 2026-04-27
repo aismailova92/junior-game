@@ -1063,6 +1063,12 @@
       <div class="muted">Order real card for your child</div>
       <button class="confirm-btn" onclick="requestCard()">Order Card</button>
     </div>
+
+<div class="card">
+  <div class="task-title">🛠 Debug (for testing)</div>
+  <button class="confirm-btn" onclick="resetQuiz()">Reset Quiz</button>
+</div>
+    
   </section>
 
 </div>
@@ -1409,6 +1415,40 @@ function updateHomeQuizCard() {
     quizBadge.textContent = "● NEW TODAY";
     quizReward.textContent = "+30 ⭐";
   }
+}
+
+function resetQuiz() {
+  quizCompleted = false;
+  quizScore = 0;
+  currentQuestionIndex = 0;
+
+  localStorage.removeItem("quizDate");
+
+  // сброс задания
+  tasks.quiz = false;
+
+  const quizButton = document.getElementById("btn-quiz");
+  const quizStatus = document.getElementById("status-quiz");
+  const quizCard = document.getElementById("task-quiz");
+
+  if (quizButton) {
+    quizButton.disabled = false;
+    quizButton.textContent = "Start";
+  }
+
+  if (quizStatus) {
+    quizStatus.innerHTML = "";
+  }
+
+  if (quizCard) {
+    quizCard.classList.remove("completed");
+  }
+
+  showToast("🔄 Quiz reset");
+
+  loadQuestion();
+  updateHomeQuizCard();
+  updateUI();
 }
     
 loadQuestion();
