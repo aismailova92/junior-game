@@ -936,39 +936,35 @@
   </div>
 </section>
     <!-- TASKS -->
-    <section id="tasks" class="screen">
-      <h1 class="title">Tasks</h1>
-      <p class="subtitle">Daily tasks and missions</p>
+<!-- TASKS -->
+<section id="tasks" class="screen">
+  <h1 class="title">🎯 Tasks</h1>
+  <p class="subtitle">Complete missions and earn points</p>
 
-      <div id="task-quiz" class="card task-card">
-        <div class="task-title">🧠 Complete Quiz</div>
-<h1 class="title">🎯 Tasks</h1>
-<p class="subtitle">Complete missions and earn points</p>
+  <div id="task-quiz" class="card task-card">
+    <div class="task-title">🧠 Quiz of the Day</div>
+    <div class="muted">Answer 1 question</div>
+    <div class="muted">Reward: +20 ⭐</div>
+    <button id="btn-quiz" class="small-btn" onclick="completeTask('quiz', 20)">Start</button>
+    <div id="status-quiz"></div>
+  </div>
 
-<div id="task-quiz" class="card task-card">
-  <div class="task-title">🧠 Quiz of the Day</div>
-  <div class="muted">Answer 1 question</div>
-  <div class="muted">Reward: +20 ⭐</div>
-  <button id="btn-quiz" class="small-btn" onclick="completeTask('quiz', 20)">Start</button>
-  <div id="status-quiz"></div>
-</div>
+  <div id="task-atm" class="card task-card">
+    <div class="task-title">🏦 Find ATM</div>
+    <div class="muted">Locate nearest ATM</div>
+    <div class="muted">Reward: +30 ⭐</div>
+    <button id="btn-atm" class="small-btn" onclick="completeTask('atm', 30)">Start</button>
+    <div id="status-atm"></div>
+  </div>
 
-<div id="task-atm" class="card task-card">
-  <div class="task-title">🏦 Find ATM</div>
-  <div class="muted">Locate nearest ATM</div>
-  <div class="muted">Reward: +30 ⭐</div>
-  <button id="btn-atm" class="small-btn" onclick="completeTask('atm', 30)">Start</button>
-  <div id="status-atm"></div>
-</div>
-
-<div id="task-parent" class="card task-card">
-  <div class="task-title">💬 Talk with Parent</div>
-  <div class="muted">Discuss spending</div>
-  <div class="muted">Reward: +25 ⭐</div>
-  <button id="btn-parent" class="small-btn" onclick="completeTask('parent', 25)">Start</button>
-  <div id="status-parent"></div>
-</div>
-    </section>
+  <div id="task-parent" class="card task-card">
+    <div class="task-title">💬 Talk with Parent</div>
+    <div class="muted">Discuss spending</div>
+    <div class="muted">Reward: +25 ⭐</div>
+    <button id="btn-parent" class="small-btn" onclick="completeTask('parent', 25)">Start</button>
+    <div id="status-parent"></div>
+  </div>
+</section>
 
     <!-- REWARDS -->
     <section id="rewards" class="screen">
