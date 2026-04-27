@@ -780,234 +780,236 @@
 <body>
   <div id="toast" class="toast">Done</div>
 
-  <div class="app">
-    <!-- HOME -->
-<section id="home" class="screen active home-screen">
-  <div class="home-hero">
-    <div class="bear-hero">
-  <img 
-    id="bear"
-    src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
-    alt="Junior Hero"
-    class="bear-img"
-  />
-  <div class="bear-text">
-    <div class="bear-title">🧸 Junior Hero</div>
-    <div class="bear-subtitle">Your money adventure buddy</div>
-  </div>
-</div>
-    <div class="topbar">
-      <div class="user-info">
-        <div class="avatar">AK</div>
-        <div>
-          <div class="hello-text">Hello, Alex! 👋</div>
-          <div class="level-text">Level 5 Explorer ⭐</div>
-        </div>
-      </div>
+<div class="app">
 
-      <div class="streak-pill">
-        <div class="streak-icon">🔥</div>
-        <div>
-          <div class="streak-label">Streak</div>
-          <div class="streak-value">7 days</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="junior-card">
-      <div class="card-top">
+  <!-- HOME -->
+  <section id="home" class="screen active home-screen">
+    <div class="home-hero">
+      <div class="bear-hero">
         <img 
-  src="https://raw.githubusercontent.com/aismailova92/junior-game/main/Screenshot%202026-04-17%20161846.png"
-  style="
-    width: 90px;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-  "
-/>
+          id="bear"
+          src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
+          alt="Junior Hero"
+          class="bear-img"
+        />
+        <div class="bear-text">
+          <div class="bear-title">🧸 Junior Hero</div>
+          <div class="bear-subtitle">Your money adventure buddy</div>
+        </div>
+      </div>
+
+      <div class="topbar">
+        <div class="user-info">
+          <div class="avatar">AK</div>
+          <div>
+            <div class="hello-text">Hello, Alex! 👋</div>
+            <div class="level-text">Level 5 Explorer ⭐</div>
+          </div>
+        </div>
+
+        <div class="streak-pill">
+          <div class="streak-icon">🔥</div>
+          <div>
+            <div class="streak-label">Streak</div>
+            <div class="streak-value">7 days</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="junior-card">
+        <div class="card-top">
+          <img 
+            src="https://raw.githubusercontent.com/aismailova92/junior-game/main/Screenshot%202026-04-17%20161846.png"
+            style="
+              width: 90px;
+              height: auto;
+              border-radius: 10px;
+              box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+            "
+          />
           <span class="card-brand">ACCESSBANK JUNIOR</span>
         </div>
+
         <div class="card-level">Level 5 ⭐</div>
+        <div class="card-name">Alex Kim</div>
+
+        <div class="points-row">
+          <div id="heroPoints" class="card-points">240</div>
+          <div class="points-star">⭐</div>
+        </div>
+
+        <div class="card-balance-label">YOUR POINTS BALANCE</div>
+
+        <div class="card-divider"></div>
+
+        <div class="card-stats">
+          <div class="stat-bubble">
+            <div class="stat-icon">🎯</div>
+            <div>
+              <div class="stat-label">NEXT LEVEL</div>
+              <div class="stat-value">550 pts</div>
+            </div>
+          </div>
+
+          <div class="stat-bubble">
+            <div class="stat-icon">🏆</div>
+            <div>
+              <div class="stat-label">BADGES</div>
+              <div class="stat-value">4/9</div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div class="card-name">Alex Kim</div>
+    <div class="home-content">
+      <div class="section-label">🎮 Daily Missions</div>
 
-      <div class="points-row">
-        <div id="heroPoints" class="card-points">2,450</div>
-        <div class="points-star">⭐</div>
-      </div>
-
-      <div class="card-balance-label">YOUR POINTS BALANCE</div>
-
-      <div class="card-divider"></div>
-
-      <div class="card-stats">
-        <div class="stat-bubble">
-          <div class="stat-icon">🎯</div>
+      <div class="quiz-card clickable-card" onclick="goToTab('tasks')">
+        <div class="quiz-left">
+          <div class="quiz-icon">🧠</div>
           <div>
-            <div class="stat-label">NEXT LEVEL</div>
-            <div class="stat-value">550 pts</div>
+            <div class="quiz-title">Quiz of the Day</div>
+            <div class="quiz-subtitle">Test your knowledge!</div>
+          </div>
+        </div>
+        <div class="quiz-arrow">›</div>
+        <div class="quiz-footer">
+          <div class="quiz-badge">● NEW TODAY</div>
+          <div class="quiz-reward">+30 ⭐</div>
+        </div>
+      </div>
+
+      <div class="simple-action-card clickable-card" onclick="goToTab('tasks')">
+        <div class="action-icon">🎯</div>
+        <div class="action-texts">
+          <div class="action-title">Daily Tasks</div>
+          <div class="action-subtitle">3 tasks available</div>
+        </div>
+        <div class="action-arrow">›</div>
+      </div>
+
+      <div class="section-label">📊 Your Progress</div>
+
+      <div class="progress-card-large">
+        <div class="progress-top-row">
+          <div>
+            <div class="mini-label">NEXT LEVEL</div>
+            <div class="progress-title">Level 6 Champion 👑</div>
+          </div>
+          <div class="progress-percent-block">
+            <div class="progress-percent">68%</div>
+            <div class="progress-small">550 pts to go</div>
           </div>
         </div>
 
-        <div class="stat-bubble">
-          <div class="stat-icon">🏆</div>
-          <div>
-            <div class="stat-label">BADGES</div>
-            <div class="stat-value">4/9</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="home-content">
-    <div class="section-label">🎮 Daily Missions</div>
-
-   <div class="quiz-card clickable-card" onclick="goToTab('tasks')">
-      <div class="quiz-left">
-        <div class="quiz-icon">🧠</div>
-        <div>
-          <div class="quiz-title">Quiz of the Day</div>
-          <div class="quiz-subtitle">Test your knowledge!</div>
-        </div>
-      </div>
-      <div class="quiz-arrow">›</div>
-      <div class="quiz-footer">
-        <div class="quiz-badge">● NEW TODAY</div>
-        <div class="quiz-reward">+30 ⭐</div>
-      </div>
-    </div>
-
-    <div class="simple-action-card clickable-card" onclick="goToTab('tasks')">
-      <div class="action-icon">🎯</div>
-      <div class="action-texts">
-        <div class="action-title">Daily Tasks</div>
-        <div class="action-subtitle">3 tasks available</div>
-      </div>
-      <div class="action-arrow">›</div>
-    </div>
-
-    <div class="section-label">📊 Your Progress</div>
-
-    <div class="progress-card-large">
-      <div class="progress-top-row">
-        <div>
-          <div class="mini-label">NEXT LEVEL</div>
-          <div class="progress-title">Level 6 Champion 👑</div>
-        </div>
-        <div class="progress-percent-block">
-          <div class="progress-percent">68%</div>
-          <div class="progress-small">550 pts to go</div>
+        <div class="progress-track-large">
+          <div class="progress-fill-large"></div>
+          <div class="progress-dot"></div>
         </div>
       </div>
 
-      <div class="progress-track-large">
-        <div class="progress-fill-large"></div>
-        <div class="progress-dot"></div>
+      <div class="section-label">💳 Card Benefits</div>
+
+      <div class="benefits-card">
+        <div class="benefits-title">Choose Your Cashback Categories</div>
+
+        <div class="cashback-tags">
+          <div class="cashback-tag">🎬 Cinema</div>
+          <div class="cashback-tag">🚗 Transport</div>
+          <div class="cashback-tag">☕ Cafes</div>
+        </div>
+
+        <div class="benefit-note">
+          ✨ Unlock real cashback rewards when you get your Junior Card
+        </div>
+      </div>
+
+      <div class="cta-card">
+        <div class="cta-icon-wrap">💳</div>
+        <div class="cta-title">Get Your Real Junior Card!</div>
+        <div class="cta-subtitle">
+          Turn your points into real rewards and start managing your own money like a hero!
+        </div>
+        <button class="cta-button" onclick="requestCard()">Request Card Now</button>
+        <div class="cta-features">• Free Delivery &nbsp;&nbsp; • Parent Controls</div>
       </div>
     </div>
+  </section>
 
-    <div class="section-label">💳 Card Benefits</div>
+  <!-- TASKS -->
+  <section id="tasks" class="screen">
+    <h1 class="title">🎯 Tasks</h1>
+    <p class="subtitle">Complete missions and earn points</p>
 
-    <div class="benefits-card">
-      <div class="benefits-title">Choose Your Cashback Categories</div>
-
-      <div class="cashback-tags">
-        <div class="cashback-tag">🎬 Cinema</div>
-        <div class="cashback-tag">🚗 Transport</div>
-        <div class="cashback-tag">☕ Cafes</div>
-      </div>
-
-      <div class="benefit-note">
-        ✨ Unlock real cashback rewards when you get your Junior Card
-      </div>
+    <div id="task-quiz" class="card task-card">
+      <div class="task-title">🧠 Quiz of the Day</div>
+      <div class="muted">Answer 1 question</div>
+      <div class="muted">Reward: +20 ⭐</div>
+      <button id="btn-quiz" class="small-btn" onclick="completeTask('quiz', 20)">Start</button>
+      <div id="status-quiz"></div>
     </div>
 
-    <div class="cta-card">
-      <div class="cta-icon-wrap">💳</div>
-      <div class="cta-title">Get Your Real Junior Card!</div>
-      <div class="cta-subtitle">
-        Turn your points into real rewards and start managing your own money like a hero!
-      </div>
-      <button class="cta-button">Request Card Now</button>
-      <div class="cta-features">• Free Delivery &nbsp;&nbsp; • Parent Controls</div>
+    <div id="task-atm" class="card task-card">
+      <div class="task-title">🏦 Find ATM</div>
+      <div class="muted">Locate nearest ATM</div>
+      <div class="muted">Reward: +30 ⭐</div>
+      <button id="btn-atm" class="small-btn" onclick="completeTask('atm', 30)">Start</button>
+      <div id="status-atm"></div>
     </div>
-  </div>
-</section>
-    <!-- TASKS -->
-<!-- TASKS -->
-<section id="tasks" class="screen">
-  <h1 class="title">🎯 Tasks</h1>
-  <p class="subtitle">Complete missions and earn points</p>
 
-  <div id="task-quiz" class="card task-card">
-    <div class="task-title">🧠 Quiz of the Day</div>
-    <div class="muted">Answer 1 question</div>
-    <div class="muted">Reward: +20 ⭐</div>
-    <button id="btn-quiz" class="small-btn" onclick="completeTask('quiz', 20)">Start</button>
-    <div id="status-quiz"></div>
-  </div>
+    <div id="task-parent" class="card task-card">
+      <div class="task-title">💬 Talk with Parent</div>
+      <div class="muted">Discuss spending</div>
+      <div class="muted">Reward: +25 ⭐</div>
+      <button id="btn-parent" class="small-btn" onclick="completeTask('parent', 25)">Start</button>
+      <div id="status-parent"></div>
+    </div>
+  </section>
 
-  <div id="task-atm" class="card task-card">
-    <div class="task-title">🏦 Find ATM</div>
-    <div class="muted">Locate nearest ATM</div>
-    <div class="muted">Reward: +30 ⭐</div>
-    <button id="btn-atm" class="small-btn" onclick="completeTask('atm', 30)">Start</button>
-    <div id="status-atm"></div>
-  </div>
+  <!-- REWARDS -->
+  <section id="rewards" class="screen">
+    <h1 class="title">🏆 Rewards</h1>
+    <p class="subtitle">Unlock achievements</p>
 
-  <div id="task-parent" class="card task-card">
-    <div class="task-title">💬 Talk with Parent</div>
-    <div class="muted">Discuss spending</div>
-    <div class="muted">Reward: +25 ⭐</div>
-    <button id="btn-parent" class="small-btn" onclick="completeTask('parent', 25)">Start</button>
-    <div id="status-parent"></div>
-  </div>
-</section>
+    <div class="reward-grid">
+      <div id="badge-first-step" class="badge locked">🏆 First Step</div>
+      <div id="badge-task-master" class="badge locked">🔥 Task Master</div>
+      <div class="badge locked">🧠 Quiz Genius</div>
+      <div class="badge locked">💰 Smart Saver</div>
+    </div>
 
-    <!-- REWARDS -->
-    <section id="rewards" class="screen">
-<h1 class="title">🏆 Rewards</h1>
-<p class="subtitle">Unlock achievements</p>
+    <div class="card">
+      <div class="task-title">Your Progress</div>
+      <div id="rewardText" class="muted">Complete tasks to unlock rewards</div>
+    </div>
+  </section>
 
-<div class="reward-grid">
-  <div id="badge-first-step" class="badge locked">🏆 First Step</div>
-  <div id="badge-task-master" class="badge locked">🔥 Task Master</div>
-  <div class="badge locked">🧠 Quiz Genius</div>
-  <div class="badge locked">💰 Smart Saver</div>
+  <!-- PARENT -->
+  <section id="parent" class="screen">
+    <h1 class="title">👨‍👩‍👧 Parent</h1>
+    <p class="subtitle">Control and approve tasks</p>
+
+    <div class="card">
+      <div class="task-title">Child Progress</div>
+      <div id="parentTasksText" class="muted">Tasks completed: 0</div>
+      <div id="parentPointsText" class="muted">Points earned: 240 ⭐</div>
+    </div>
+
+    <div class="card">
+      <div class="task-title">Pending Approval</div>
+      <div class="muted">Helped at home</div>
+      <button class="confirm-btn">Confirm Task</button>
+    </div>
+
+    <div class="card">
+      <div class="task-title">💳 Junior Card</div>
+      <div class="muted">Order real card for your child</div>
+      <button class="confirm-btn" onclick="requestCard()">Order Card</button>
+    </div>
+  </section>
+
 </div>
-
-<div class="card">
-  <div class="task-title">Your Progress</div>
-  <div id="rewardText" class="muted">Complete tasks to unlock rewards</div>
-</div>
-    </section>
-
-    <!-- PARENT -->
-    <section id="parent" class="screen">
-<h1 class="title">👨‍👩‍👧 Parent</h1>
-<p class="subtitle">Control and approve tasks</p>
-
-<div class="card">
-  <div class="task-title">Child Progress</div>
-  <div id="parentTasksText" class="muted">Tasks completed: 0</div>
-  <div id="parentPointsText" class="muted">Points earned: 0 ⭐</div>
-</div>
-
-<div class="card">
-  <div class="task-title">Pending Approval</div>
-  <div class="muted">Helped at home</div>
-  <button class="confirm-btn">Confirm Task</button>
-</div>
-
-<div class="card">
-  <div class="task-title">💳 Junior Card</div>
-  <div class="muted">Order real card for your child</div>
-  <button class="confirm-btn" onclick="requestCard()">Order Card</button>
-</div>
-    </section>
-  </div>
 
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="showTab('home', this)">
