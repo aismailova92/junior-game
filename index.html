@@ -1339,15 +1339,6 @@ function checkAnswer(selectedIndex) {
   }
 }
 
-  updateUI();
-
-  if (currentQuestionIndex < quizQuestions.length - 1) {
-    document.getElementById("nextQuestionBtn").style.display = "inline-block";
-  } else {
-    finishQuiz();
-  }
-}
-
 function nextQuestion() {
   currentQuestionIndex++;
   loadQuestion();
