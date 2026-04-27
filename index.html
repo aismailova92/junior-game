@@ -1007,11 +1007,11 @@
 </div>
 
  <div id="task-atm" class="card task-card">
-  <div class="task-title">🏦 Find ATM</div>
-  <div id="atmTaskDescription" class="muted">Find the nearest ATM around you</div>
-  <div id="atmTaskReward" class="muted">Reward: +30 ⭐</div>
+ <div id="dailyTaskTitle" class="task-title"></div>
+<div id="dailyTaskDescription" class="muted"></div>
+<div id="dailyTaskReward" class="muted"></div>
 
-  <button id="btn-atm" class="small-btn" onclick="completeATMTask()">Find ATM</button>
+<button id="btn-atm" class="small-btn" onclick="handleDailyTask()">Start</button>
 
   <div id="status-atm"></div>
 </div>
@@ -1107,12 +1107,12 @@
 
     const today = new Date().toISOString().slice(0, 10);
     const savedQuizDate = localStorage.getItem("quizDate");
-    const savedATMDate = localStorage.getItem("atmDate");
+   const savedTaskDate = localStorage.getItem("taskDate");
 
-let atmCompleted = false;
+let dailyTaskCompleted = false;
 
-if (savedATMDate === today) {
-  atmCompleted = true;
+if (savedTaskDate === today) {
+  dailyTaskCompleted = true;
   tasks.atm = true;
 }
 
@@ -1160,6 +1160,36 @@ if (savedQuizDate === today) {
     correctIndex: 0,
     explanation: "It is smart to think before spending money."
   }
+
+     const dailyTasksList = [
+  {
+    id: "atm",
+    title: "🏦 Find ATM",
+    description: "Open map and find nearest ATM",
+    reward: 30,
+    action: "map"
+  },
+  {
+    id: "balance",
+    title: "💰 Check Balance",
+    description: "Check your card balance",
+    reward: 20,
+    action: "confirm"
+  },
+  {
+    id: "save",
+    title: "🐷 Save Money",
+    description: "Save at least 1 AZN today",
+    reward: 25,
+    action: "confirm"
+  },
+  {
+    id: "talk",
+    title: "💬 Talk with Parent",
+    description: "Discuss spending today",
+    reward: 20,
+    action: "confirm"
+  } 
 ];
 
     function showTab(tabId, button) {
@@ -1222,30 +1252,35 @@ function startQuizFromTasks() {
   updateUI();
 }
 
-    function updateATMTaskCard() {
+function updateATMTaskCard() {
+  const task = getTodayTask();
+
+  const title = document.getElementById("dailyTaskTitle");
+  const desc = document.getElementById("dailyTaskDescription");
+  const reward = document.getElementById("dailyTaskReward");
   const btn = document.getElementById("btn-atm");
   const status = document.getElementById("status-atm");
-  const desc = document.getElementById("atmTaskDescription");
-  const reward = document.getElementById("atmTaskReward");
   const card = document.getElementById("task-atm");
 
-  if (!btn || !status || !desc || !reward || !card) return;
+  if (!title || !desc || !reward || !btn || !status || !card) return;
 
-  if (atmCompleted) {
+  if (dailyTaskCompleted) {
+    title.textContent = task.title;
+    desc.textContent = "Task completed for today";
+    reward.textContent = "Come back tomorrow 🌟";
+
     btn.disabled = true;
     btn.textContent = "Completed";
-
-    desc.textContent = "ATM task completed for today";
-    reward.textContent = "Come back tomorrow for new mission 🌟";
 
     status.innerHTML = '<span class="status">✅ Completed today</span>';
     card.classList.add("completed");
   } else {
-    btn.disabled = false;
-    btn.textContent = "Find ATM";
+    title.textContent = task.title;
+    desc.textContent = task.description;
+    reward.textContent = `Reward: +${task.reward} ⭐`;
 
-    desc.textContent = "Find the nearest ATM around you";
-    reward.textContent = "Reward: +30 ⭐";
+    btn.disabled = false;
+    btn.textContent = "Start";
 
     status.innerHTML = "";
     card.classList.remove("completed");
@@ -1272,6 +1307,39 @@ function startQuizFromTasks() {
       reactBear("happy");
     }
 
+    function handleDailyTask() {
+  const task = getTodayTask();
+
+  if (dailyTaskCompleted) {
+    showToast("✅ Task already completed today");
+    return;
+  }
+
+  if (task.action === "map") {
+    window.open("https://www.google.com/maps/search/ATM", "_blank");
+    showToast("📍 Find ATM on map and come back");
+  } else {
+    confirmTaskCompletion();
+  }
+}
+
+function confirmTaskCompletion() {
+  const task = getTodayTask();
+
+  dailyTaskCompleted = true;
+  tasks.atm = true;
+
+  points += task.reward;
+
+  localStorage.setItem("taskDate", today);
+
+  showToast(`🎉 Task completed! +${task.reward} ⭐`);
+  reactBear("happy");
+
+  updateATMTaskCard();
+  updateUI();
+}
+    
 function requestCard() {
   showToast("💳 Card request form will be added soon");
 }
@@ -1519,7 +1587,8 @@ function resetQuiz() {
   currentQuestionIndex = 0;
 
 localStorage.removeItem("quizDate");
-localStorage.removeItem("atmDate");
+localStorage.removeItem("taskDate");
+dailyTaskCompleted = false;
 atmCompleted = false;
 tasks.atm = false;
 
@@ -1551,6 +1620,11 @@ updateQuizTaskCard();
 updateATMTaskCard();
 updateUI();
 }
+
+    function getTodayTask() {
+  const index = new Date().getDate() % dailyTasksList.length;
+  return dailyTasksList[index];
+}    
     
 loadQuestion();
 updateHomeQuizCard();
