@@ -768,6 +768,18 @@
   margin-top: 10px;
   text-align: left;
 }
+
+.answer-btn.correct {
+  background: #22c55e;
+}
+
+.answer-btn.wrong {
+  background: #ef4444;
+}
+
+.answer-btn:disabled {
+  opacity: 0.85;
+}    
     
 @media (max-width: 390px) {
   .card-points {
@@ -944,24 +956,30 @@
     </div>
   </section>
 
-  <!-- QUIZ -->
+<!-- QUIZ -->
 <section id="quiz" class="screen">
-  <h1 class="title">🧠 Quiz</h1>
-  <p class="subtitle">Answer and earn points</p>
+  <h1 class="title">🧠 Quiz of the Day</h1>
+  <p class="subtitle">Answer 3 questions and earn points</p>
 
   <div class="card">
-    <div id="question" class="task-title">
-      What should you NEVER share?
+    <div id="quizCounter" class="muted">Question 1 of 3</div>
+
+    <div id="question" class="task-title" style="margin-top: 10px;">
+      Loading question...
     </div>
 
-    <div id="answers">
-      <button class="small-btn answer-btn" onclick="answer(false)">Your favorite color</button>
-      <button class="small-btn answer-btn" onclick="answer(true)">Your card PIN</button>
-      <button class="small-btn answer-btn" onclick="answer(false)">Your hobby</button>
-      <button class="small-btn answer-btn" onclick="answer(false)">Your school subject</button>
-    </div>
+    <div id="answers"></div>
 
-    <div id="quizResult" style="margin-top:10px;"></div>
+    <div id="quizResult" style="margin-top: 12px;"></div>
+
+    <button 
+      id="nextQuestionBtn" 
+      class="small-btn" 
+      style="display:none; margin-top: 14px;" 
+      onclick="nextQuestion()"
+    >
+      Next Question →
+    </button>
   </div>
 </section>
   
@@ -1065,12 +1083,51 @@
   super: "https://cdn-icons-png.flaticon.com/512/616/616430.png"
 };
     let points = 240;
+    let currentQuestionIndex = 0;
+    let quizScore = 0;
+    let quizCompleted = false;
 
     const tasks = {
       quiz: false,
       atm: false,
       parent: false
     };
+
+    const quizQuestions = [
+  {
+    question: "What should you NEVER share with anyone?",
+    answers: [
+      "Your favorite color",
+      "Your card PIN",
+      "Your favorite cartoon",
+      "Your school subject"
+    ],
+    correctIndex: 1,
+    explanation: "Your PIN is secret. Never share it with anyone."
+  },
+  {
+    question: "What is a good money habit?",
+    answers: [
+      "Spend everything at once",
+      "Save a small amount regularly",
+      "Ignore your balance",
+      "Buy things you do not need"
+    ],
+    correctIndex: 1,
+    explanation: "Saving regularly helps you reach your goals."
+  },
+  {
+    question: "What should you do before buying something?",
+    answers: [
+      "Think if you really need it",
+      "Buy it immediately",
+      "Ask a stranger",
+      "Share your card details"
+    ],
+    correctIndex: 0,
+    explanation: "It is smart to think before spending money."
+  }
+];
 
     function showTab(tabId, button) {
       const screens = document.querySelectorAll('.screen');
@@ -1190,20 +1247,103 @@ function reactBear(state) {
 
     updateUI();
 
-  function answer(isCorrect) {
-  const result = document.getElementById("quizResult");
+function loadQuestion() {
+  const questionData = quizQuestions[currentQuestionIndex];
 
-  if (isCorrect) {
-    result.innerHTML = "✅ Correct! +30 ⭐";
-    points += 30;
-    showToast("🎉 Correct answer! +30 ⭐");
+  document.getElementById("quizCounter").textContent =
+    `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+
+  document.getElementById("question").textContent = questionData.question;
+
+  const answersContainer = document.getElementById("answers");
+  answersContainer.innerHTML = "";
+
+  document.getElementById("quizResult").innerHTML = "";
+  document.getElementById("nextQuestionBtn").style.display = "none";
+
+  questionData.answers.forEach((answerText, index) => {
+    const button = document.createElement("button");
+    button.className = "small-btn answer-btn";
+    button.textContent = answerText;
+    button.onclick = () => checkAnswer(index);
+    answersContainer.appendChild(button);
+  });
+}
+
+function checkAnswer(selectedIndex) {
+  const questionData = quizQuestions[currentQuestionIndex];
+  const buttons = document.querySelectorAll("#answers .answer-btn");
+
+  buttons.forEach((button, index) => {
+    button.disabled = true;
+
+    if (index === questionData.correctIndex) {
+      button.classList.add("correct");
+    }
+
+    if (index === selectedIndex && selectedIndex !== questionData.correctIndex) {
+      button.classList.add("wrong");
+    }
+  });
+
+  if (selectedIndex === questionData.correctIndex) {
+    quizScore++;
+    points += 10;
+    document.getElementById("quizResult").innerHTML =
+      `✅ Correct! +10 ⭐<br><span class="muted">${questionData.explanation}</span>`;
+    showToast("🎉 Correct answer! +10 ⭐");
     reactBear("happy");
   } else {
-    result.innerHTML = "❌ Wrong! Never share your PIN.";
+    document.getElementById("quizResult").innerHTML =
+      `❌ Not quite.<br><span class="muted">${questionData.explanation}</span>`;
   }
 
   updateUI();
-}  
+
+  if (currentQuestionIndex < quizQuestions.length - 1) {
+    document.getElementById("nextQuestionBtn").style.display = "inline-block";
+  } else {
+    finishQuiz();
+  }
+}
+
+function nextQuestion() {
+  currentQuestionIndex++;
+  loadQuestion();
+}
+
+function finishQuiz() {
+  quizCompleted = true;
+
+  const bonus = quizScore === 3 ? 20 : 0;
+
+  if (bonus > 0) {
+    points += bonus;
+    showToast("🏆 Perfect quiz! Bonus +20 ⭐");
+  }
+
+  document.getElementById("nextQuestionBtn").style.display = "none";
+
+  document.getElementById("quizResult").innerHTML +=
+    `<br><br>🏁 Quiz completed! Score: ${quizScore}/3` +
+    (bonus > 0 ? `<br>🏆 Perfect bonus: +20 ⭐` : "");
+
+  if (!tasks.quiz) {
+    tasks.quiz = true;
+
+    const quizButton = document.getElementById("btn-quiz");
+    const quizStatus = document.getElementById("status-quiz");
+    const quizCard = document.getElementById("task-quiz");
+
+    quizButton.disabled = true;
+    quizButton.textContent = "Completed";
+    quizStatus.innerHTML = '<span class="status">✅ Completed</span>';
+    quizCard.classList.add("completed");
+  }
+
+loadQuestion();
+updateUI();
+}
     
   </script>
 </body>
