@@ -1089,7 +1089,11 @@
       button.textContent = 'Completed';
       status.innerHTML = '<span class="status">✅ Completed</span>';
       card.classList.add('completed');
-
+      
+    function requestCard() {
+      showToast("💳 Card request form will be added soon");
+      }
+      
       updateUI();
       showToast(`🎉 Task completed! +${reward} ⭐`);
       reactBear("happy");
