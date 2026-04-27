@@ -1013,8 +1013,14 @@
 <div id="dailyTaskReward" class="muted"></div>
 
 <button id="btn-atm" class="small-btn" onclick="handleDailyTask()">Start</button>
-<button id="btn-confirm-daily" class="small-btn secondary" style="display:none;" onclick="confirmTaskCompletion()">Confirm Done</button>
 
+<textarea 
+  id="dailyTaskAnswer"
+  placeholder="Write at least 10 words..."
+  style="display:none; width:100%; margin-top:12px; padding:12px; border-radius:12px; border:1px solid #d1d5db;"
+></textarea>
+
+<button id="btn-confirm-daily" class="small-btn secondary" style="display:none;" onclick="confirmTaskCompletion()">Confirm Done</button>
 <div id="status-atm"></div>
 </div>
 
@@ -1160,34 +1166,40 @@ if (savedQuizDate === today) {
 const dailyTasksList = [
   {
     id: "atm",
-    title: "🏦 Find ATM",
-    description: "Open map and find nearest ATM",
+    title: "🏦 Find nearest ATM",
+    description: "Find the nearest ATM and write where it is located.",
     reward: 30,
-    action: "map"
+    action: "text"
   },
   {
     id: "balance",
-    title: "💰 Check Balance",
-    description: "Check your card balance",
-    reward: 20,
-    action: "confirm"
-  },
-  {
-    id: "save",
-    title: "🐷 Save Money",
-    description: "Save at least 1 AZN today",
+    title: "💳 Learn how to check card balance",
+    description: "Write how you can check your card balance safely.",
     reward: 25,
-    action: "confirm"
+    action: "text"
   },
   {
-    id: "talk",
-    title: "💬 Talk with Parent",
-    description: "Discuss spending today",
+    id: "card",
+    title: "🔐 Learn card safety",
+    description: "Write one rule about how to keep your card safe.",
+    reward: 25,
+    action: "text"
+  },
+  {
+    id: "cashback",
+    title: "🎁 Choose cashback category",
+    description: "Write which cashback category you would choose and why.",
     reward: 20,
-    action: "confirm"
-  } 
+    action: "text"
+  },
+  {
+    id: "saving",
+    title: "🐷 Saving goal",
+    description: "Write what you would like to save money for.",
+    reward: 20,
+    action: "text"
+  }
 ];
-
     function showTab(tabId, button) {
       const screens = document.querySelectorAll('.screen');
       const buttons = document.querySelectorAll('.nav-btn');
@@ -1258,10 +1270,13 @@ function updateATMTaskCard() {
   const status = document.getElementById("status-atm");
   const card = document.getElementById("task-atm");
   const confirmBtn = document.getElementById("btn-confirm-daily");
+  const answerBox = document.getElementById("dailyTaskAnswer");
 
   if (!title || !desc || !reward || !btn || !status || !card) return;
 
   confirmBtn.style.display = "none";
+  answerBox.style.display = "none";
+  answerBox.value = "";
   if (dailyTaskCompleted) {
     title.textContent = task.title;
     desc.textContent = "Task completed for today";
@@ -1306,34 +1321,34 @@ function updateATMTaskCard() {
       reactBear("happy");
     }
 
-   function handleDailyTask() {
-  const task = getTodayTask();
-
+  function handleDailyTask() {
   if (dailyTaskCompleted) {
     showToast("✅ Task already completed today");
     return;
   }
 
-  if (task.action === "map") {
-    window.open("https://www.google.com/maps/search/ATM", "_blank");
-    showToast("📍 Find ATM, then tap Confirm Done");
+  document.getElementById("dailyTaskAnswer").style.display = "block";
+  document.getElementById("btn-confirm-daily").style.display = "inline-block";
 
-    document.getElementById("btn-confirm-daily").style.display = "inline-block";
-  } else {
-    showToast("✅ Do the task, then tap Confirm Done");
-    document.getElementById("btn-confirm-daily").style.display = "inline-block";
-  }
+  showToast("✍️ Write at least 10 words to complete the task");
 }
 
 function confirmTaskCompletion() {
   const task = getTodayTask();
+  const answer = document.getElementById("dailyTaskAnswer").value.trim();
+  const wordCount = answer.split(/\s+/).filter(Boolean).length;
+
+  if (wordCount < 10) {
+    showToast("✍️ Please write at least 10 words");
+    return;
+  }
 
   dailyTaskCompleted = true;
   tasks.atm = true;
-
   points += task.reward;
 
   localStorage.setItem("taskDate", today);
+  localStorage.setItem("taskAnswer", answer);
 
   showToast(`🎉 Task completed! +${task.reward} ⭐`);
   reactBear("happy");
