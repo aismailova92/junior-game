@@ -761,7 +761,14 @@
 
 .clickable-card:active {
   transform: scale(0.99);
-}    
+} 
+
+.answer-btn {
+  width: 100%;
+  margin-top: 10px;
+  text-align: left;
+}
+    
 @media (max-width: 390px) {
   .card-points {
     font-size: 48px;
@@ -880,7 +887,7 @@
         </div>
       </div>
 
-      <div class="simple-action-card clickable-card" onclick="goToTab('tasks')">
+      <div class="simple-action-card clickable-card" onclick="goToTab('quiz')">
         <div class="action-icon">🎯</div>
         <div class="action-texts">
           <div class="action-title">Daily Tasks</div>
@@ -937,6 +944,27 @@
     </div>
   </section>
 
+  <!-- QUIZ -->
+<section id="quiz" class="screen">
+  <h1 class="title">🧠 Quiz</h1>
+  <p class="subtitle">Answer and earn points</p>
+
+  <div class="card">
+    <div id="question" class="task-title">
+      What should you NEVER share?
+    </div>
+
+    <div id="answers">
+      <button class="small-btn answer-btn" onclick="answer(false)">Your favorite color</button>
+      <button class="small-btn answer-btn" onclick="answer(true)">Your card PIN</button>
+      <button class="small-btn answer-btn" onclick="answer(false)">Your hobby</button>
+      <button class="small-btn answer-btn" onclick="answer(false)">Your school subject</button>
+    </div>
+
+    <div id="quizResult" style="margin-top:10px;"></div>
+  </div>
+</section>
+  
   <!-- TASKS -->
   <section id="tasks" class="screen">
     <h1 class="title">🎯 Tasks</h1>
@@ -1161,6 +1189,22 @@ function reactBear(state) {
 }
 
     updateUI();
+
+  function answer(isCorrect) {
+  const result = document.getElementById("quizResult");
+
+  if (isCorrect) {
+    result.innerHTML = "✅ Correct! +30 ⭐";
+    points += 30;
+    showToast("🎉 Correct answer! +30 ⭐");
+    reactBear("happy");
+  } else {
+    result.innerHTML = "❌ Wrong! Never share your PIN.";
+  }
+
+  updateUI();
+}  
+    
   </script>
 </body>
 </html>
