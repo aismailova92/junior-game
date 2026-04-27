@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -980,6 +980,16 @@
     >
       Next Question →
     </button>
+
+    <button 
+  id="finishQuizBtn" 
+  class="small-btn" 
+  style="display:none; margin-top: 14px;" 
+  onclick="finishQuiz()"
+>
+  Finish Quiz ✅
+</button>
+    
   </div>
 </section>
   
@@ -1086,6 +1096,13 @@
     let currentQuestionIndex = 0;
     let quizScore = 0;
     let quizCompleted = false;
+
+    const today = new Date().toISOString().slice(0, 10);
+const savedQuizDate = localStorage.getItem("quizDate");
+
+if (savedQuizDate === today) {
+  quizCompleted = true;
+}
 
     const tasks = {
       quiz: false,
@@ -1248,6 +1265,18 @@ function reactBear(state) {
     updateUI();
 
 function loadQuestion() {
+  // 👇 ЕСЛИ КВИЗ УЖЕ ПРОЙДЕН СЕГОДНЯ
+  if (quizCompleted) {
+    document.getElementById("quizCounter").textContent = "Today's quiz completed";
+    document.getElementById("question").textContent = "You already completed today's quiz 🎉";
+    document.getElementById("answers").innerHTML = "";
+    document.getElementById("quizResult").innerHTML = "Come back tomorrow for new questions 🌟";
+    document.getElementById("nextQuestionBtn").style.display = "none";
+    document.getElementById("finishQuizBtn").style.display = "none";
+    return;
+  }
+
+  // 👇 ОБЫЧНЫЙ КВИЗ
   const questionData = quizQuestions[currentQuestionIndex];
 
   document.getElementById("quizCounter").textContent =
@@ -1260,6 +1289,7 @@ function loadQuestion() {
 
   document.getElementById("quizResult").innerHTML = "";
   document.getElementById("nextQuestionBtn").style.display = "none";
+  document.getElementById("finishQuizBtn").style.display = "none";
 
   questionData.answers.forEach((answerText, index) => {
     const button = document.createElement("button");
@@ -1271,6 +1301,8 @@ function loadQuestion() {
 }
 
 function checkAnswer(selectedIndex) {
+  if (quizCompleted) return;
+
   const questionData = quizQuestions[currentQuestionIndex];
   const buttons = document.querySelectorAll("#answers .answer-btn");
 
@@ -1303,6 +1335,15 @@ function checkAnswer(selectedIndex) {
   if (currentQuestionIndex < quizQuestions.length - 1) {
     document.getElementById("nextQuestionBtn").style.display = "inline-block";
   } else {
+    document.getElementById("finishQuizBtn").style.display = "inline-block";
+  }
+}
+
+  updateUI();
+
+  if (currentQuestionIndex < quizQuestions.length - 1) {
+    document.getElementById("nextQuestionBtn").style.display = "inline-block";
+  } else {
     finishQuiz();
   }
 }
@@ -1313,7 +1354,10 @@ function nextQuestion() {
 }
 
 function finishQuiz() {
+  if (quizCompleted) return;
+
   quizCompleted = true;
+  localStorage.setItem("quizDate", today);
 
   const bonus = quizScore === 3 ? 20 : 0;
 
@@ -1323,10 +1367,12 @@ function finishQuiz() {
   }
 
   document.getElementById("nextQuestionBtn").style.display = "none";
+  document.getElementById("finishQuizBtn").style.display = "none";
 
   document.getElementById("quizResult").innerHTML +=
     `<br><br>🏁 Quiz completed! Score: ${quizScore}/3` +
-    (bonus > 0 ? `<br>🏆 Perfect bonus: +20 ⭐` : "");
+    (bonus > 0 ? `<br>🏆 Perfect bonus: +20 ⭐` : "") +
+    `<br><br>Come back tomorrow for a new quiz 🌟`;
 
   if (!tasks.quiz) {
     tasks.quiz = true;
@@ -1337,13 +1383,12 @@ function finishQuiz() {
 
     quizButton.disabled = true;
     quizButton.textContent = "Completed";
-    quizStatus.innerHTML = '<span class="status">✅ Completed</span>';
+    quizStatus.innerHTML = '<span class="status">✅ Completed today</span>';
     quizCard.classList.add("completed");
   }
 
-updateUI();
+  updateUI();
 }
-
 loadQuestion();
 updateUI();
     
