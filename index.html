@@ -1325,14 +1325,6 @@ function updateATMTaskCard() {
   }
 }
 
-  if (task.action === "map") {
-    window.open("https://www.google.com/maps/search/ATM", "_blank");
-    showToast("📍 Find ATM on map and come back");
-  } else {
-    confirmTaskCompletion();
-  }
-}
-
 function confirmTaskCompletion() {
   const task = getTodayTask();
 
