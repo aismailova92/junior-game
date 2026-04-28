@@ -922,6 +922,156 @@
   font-weight: 800;
   color: #1d4ed8;
 }
+
+.home-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.profile-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #facc15;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+}
+
+.home-rank-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 24px;
+  padding: 18px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.16);
+}
+
+.home-small-label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.home-points-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.home-points {
+  font-size: 46px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.home-star {
+  font-size: 28px;
+}
+
+.home-rank-line {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fde68a;
+}
+
+.home-next-step {
+  margin-top: 8px;
+  font-size: 13px;
+  opacity: 0.85;
+  line-height: 1.35;
+}
+
+.home-rank-icon {
+  font-size: 42px;
+  align-self: center;
+}
+
+.home-section-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.home-section-subtitle {
+  font-size: 13px;
+  color: #6b7280;
+  margin-top: -6px;
+}
+
+.home-small-button {
+  border: none;
+  background: #e8f1ff;
+  color: #0057ff;
+  border-radius: 14px;
+  padding: 10px 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.home-progress-card {
+  background: white;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+  margin: 14px 0 16px;
+}
+
+.home-progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.home-mission-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.home-mini-mission {
+  background: white;
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.home-mini-mission.done {
+  border: 2px solid #22c55e;
+  background: #f0fdf4;
+}
+
+.home-mini-icon {
+  font-size: 24px;
+}
+
+.home-mini-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #11254d;
+}
+
+.home-mini-status {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 3px;
+}
     
 @media (max-width: 390px) {
   .card-points {
@@ -951,160 +1101,111 @@
 
 <div class="app">
 
-  <!-- HOME -->
-  <section id="home" class="screen active home-screen">
-    <div class="home-hero">
-      <div class="bear-hero">
-        <img 
-          id="bear"
-          src="https://cdn-icons-png.flaticon.com/512/616/616408.png"
-          alt="Junior Hero"
-          class="bear-img"
-        />
-        <div class="bear-text">
-          <div class="bear-title">🧸 Junior Hero</div>
-          <div class="bear-subtitle">Your money adventure buddy</div>
+<!-- HOME -->
+<section id="home" class="screen active home-screen">
+  <div class="home-hero">
+
+    <div class="home-profile-row">
+      <div class="profile-avatar">AK</div>
+      <div>
+        <div class="hello-text">Hello, Alex! 👋</div>
+        <div class="level-text">Welcome back to Junior Club</div>
+      </div>
+    </div>
+
+    <div class="home-rank-card clickable-card" onclick="goToTab('rewards')">
+      <div>
+        <div class="home-small-label">Your Bonus Balance</div>
+        <div class="home-points-row">
+          <span id="heroPoints" class="home-points">240</span>
+          <span class="home-star">⭐</span>
+        </div>
+
+        <div class="home-rank-line">
+          <span id="homeRankName">Beginner Explorer</span>
+          <span> • </span>
+          <span id="homeDailyBonus">Daily bonus +1 ⭐</span>
+        </div>
+
+        <div id="homeNextStep" class="home-next-step">
+          Complete more missions to upgrade your badges.
         </div>
       </div>
 
-      <div class="topbar">
-        <div class="user-info">
-          <div class="avatar">AK</div>
-          <div>
-            <div class="hello-text">Hello, Alex! 👋</div>
-            <div class="level-text">Level 5 Explorer ⭐</div>
-          </div>
-        </div>
+      <div class="home-rank-icon">🏆</div>
+    </div>
+  </div>
 
-        <div class="streak-pill">
-          <div class="streak-icon">🔥</div>
-          <div>
-            <div class="streak-label">Streak</div>
-            <div class="streak-value">7 days</div>
-          </div>
+  <div class="home-content">
+
+    <div class="home-section-row">
+      <div>
+        <div class="section-label">🎯 Today’s Missions</div>
+        <div id="homeTasksSummary" class="home-section-subtitle">0 of 4 completed</div>
+      </div>
+      <button class="home-small-button" onclick="goToTab('tasks')">Open Tasks</button>
+    </div>
+
+    <div class="home-progress-card clickable-card" onclick="goToTab('tasks')">
+      <div class="home-progress-top">
+        <div>
+          <div class="mini-label">TODAY PROGRESS</div>
+          <div id="homeProgressText" class="progress-title">0 / 4 missions</div>
+        </div>
+        <div id="homeProgressPercent" class="progress-percent">0%</div>
+      </div>
+
+      <div class="progress-track-large">
+        <div id="homeProgressFill" class="progress-fill-large"></div>
+      </div>
+    </div>
+
+    <div class="home-mission-grid">
+      <div id="homeQuizStatus" class="home-mini-mission">
+        <div class="home-mini-icon">🧠</div>
+        <div>
+          <div class="home-mini-title">Quiz</div>
+          <div class="home-mini-status">Not completed</div>
         </div>
       </div>
 
-      <div class="junior-card">
-        <div class="card-top">
-          <img 
-            src="https://raw.githubusercontent.com/aismailova92/junior-game/main/Screenshot%202026-04-17%20161846.png"
-            style="
-              width: 90px;
-              height: auto;
-              border-radius: 10px;
-              box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-            "
-          />
-          <span class="card-brand">ACCESSBANK JUNIOR</span>
+      <div id="homeDailyStatus" class="home-mini-mission">
+        <div class="home-mini-icon">🌟</div>
+        <div>
+          <div class="home-mini-title">Daily Task</div>
+          <div class="home-mini-status">Not completed</div>
         </div>
+      </div>
 
-        <div class="card-level">Level 5 ⭐</div>
-        <div class="card-name">Alex Kim</div>
-
-        <div class="points-row">
-          <div id="heroPoints" class="card-points">240</div>
-          <div class="points-star">⭐</div>
+      <div id="homeParentStatus" class="home-mini-mission">
+        <div class="home-mini-icon">👨‍👩‍👧</div>
+        <div>
+          <div class="home-mini-title">Parent</div>
+          <div class="home-mini-status">Not completed</div>
         </div>
+      </div>
 
-        <div class="card-balance-label">YOUR POINTS BALANCE</div>
-
-        <div class="card-divider"></div>
-
-        <div class="card-stats">
-          <div class="stat-bubble">
-            <div class="stat-icon">🎯</div>
-            <div>
-              <div class="stat-label">NEXT LEVEL</div>
-              <div class="stat-value">550 pts</div>
-            </div>
-          </div>
-
-          <div class="stat-bubble">
-            <div class="stat-icon">🏆</div>
-            <div>
-              <div class="stat-label">BADGES</div>
-              <div class="stat-value">4/9</div>
-            </div>
-          </div>
+      <div id="homeGameStatus" class="home-mini-mission">
+        <div class="home-mini-icon">🎮</div>
+        <div>
+          <div class="home-mini-title">Game</div>
+          <div class="home-mini-status">Not completed</div>
         </div>
       </div>
     </div>
 
-    <div class="home-content">
-      <div class="section-label">🎮 Daily Missions</div>
-
-      <div class="quiz-card clickable-card" onclick="goToTab('quiz')">
-        <div class="quiz-left">
-          <div class="quiz-icon">🧠</div>
-          <div>
-            <div class="quiz-title">Quiz of the Day</div>
-            <div class="quiz-subtitle">Test your knowledge!</div>
-          </div>
-        </div>
-        <div class="quiz-arrow">›</div>
-        <div class="quiz-footer">
-          <div class="quiz-badge">● NEW TODAY</div>
-          <div class="quiz-reward">+30 ⭐</div>
-        </div>
+    <div class="cta-card">
+      <div class="cta-icon-wrap">💳</div>
+      <div class="cta-title">Get Your Real Junior Card!</div>
+      <div class="cta-subtitle">
+        Turn your points into real rewards and start managing your own money like a hero!
       </div>
-
-      <div class="simple-action-card clickable-card" onclick="goToTab('tasks')">
-        <div class="action-icon">🎯</div>
-        <div class="action-texts">
-          <div class="action-title">Daily Tasks</div>
-          <div class="action-subtitle">3 tasks available</div>
-        </div>
-        <div class="action-arrow">›</div>
-      </div>
-
-      <div class="section-label">📊 Your Progress</div>
-
-      <div class="progress-card-large">
-        <div class="progress-top-row">
-          <div>
-            <div class="mini-label">NEXT LEVEL</div>
-            <div class="progress-title">Level 6 Champion 👑</div>
-          </div>
-          <div class="progress-percent-block">
-            <div class="progress-percent">68%</div>
-            <div class="progress-small">550 pts to go</div>
-          </div>
-        </div>
-
-        <div class="progress-track-large">
-          <div class="progress-fill-large"></div>
-          <div class="progress-dot"></div>
-        </div>
-      </div>
-
-      <div class="section-label">💳 Card Benefits</div>
-
-      <div class="benefits-card">
-        <div class="benefits-title">Choose Your Cashback Categories</div>
-
-        <div class="cashback-tags">
-          <div class="cashback-tag">🎬 Cinema</div>
-          <div class="cashback-tag">🚗 Transport</div>
-          <div class="cashback-tag">☕ Cafes</div>
-        </div>
-
-        <div class="benefit-note">
-          ✨ Unlock real cashback rewards when you get your Junior Card
-        </div>
-      </div>
-
-      <div class="cta-card">
-        <div class="cta-icon-wrap">💳</div>
-        <div class="cta-title">Get Your Real Junior Card!</div>
-        <div class="cta-subtitle">
-          Turn your points into real rewards and start managing your own money like a hero!
-        </div>
-        <button class="cta-button" onclick="requestCard()">Request Card Now</button>
-        <div class="cta-features">• Free Delivery &nbsp;&nbsp; • Parent Controls</div>
-      </div>
+      <button class="cta-button" onclick="requestCard()">Request Card Now</button>
+      <div class="cta-features">• Free Delivery &nbsp;&nbsp; • Parent Controls</div>
     </div>
-  </section>
+
+  </div>
+</section>
 
 <!-- QUIZ -->
 <section id="quiz" class="screen">
@@ -1974,6 +2075,7 @@ updateATMTaskCard();
 updateParentChallengeCard();
 updateGameTaskCard();
 updateRewardsPage();
+updateHomeDashboard();
 updateUI();
 }
 
@@ -2260,6 +2362,57 @@ function updateRewardsPage() {
   document.getElementById("nextUpgradeText").textContent =
     "Complete missions on more days to upgrade Wooden → Pearl → Silver → Gold → Diamond.";
 }
+
+function updateHomeDashboard() {
+  const completedCount = Object.values(tasks).filter(Boolean).length;
+  const totalTasks = Object.keys(tasks).length;
+  const percent = Math.round((completedCount / totalTasks) * 100);
+
+  document.getElementById("homeTasksSummary").textContent =
+    `${completedCount} of ${totalTasks} completed`;
+
+  document.getElementById("homeProgressText").textContent =
+    `${completedCount} / ${totalTasks} missions`;
+
+  document.getElementById("homeProgressPercent").textContent = `${percent}%`;
+  document.getElementById("homeProgressFill").style.width = `${percent}%`;
+
+  const quizBadge = getBadgeLevel(quizDays);
+  const taskBadge = getBadgeLevel(taskDays);
+  const parentBadge = getBadgeLevel(parentDays);
+  const gameBadge = getBadgeLevel(gameDays);
+  const streakBadge = getBadgeLevel(streakDays);
+
+  const totalRankPoints =
+    quizBadge.points + taskBadge.points + parentBadge.points + gameBadge.points + streakBadge.points;
+
+  const rank = getJuniorRank(totalRankPoints);
+
+  document.getElementById("homeRankName").textContent = rank.name;
+  document.getElementById("homeDailyBonus").textContent = `Daily bonus +${rank.bonus} ⭐`;
+  document.getElementById("homeNextStep").textContent =
+    "Complete today’s missions to grow your badges and unlock a higher rank.";
+
+  updateHomeMissionStatus("homeQuizStatus", tasks.quiz);
+  updateHomeMissionStatus("homeDailyStatus", tasks.atm);
+  updateHomeMissionStatus("homeParentStatus", tasks.parent);
+  updateHomeMissionStatus("homeGameStatus", tasks.game);
+}
+
+function updateHomeMissionStatus(elementId, isDone) {
+  const card = document.getElementById(elementId);
+  if (!card) return;
+
+  const status = card.querySelector(".home-mini-status");
+
+  if (isDone) {
+    card.classList.add("done");
+    status.textContent = "Completed today";
+  } else {
+    card.classList.remove("done");
+    status.textContent = "Not completed";
+  }
+}
     
 loadQuestion();
 loadGame();
@@ -2269,6 +2422,7 @@ updateATMTaskCard();
 updateParentChallengeCard();
 updateGameTaskCard();
 updateRewardsPage();
+updateHomeDashboard();
 updateUI();
     
   </script>
