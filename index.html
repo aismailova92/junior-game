@@ -840,6 +840,88 @@
   font-weight: 800;
   color: #facc15; /* золотой */
 }
+
+.rewards-header {
+  background: linear-gradient(180deg, #4f46e5, #1e3a8a);
+  padding: 20px;
+  color: white;
+}
+
+.rewards-title {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.rewards-subtitle {
+  font-size: 14px;
+  opacity: 0.85;
+  margin: 6px 0 16px;
+}
+
+.rank-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.1));
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rank-label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.rank-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.rank-bonus {
+  font-size: 14px;
+  margin-top: 4px;
+  color: #fde68a;
+}
+
+.rank-icon {
+  font-size: 42px;
+}
+
+.badge-level-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.badge-level-card {
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  border-radius: 18px;
+  padding: 14px;
+  text-align: center;
+}
+
+.badge-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.badge-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.badge-level {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1d4ed8;
+}
     
 @media (max-width: 390px) {
   .card-points {
@@ -1156,22 +1238,61 @@
   </section>
 
   <!-- REWARDS -->
-  <section id="rewards" class="screen">
-    <h1 class="title">🏆 Rewards</h1>
-    <p class="subtitle">Unlock achievements</p>
+<section id="rewards" class="screen">
+  <div class="rewards-header">
+    <h1 class="rewards-title">Rewards 🏆</h1>
+    <p class="rewards-subtitle">Grow your badges and increase your daily bonus</p>
 
-    <div class="reward-grid">
-      <div id="badge-first-step" class="badge locked">🏆 First Step</div>
-      <div id="badge-task-master" class="badge locked">🔥 Task Master</div>
-      <div class="badge locked">🧠 Quiz Genius</div>
-      <div class="badge locked">💰 Smart Saver</div>
+    <div class="rank-card">
+      <div>
+        <div class="rank-label">Junior Rank</div>
+        <div id="juniorRank" class="rank-title">Beginner Explorer</div>
+        <div id="dailyBonusText" class="rank-bonus">Daily bonus: +1 ⭐</div>
+      </div>
+      <div class="rank-icon">👑</div>
     </div>
+  </div>
 
-    <div class="card">
-      <div class="task-title">Your Progress</div>
-      <div id="rewardText" class="muted">Complete tasks to unlock rewards</div>
+  <div class="card">
+    <div class="task-title">🎖 Badge Collection</div>
+    <div class="badge-level-grid">
+      <div class="badge-level-card">
+        <div class="badge-icon">🧠</div>
+        <div class="badge-name">Quiz Badge</div>
+        <div id="quizBadgeLevel" class="badge-level">Wooden</div>
+      </div>
+
+      <div class="badge-level-card">
+        <div class="badge-icon">🌟</div>
+        <div class="badge-name">Daily Task Badge</div>
+        <div id="taskBadgeLevel" class="badge-level">Wooden</div>
+      </div>
+
+      <div class="badge-level-card">
+        <div class="badge-icon">👨‍👩‍👧</div>
+        <div class="badge-name">Parent Badge</div>
+        <div id="parentBadgeLevel" class="badge-level">Wooden</div>
+      </div>
+
+      <div class="badge-level-card">
+        <div class="badge-icon">🎮</div>
+        <div class="badge-name">Game Badge</div>
+        <div id="gameBadgeLevel" class="badge-level">Wooden</div>
+      </div>
+
+      <div class="badge-level-card">
+        <div class="badge-icon">🔥</div>
+        <div class="badge-name">App Streak</div>
+        <div id="streakBadgeLevel" class="badge-level">Wooden</div>
+      </div>
     </div>
-  </section>
+  </div>
+
+  <div class="card">
+    <div class="task-title">🚀 Next Upgrade</div>
+    <div id="nextUpgradeText" class="muted">Complete more missions to upgrade your badges.</div>
+  </div>
+</section>
 
   <!-- PARENT -->
   <section id="parent" class="screen">
@@ -1234,6 +1355,11 @@
     let currentQuestionIndex = 0;
     let quizScore = 0;
     let quizCompleted = false;
+    let quizDays = Number(localStorage.getItem("quizDays") || 0);
+    let taskDays = Number(localStorage.getItem("taskDays") || 0);
+    let parentDays = Number(localStorage.getItem("parentDays") || 0);
+    let gameDays = Number(localStorage.getItem("gameDays") || 0);
+    let streakDays = Number(localStorage.getItem("streakDays") || 1);
 
     const today = new Date().toISOString().slice(0, 10);
     const savedQuizDate = localStorage.getItem("quizDate");
@@ -1552,6 +1678,8 @@ function confirmTaskCompletion() {
   points += task.reward;
 
   localStorage.setItem("taskDate", today);
+  taskDays++;
+localStorage.setItem("taskDays", taskDays);
   localStorage.setItem("taskAnswer", answer);
 
   showToast(`🎉 Task completed! +${task.reward} ⭐`);
@@ -1729,6 +1857,9 @@ function finishQuiz() {
   quizCompleted = true;
   localStorage.setItem("quizDate", today);
 
+  quizDays++;
+  localStorage.setItem("quizDays", quizDays);
+
   const bonus = quizScore === 3 ? 20 : 0;
 
   if (bonus > 0) {
@@ -1866,6 +1997,7 @@ updateQuizTaskCard();
 updateATMTaskCard();
 updateParentChallengeCard();
 updateGameTaskCard();
+updateRewardsPage();
 updateUI();
 }
 
@@ -1920,6 +2052,8 @@ function confirmParentChallenge() {
   points += rewardByRating[rating];
 
   localStorage.setItem("parentChallengeDate", today);
+  parentDays++;
+localStorage.setItem("parentDays", parentDays);
   localStorage.setItem("parentChallengeAnswer", answer);
   localStorage.setItem("parentChallengeRating", rating);
 
@@ -2065,6 +2199,8 @@ function checkGameWin() {
     points += 20;
 
     localStorage.setItem("gameDate", today);
+    gameDays++;
+localStorage.setItem("gameDays", gameDays);
 
     document.getElementById("gameResult").innerHTML =
       "🎉 You matched all cards! +20 ⭐";
@@ -2102,6 +2238,52 @@ function updateGameTaskCard() {
     card.classList.remove("completed");
   }
 }
+
+function getBadgeLevel(days) {
+  if (days >= 30) return { name: "Diamond", points: 30 };
+  if (days >= 14) return { name: "Gold", points: 14 };
+  if (days >= 7) return { name: "Silver", points: 7 };
+  if (days >= 3) return { name: "Pearl", points: 3 };
+  if (days >= 1) return { name: "Wooden", points: 1 };
+  return { name: "Locked", points: 0 };
+}
+
+function getJuniorRank(totalRankPoints) {
+  if (totalRankPoints >= 61) return { name: "Finance Legend", bonus: 10 };
+  if (totalRankPoints >= 31) return { name: "Junior Champion", bonus: 8 };
+  if (totalRankPoints >= 16) return { name: "Money Hero", bonus: 5 };
+  if (totalRankPoints >= 6) return { name: "Smart Saver", bonus: 3 };
+  return { name: "Beginner Explorer", bonus: 1 };
+}
+
+function updateRewardsPage() {
+  const quizBadge = getBadgeLevel(quizDays);
+  const taskBadge = getBadgeLevel(taskDays);
+  const parentBadge = getBadgeLevel(parentDays);
+  const gameBadge = getBadgeLevel(gameDays);
+  const streakBadge = getBadgeLevel(streakDays);
+
+  const totalRankPoints =
+    quizBadge.points +
+    taskBadge.points +
+    parentBadge.points +
+    gameBadge.points +
+    streakBadge.points;
+
+  const rank = getJuniorRank(totalRankPoints);
+
+  document.getElementById("quizBadgeLevel").textContent = `${quizBadge.name} (${quizDays} days)`;
+  document.getElementById("taskBadgeLevel").textContent = `${taskBadge.name} (${taskDays} days)`;
+  document.getElementById("parentBadgeLevel").textContent = `${parentBadge.name} (${parentDays} days)`;
+  document.getElementById("gameBadgeLevel").textContent = `${gameBadge.name} (${gameDays} days)`;
+  document.getElementById("streakBadgeLevel").textContent = `${streakBadge.name} (${streakDays} days)`;
+
+  document.getElementById("juniorRank").textContent = rank.name;
+  document.getElementById("dailyBonusText").textContent = `Daily bonus: +${rank.bonus} ⭐`;
+
+  document.getElementById("nextUpgradeText").textContent =
+    "Complete missions on more days to upgrade Wooden → Pearl → Silver → Gold → Diamond.";
+}
     
 loadQuestion();
 loadGame();
@@ -2110,6 +2292,7 @@ updateQuizTaskCard();
 updateATMTaskCard();
 updateParentChallengeCard();
 updateGameTaskCard();
+updateRewardsPage();
 updateUI();
     
   </script>
