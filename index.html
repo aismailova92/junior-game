@@ -1092,6 +1092,65 @@
   margin-left: 16px;
   margin-right: 16px;
 }
+
+.settings-header {
+  background: linear-gradient(180deg, #1e3a8a, #1e40af);
+  padding: 20px;
+  color: white;
+}
+
+.settings-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.settings-subtitle {
+  font-size: 14px;
+  opacity: 0.8;
+  margin: 4px 0 16px;
+}
+
+.settings-card {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  backdrop-filter: blur(6px);
+}
+
+.settings-label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.settings-main {
+  font-size: 22px;
+  font-weight: 800;
+  color: #facc15;
+  margin-top: 4px;
+}
+
+.settings-icon {
+  font-size: 40px;
+  background: rgba(255,255,255,0.2);
+  padding: 10px;
+  border-radius: 14px;
+}
+
+#parent {
+  padding: 0 0 100px;
+  background: #f3f5f8;
+}
+
+#parent > .card {
+  margin-left: 16px;
+  margin-right: 16px;
+}    
     
 @media (max-width: 390px) {
   .card-points {
@@ -1415,35 +1474,40 @@
   </div>
 </section>
 
-  <!-- PARENT -->
-  <section id="parent" class="screen">
-    <h1 class="title">👨‍👩‍👧 Parent</h1>
-    <p class="subtitle">Control and approve tasks</p>
+<!-- SETTINGS -->
+<section id="parent" class="screen">
+  <div class="settings-header">
+    <h1 class="settings-title">Settings ⚙️</h1>
+    <p class="settings-subtitle">Manage progress, card request and testing tools</p>
 
-    <div class="card">
-      <div class="task-title">Child Progress</div>
-      <div id="parentTasksText" class="muted">Tasks completed: 0</div>
-      <div id="parentPointsText" class="muted">Points earned: 240 ⭐</div>
+    <div class="settings-card">
+      <div>
+        <div class="settings-label">Junior Club Status</div>
+        <div class="settings-main">Progress overview</div>
+      </div>
+      <div class="settings-icon">📊</div>
     </div>
+  </div>
 
-    <div class="card">
-      <div class="task-title">Pending Approval</div>
-      <div class="muted">Helped at home</div>
-      <button class="confirm-btn">Confirm Task</button>
-    </div>
+  <div class="card">
+    <div class="task-title">📈 Progress</div>
+    <div id="parentTasksText" class="muted">Tasks completed this week: 0</div>
+    <div id="parentPointsText" class="muted">Points earned: 240 ⭐</div>
+    <div class="muted">Badges and rank are available in Rewards.</div>
+  </div>
 
-    <div class="card">
-      <div class="task-title">💳 Junior Card</div>
-      <div class="muted">Order real card for your child</div>
-      <button class="confirm-btn" onclick="requestCard()">Order Card</button>
-    </div>
+  <div class="card">
+    <div class="task-title">💳 Junior Card</div>
+    <div class="muted">Order a real Junior Card for your child.</div>
+    <button class="confirm-btn" onclick="requestCard()">Order Card</button>
+  </div>
 
-<div class="card">
-  <div class="task-title">🛠 Debug (for testing)</div>
-  <button class="confirm-btn" onclick="resetQuiz()">Reset Quiz</button>
-</div>
-    
-  </section>
+  <div class="card">
+    <div class="task-title">🛠 Debug / Testing</div>
+    <div class="muted">Use this only for demo and testing.</div>
+    <button class="confirm-btn" onclick="resetQuiz()">Reset Demo</button>
+  </div>
+</section>
 
 </div>
 
@@ -1461,8 +1525,8 @@
       Rewards
     </button>
     <button class="nav-btn" onclick="showTab('parent', this)">
-      <span class="nav-icon">👨‍👩‍👧</span>
-      Parent
+     <span class="nav-icon">⚙️</span>
+      Settings
     </button>
   </nav>
 
