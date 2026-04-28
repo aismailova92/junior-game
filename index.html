@@ -1557,15 +1557,16 @@
     let taskDays = Number(localStorage.getItem("taskDays") || 0);
     let parentDays = Number(localStorage.getItem("parentDays") || 0);
     let gameDays = Number(localStorage.getItem("gameDays") || 0);
-    let streakDays = Number(localStorage.getItem("streakDays") || 1);
-    let dailyLoginClaimed = false;
+  let streakDays = Number(localStorage.getItem("streakDays") || 1);
+
+const today = new Date().toISOString().slice(0, 10);
+
+let dailyLoginClaimed = false;
 const savedLoginDate = localStorage.getItem("loginBonusDate");
 
 if (savedLoginDate === today) {
   dailyLoginClaimed = true;
 }
-
-    const today = new Date().toISOString().slice(0, 10);
     const savedQuizDate = localStorage.getItem("quizDate");
    const savedTaskDate = localStorage.getItem("taskDate");
 
