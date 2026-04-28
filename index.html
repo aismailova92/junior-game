@@ -1580,13 +1580,15 @@ function updateUI() {
 
   const tasksPointsEl = document.getElementById("tasksPoints");
 if (tasksPointsEl) {
-  const available =
-    (tasks.quiz ? 0 : 30) +
-    (tasks.atm ? 0 : 30) +
-    (tasks.parent ? 0 : 25) +
-    (tasks.game ? 0 : 20);
+const todayTask = getTodayTask();
 
-  tasksPointsEl.textContent = available + " ⭐";
+const available =
+  (tasks.quiz ? 0 : 50) +
+  (tasks.atm ? 0 : todayTask.reward) +
+  (tasks.parent ? 0 : 25) +
+  (tasks.game ? 0 : 20);
+
+tasksPointsEl.textContent = available + " ⭐";
 }
 }
 
