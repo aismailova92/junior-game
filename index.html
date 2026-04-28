@@ -2036,6 +2036,24 @@ function resetQuiz() {
 localStorage.removeItem("quizDate");
 localStorage.removeItem("taskDate");
 localStorage.removeItem("gameDate");
+
+  // 🔄 RESET REWARDS
+
+localStorage.removeItem("points");
+points = 240;
+
+localStorage.removeItem("quizDays");
+localStorage.removeItem("taskDays");
+localStorage.removeItem("parentDays");
+localStorage.removeItem("gameDays");
+localStorage.removeItem("streakDays");
+
+quizDays = 0;
+taskDays = 0;
+parentDays = 0;
+gameDays = 0;
+streakDays = 1;
+  
 gameCompleted = false;
 tasks.game = false;
 firstCard = null;
@@ -2072,11 +2090,13 @@ tasks.atm = false;
 
 loadQuestion();
 loadGame();
+
 updateHomeQuizCard();
 updateQuizTaskCard();
 updateATMTaskCard();
 updateParentChallengeCard();
 updateGameTaskCard();
+
 updateRewardsPage();
 updateHomeDashboard();
 updateUI();
@@ -2422,11 +2442,13 @@ function updateHomeMissionStatus(elementId, isDone) {
     
 loadQuestion();
 loadGame();
+
 updateHomeQuizCard();
 updateQuizTaskCard();
 updateATMTaskCard();
 updateParentChallengeCard();
 updateGameTaskCard();
+
 updateRewardsPage();
 updateHomeDashboard();
 updateUI();
