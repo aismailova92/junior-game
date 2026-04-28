@@ -792,6 +792,25 @@
   .progress-title {
     font-size: 16px;
   }
+
+  .game-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.memory-card {
+  height: 70px;
+  border-radius: 16px;
+  border: none;
+  background: #e8f1ff;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.memory-card.matched {
+  background: #dcfce7;
+}
 }
   </style>
 </head>
@@ -991,6 +1010,16 @@
     
   </div>
 </section>
+
+  <section id="game" class="screen">
+  <h1 class="title">🎮 Game of the Day</h1>
+  <p class="subtitle">Match all pairs</p>
+
+  <div class="card">
+    <div id="gameBoard" class="game-board"></div>
+    <div id="gameResult" style="margin-top:12px;"></div>
+  </div>
+</section>
   
   <!-- TASKS -->
   <section id="tasks" class="screen">
@@ -1053,6 +1082,15 @@
 
   <div id="status-parent-challenge"></div>
 </div>    
+
+<div id="task-game" class="card task-card">
+  <div class="task-title">🎮 Game of the Day</div>
+  <div id="gameTaskDescription" class="muted">Match all cards and earn points</div>
+  <div id="gameTaskReward" class="muted">Reward: +20 ⭐</div>
+
+  <button id="btn-game" class="small-btn" onclick="goToTab('game')">Play Game</button>
+  <div id="status-game"></div>
+</div>
     
   </section>
 
@@ -1142,12 +1180,22 @@
 
 let dailyTaskCompleted = false;
 let parentChallengeCompleted = false;
+let gameCompleted = false;
+let firstCard = null;
+let lockGame = false;
+
+const savedGameDate = localStorage.getItem("gameDate");
+
+if (savedGameDate === today) {
+  gameCompleted = true;
+}
 const savedParentChallengeDate = localStorage.getItem("parentChallengeDate");
     
 const tasks = {
   quiz: false,
   atm: false,
-  parent: false
+  parent: false,
+  game: false
 };
 
 if (savedTaskDate === today) {
@@ -1702,6 +1750,11 @@ function resetQuiz() {
 
 localStorage.removeItem("quizDate");
 localStorage.removeItem("taskDate");
+localStorage.removeItem("gameDate");
+gameCompleted = false;
+tasks.game = false;
+firstCard = null;
+lockGame = false;
 localStorage.removeItem("parentChallengeDate");
 localStorage.removeItem("parentChallengeAnswer");
 localStorage.removeItem("parentChallengeRating");
@@ -1733,10 +1786,12 @@ tasks.atm = false;
   showToast("🔄 Quiz reset");
 
 loadQuestion();
+loadGame();
 updateHomeQuizCard();
 updateQuizTaskCard();
 updateATMTaskCard();
 updateParentChallengeCard();
+updateGameTaskCard();
 updateUI();
 }
 
@@ -1861,12 +1916,126 @@ function getTodayQuizQuestions() {
 
   return selected;
 }
+
+function getTodayGameCards() {
+  const gameSets = [
+    ["💳", "⭐", "🏦", "🐷"],
+    ["💰", "🎯", "🔐", "🎁"],
+    ["🧠", "🛍️", "📚", "🔥"]
+  ];
+
+  const index = new Date().getDate() % gameSets.length;
+  return [...gameSets[index], ...gameSets[index]].sort(() => Math.random() - 0.5);
+}
+
+function loadGame() {
+  const board = document.getElementById("gameBoard");
+  const result = document.getElementById("gameResult");
+
+  if (!board || !result) return;
+
+  board.innerHTML = "";
+  result.innerHTML = "";
+
+  if (gameCompleted) {
+    result.innerHTML = "✅ Game completed today. Come back tomorrow 🌟";
+    updateGameTaskCard();
+    return;
+  }
+
+  const cards = getTodayGameCards();
+
+  cards.forEach((emoji) => {
+    const btn = document.createElement("button");
+    btn.className = "memory-card";
+    btn.dataset.value = emoji;
+    btn.textContent = "❔";
+    btn.onclick = () => flipCard(btn);
+    board.appendChild(btn);
+  });
+}
+
+function flipCard(card) {
+  if (lockGame || card.classList.contains("matched") || card === firstCard) return;
+
+  card.textContent = card.dataset.value;
+
+  if (!firstCard) {
+    firstCard = card;
+    return;
+  }
+
+  if (firstCard.dataset.value === card.dataset.value) {
+    firstCard.classList.add("matched");
+    card.classList.add("matched");
+    firstCard = null;
+    checkGameWin();
+  } else {
+    lockGame = true;
+    setTimeout(() => {
+      firstCard.textContent = "❔";
+      card.textContent = "❔";
+      firstCard = null;
+      lockGame = false;
+    }, 700);
+  }
+}
+
+function checkGameWin() {
+  const allCards = document.querySelectorAll(".memory-card");
+  const matchedCards = document.querySelectorAll(".memory-card.matched");
+
+  if (allCards.length && allCards.length === matchedCards.length) {
+    gameCompleted = true;
+    tasks.game = true;
+    points += 20;
+
+    localStorage.setItem("gameDate", today);
+
+    document.getElementById("gameResult").innerHTML =
+      "🎉 You matched all cards! +20 ⭐";
+
+    showToast("🎮 Game completed! +20 ⭐");
+    reactBear("happy");
+
+    updateGameTaskCard();
+    updateUI();
+  }
+}
+
+function updateGameTaskCard() {
+  const btn = document.getElementById("btn-game");
+  const desc = document.getElementById("gameTaskDescription");
+  const reward = document.getElementById("gameTaskReward");
+  const status = document.getElementById("status-game");
+  const card = document.getElementById("task-game");
+
+  if (!btn || !desc || !reward || !status || !card) return;
+
+  if (gameCompleted) {
+    btn.disabled = true;
+    btn.textContent = "Completed";
+    desc.textContent = "Game completed for today";
+    reward.textContent = "Come back tomorrow 🌟";
+    status.innerHTML = '<span class="status">✅ Completed today</span>';
+    card.classList.add("completed");
+  } else {
+    btn.disabled = false;
+    btn.textContent = "Play Game";
+    desc.textContent = "Match all cards and earn points";
+    reward.textContent = "Reward: +20 ⭐";
+    status.innerHTML = "";
+    card.classList.remove("completed");
+  }
+}
     
 loadQuestion();
+loadGame();
 updateHomeQuizCard();
 updateQuizTaskCard();
 updateATMTaskCard();
 updateParentChallengeCard();
+updateGameTaskCard();
 updateUI();
     
   </script>
