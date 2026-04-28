@@ -1198,6 +1198,40 @@ if (savedParentChallengeDate === today) {
     correctIndex: 0,
     explanation: "It is smart to think before spending money."
   }
+,
+{
+  question: "What should you do if you lose your card?",
+  answers: [
+    "Ignore it",
+    "Tell your parent or bank immediately",
+    "Share it online",
+    "Wait many days"
+  ],
+  correctIndex: 1,
+  explanation: "If a card is lost, an adult or the bank should be informed quickly."
+},
+{
+  question: "What is cashback?",
+  answers: [
+    "Money or points returned after spending",
+    "A secret password",
+    "A card number",
+    "A type of ATM"
+  ],
+  correctIndex: 0,
+  explanation: "Cashback means getting some value back after a purchase."
+},
+{
+  question: "What is a safe online shopping habit?",
+  answers: [
+    "Buy from unknown links",
+    "Share your PIN",
+    "Ask parent before payment",
+    "Use any website"
+  ],
+  correctIndex: 2,
+  explanation: "For children, online purchases should be checked with a parent."
+}      
 ];
 
 const dailyTasksList = [
@@ -1498,10 +1532,11 @@ function loadQuestion() {
   }
 
   // 👇 ОБЫЧНЫЙ КВИЗ
-  const questionData = quizQuestions[currentQuestionIndex];
+ const todayQuiz = getTodayQuizQuestions();
+ const questionData = todayQuiz[currentQuestionIndex];
 
   document.getElementById("quizCounter").textContent =
-    `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+`Question ${currentQuestionIndex + 1} of ${todayQuiz.length}`;
 
   document.getElementById("question").textContent = questionData.question;
 
@@ -1524,7 +1559,8 @@ function loadQuestion() {
 function checkAnswer(selectedIndex) {
   if (quizCompleted) return;
 
-  const questionData = quizQuestions[currentQuestionIndex];
+ const todayQuiz = getTodayQuizQuestions();
+const questionData = todayQuiz[currentQuestionIndex];
   const buttons = document.querySelectorAll("#answers .answer-btn");
 
   buttons.forEach((button, index) => {
@@ -1553,7 +1589,7 @@ function checkAnswer(selectedIndex) {
 
   updateUI();
 
-  if (currentQuestionIndex < quizQuestions.length - 1) {
+ if (currentQuestionIndex < todayQuiz.length - 1) {
     document.getElementById("nextQuestionBtn").style.display = "inline-block";
   } else {
     document.getElementById("finishQuizBtn").style.display = "inline-block";
@@ -1811,6 +1847,19 @@ function updateParentChallengeCard() {
     status.innerHTML = "";
     card.classList.remove("completed");
   }
+}
+
+function getTodayQuizQuestions() {
+  const day = new Date().getDate();
+  const startIndex = day % quizQuestions.length;
+
+  const selected = [];
+
+  for (let i = 0; i < 3; i++) {
+    selected.push(quizQuestions[(startIndex + i) % quizQuestions.length]);
+  }
+
+  return selected;
 }
     
 loadQuestion();
