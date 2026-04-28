@@ -1704,7 +1704,7 @@ function updateUI() {
   if (points >= 300) {
     reactBear("super");
   }
-  updateRewards(completedCount);
+  updateRewardsPage();
 
   const tasksPointsEl = document.getElementById("tasksPoints");
 if (tasksPointsEl) {
@@ -1718,30 +1718,6 @@ const available =
 
 tasksPointsEl.textContent = available + " ⭐";
 }
-}
-
-    function updateRewards(completedCount) {
-  const first = document.getElementById("badge-first-step");
-  const master = document.getElementById("badge-task-master");
-  const text = document.getElementById("rewardText");
-
-  if (completedCount >= 1) {
-    first.classList.remove("locked");
-    first.classList.add("unlocked");
-  }
-
-  if (completedCount >= 3) {
-    master.classList.remove("locked");
-    master.classList.add("unlocked");
-  }
-
-  if (completedCount === 0) {
-    text.innerText = "Complete 1 task to unlock reward";
-  } else if (completedCount < 3) {
-    text.innerText = "Almost there! Complete all tasks";
-  } else {
-    text.innerText = "Amazing! All rewards unlocked 🎉";
-  }
 }
     
 function showToast(message) {
