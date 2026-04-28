@@ -1023,6 +1023,37 @@
 <div id="status-atm"></div>
 </div>
 
+<div id="task-parent-challenge" class="card task-card">
+  <div class="task-title">👨‍👩‍👧 Parent Challenge</div>
+  <div id="parentChallengeTitle" class="task-title"></div>
+  <div id="parentChallengeDescription" class="muted"></div>
+  <div id="parentChallengeReward" class="muted">Reward depends on parent rating ⭐</div>
+
+  <button id="btn-parent-challenge" class="small-btn" onclick="startParentChallenge()">Start</button>
+
+  <textarea 
+    id="parentChallengeAnswer"
+    placeholder="Write at least 10 words about what you did..."
+    style="display:none; width:100%; margin-top:12px; padding:12px; border-radius:12px; border:1px solid #d1d5db;"
+  ></textarea>
+
+  <select 
+    id="parentRating"
+    style="display:none; width:100%; margin-top:12px; padding:12px; border-radius:12px; border:1px solid #d1d5db;"
+  >
+    <option value="">Parent rating</option>
+    <option value="1">⭐ 1 — Need improvement</option>
+    <option value="2">⭐⭐ 2 — Tried a little</option>
+    <option value="3">⭐⭐⭐ 3 — Good</option>
+    <option value="4">⭐⭐⭐⭐ 4 — Very good</option>
+    <option value="5">⭐⭐⭐⭐⭐ 5 — Excellent</option>
+  </select>
+
+  <button id="btn-confirm-parent-challenge" class="small-btn secondary" style="display:none;" onclick="confirmParentChallenge()">Confirm</button>
+
+  <div id="status-parent-challenge"></div>
+</div>    
+    
   </section>
 
   <!-- REWARDS -->
@@ -1110,7 +1141,9 @@
    const savedTaskDate = localStorage.getItem("taskDate");
 
 let dailyTaskCompleted = false;
-
+let parentChallengeCompleted = false;
+const savedParentChallengeDate = localStorage.getItem("parentChallengeDate");
+    
 const tasks = {
   quiz: false,
   atm: false,
@@ -1126,6 +1159,11 @@ if (savedQuizDate === today) {
   quizCompleted = true;
   tasks.quiz = true;
 }
+
+if (savedParentChallengeDate === today) {
+  parentChallengeCompleted = true;
+  tasks.parent = true;
+}    
     const quizQuestions = [
   {
     question: "What should you NEVER share with anyone?",
@@ -1199,6 +1237,30 @@ const dailyTasksList = [
     action: "text"
   }
 ];
+
+const parentTasksList = [
+  {
+    title: "🧹 Help with cleaning",
+    description: "Help clean one room or your study area."
+  },
+  {
+    title: "📚 Finish homework",
+    description: "Complete your homework and show it to your parent."
+  },
+  {
+    title: "👕 Organize wardrobe",
+    description: "Put your clothes in order."
+  },
+  {
+    title: "🎒 Prepare school bag",
+    description: "Pack your school bag for tomorrow."
+  },
+  {
+    title: "🍽 Help after dinner",
+    description: "Help clear the table or wash your plate."
+  }
+];
+    
     function showTab(tabId, button) {
       const screens = document.querySelectorAll('.screen');
       const buttons = document.querySelectorAll('.nav-btn');
@@ -1604,6 +1666,11 @@ function resetQuiz() {
 
 localStorage.removeItem("quizDate");
 localStorage.removeItem("taskDate");
+localStorage.removeItem("parentChallengeDate");
+localStorage.removeItem("parentChallengeAnswer");
+localStorage.removeItem("parentChallengeRating");
+parentChallengeCompleted = false;
+tasks.parent = false;
 dailyTaskCompleted = false;
 tasks.atm = false;
 
@@ -1633,6 +1700,7 @@ loadQuestion();
 updateHomeQuizCard();
 updateQuizTaskCard();
 updateATMTaskCard();
+updateParentChallengeCard();
 updateUI();
 }
 
@@ -1640,11 +1708,116 @@ updateUI();
   const index = new Date().getDate() % dailyTasksList.length;
   return dailyTasksList[index];
 }    
+
+function getTodayParentTask() {
+  const index = new Date().getDate() % parentTasksList.length;
+  return parentTasksList[index];
+}
+
+function startParentChallenge() {
+  if (parentChallengeCompleted) {
+    showToast("✅ Parent challenge already completed today");
+    return;
+  }
+
+  document.getElementById("parentChallengeAnswer").style.display = "block";
+  document.getElementById("parentRating").style.display = "block";
+  document.getElementById("btn-confirm-parent-challenge").style.display = "inline-block";
+
+  showToast("✍️ Write what you did and ask parent to rate");
+}
+
+function confirmParentChallenge() {
+  const answer = document.getElementById("parentChallengeAnswer").value.trim();
+  const rating = Number(document.getElementById("parentRating").value);
+  const wordCount = answer.split(/\s+/).filter(Boolean).length;
+
+  if (wordCount < 10) {
+    showToast("✍️ Please write at least 10 words");
+    return;
+  }
+
+  if (!rating) {
+    showToast("⭐ Parent rating is required");
+    return;
+  }
+
+  const rewardByRating = {
+    1: 5,
+    2: 10,
+    3: 15,
+    4: 20,
+    5: 25
+  };
+
+  parentChallengeCompleted = true;
+  tasks.parent = true;
+  points += rewardByRating[rating];
+
+  localStorage.setItem("parentChallengeDate", today);
+  localStorage.setItem("parentChallengeAnswer", answer);
+  localStorage.setItem("parentChallengeRating", rating);
+
+  showToast(`🎉 Parent challenge completed! +${rewardByRating[rating]} ⭐`);
+  reactBear("happy");
+
+  updateParentChallengeCard();
+  updateUI();
+}
+
+function updateParentChallengeCard() {
+  const task = getTodayParentTask();
+
+  const title = document.getElementById("parentChallengeTitle");
+  const desc = document.getElementById("parentChallengeDescription");
+  const reward = document.getElementById("parentChallengeReward");
+  const btn = document.getElementById("btn-parent-challenge");
+  const answer = document.getElementById("parentChallengeAnswer");
+  const rating = document.getElementById("parentRating");
+  const confirmBtn = document.getElementById("btn-confirm-parent-challenge");
+  const status = document.getElementById("status-parent-challenge");
+  const card = document.getElementById("task-parent-challenge");
+
+  if (!title || !desc || !reward || !btn || !answer || !rating || !confirmBtn || !status || !card) return;
+
+  title.textContent = task.title;
+
+  if (parentChallengeCompleted) {
+    desc.textContent = "Parent challenge completed for today";
+    reward.textContent = "Come back tomorrow 🌟";
+
+    btn.disabled = true;
+    btn.textContent = "Completed";
+
+    answer.style.display = "none";
+    rating.style.display = "none";
+    confirmBtn.style.display = "none";
+
+    status.innerHTML = '<span class="status">✅ Completed today</span>';
+    card.classList.add("completed");
+  } else {
+    desc.textContent = task.description;
+    reward.textContent = "Reward: 5–25 ⭐ based on parent rating";
+
+    btn.disabled = false;
+    btn.textContent = "Start";
+
+    answer.style.display = "none";
+    answer.value = "";
+    rating.style.display = "none";
+    rating.value = "";
+    confirmBtn.style.display = "none";
+
+    status.innerHTML = "";
+    card.classList.remove("completed");
+  }
+}
     
 loadQuestion();
 updateHomeQuizCard();
 updateQuizTaskCard();
 updateATMTaskCard();
+updateParentChallengeCard();
 updateUI();
     
   </script>
