@@ -1050,6 +1050,13 @@
   gap: 10px;
   align-items: center;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.home-mini-mission:active {
+  transform: scale(0.96);
 }
 
 .home-mini-mission.done {
@@ -1174,7 +1181,7 @@
     </div>
 
     <div class="home-mission-grid">
-      <div id="homeQuizStatus" class="home-mini-mission">
+      <div id="homeQuizStatus" class="home-mini-mission" onclick="openFromHome('quiz')">
         <div class="home-mini-icon">🧠</div>
         <div>
           <div class="home-mini-title">Quiz</div>
@@ -1182,7 +1189,7 @@
         </div>
       </div>
 
-      <div id="homeDailyStatus" class="home-mini-mission">
+      <div id="homeDailyStatus" class="home-mini-mission" onclick="openFromHome('task')">
         <div class="home-mini-icon">🌟</div>
         <div>
           <div class="home-mini-title">Daily Task</div>
@@ -1190,7 +1197,7 @@
         </div>
       </div>
 
-      <div id="homeParentStatus" class="home-mini-mission">
+      <div id="homeParentStatus" class="home-mini-mission" onclick="openFromHome('parent')">
         <div class="home-mini-icon">👨‍👩‍👧</div>
         <div>
           <div class="home-mini-title">Parent</div>
@@ -1198,7 +1205,7 @@
         </div>
       </div>
 
-      <div id="homeGameStatus" class="home-mini-mission">
+      <div id="homeGameStatus" class="home-mini-mission" onclick="openFromHome('game')">
         <div class="home-mini-icon">🎮</div>
         <div>
           <div class="home-mini-title">Game</div>
@@ -2452,6 +2459,32 @@ function updateHomeMissionStatus(elementId, isDone) {
     status.textContent = "Not completed";
   }
 }
+
+function openFromHome(type) {
+  if (type === "quiz") {
+    goToTab("quiz");
+    return;
+  }
+
+  if (type === "game") {
+    goToTab("game");
+    loadGame();
+    return;
+  }
+
+  // для task и parent открываем вкладку Tasks
+  goToTab("tasks");
+
+  setTimeout(() => {
+    if (type === "task") {
+      document.getElementById("task-atm")?.scrollIntoView({ behavior: "smooth" });
+    }
+
+    if (type === "parent") {
+      document.getElementById("task-parent-challenge")?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, 200);
+}    
     
 loadQuestion();
 loadGame();
