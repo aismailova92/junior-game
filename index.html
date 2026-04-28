@@ -1200,6 +1200,12 @@
           <span class="home-star">⭐</span>
         </div>
 
+        <div class="card">
+  <div class="task-title">🔥 Daily Login Bonus</div>
+  <div id="dailyLoginText" class="muted">Claim your daily bonus</div>
+  <button id="btn-daily-login" class="small-btn" onclick="claimDailyLoginBonus()">Claim Bonus</button>
+</div>
+
         <div class="home-rank-line">
           <span id="homeRankName">Beginner Explorer</span>
           <span> • </span>
@@ -1247,6 +1253,13 @@
           <div class="home-mini-status">Not completed</div>
         </div>
       </div>
+
+      <div id="surpriseBoxCard" class="card" style="display:none;">
+  <div class="task-title">🎁 Surprise Box</div>
+  <div class="muted">You completed all missions today. Open your reward!</div>
+  <button id="btn-surprise" class="small-btn" onclick="openSurpriseBox()">Open Surprise Box 🎁</button>
+  <div id="surpriseResult" class="muted" style="margin-top:10px;"></div>
+</div>
 
       <div id="homeDailyStatus" class="home-mini-mission" onclick="openFromHome('task')">
         <div class="home-mini-icon">🌟</div>
@@ -1545,6 +1558,12 @@
     let parentDays = Number(localStorage.getItem("parentDays") || 0);
     let gameDays = Number(localStorage.getItem("gameDays") || 0);
     let streakDays = Number(localStorage.getItem("streakDays") || 1);
+    let dailyLoginClaimed = false;
+const savedLoginDate = localStorage.getItem("loginBonusDate");
+
+if (savedLoginDate === today) {
+  dailyLoginClaimed = true;
+}
 
     const today = new Date().toISOString().slice(0, 10);
     const savedQuizDate = localStorage.getItem("quizDate");
@@ -1910,6 +1929,8 @@ function updateUI() {
   }
 
   updateHomeDashboard();
+  updateDailyLoginCard();
+  updateSurpriseBox();
 }
     
 function showToast(message) {
@@ -2126,6 +2147,9 @@ function resetQuiz() {
 localStorage.removeItem("quizDate");
 localStorage.removeItem("taskDate");
 localStorage.removeItem("gameDate");
+localStorage.removeItem("loginBonusDate");
+localStorage.removeItem("surpriseBoxDate");
+dailyLoginClaimed = false;
 
   // 🔄 RESET REWARDS
 
@@ -2561,6 +2585,106 @@ function openFromHome(type) {
       document.getElementById("task-parent-challenge")?.scrollIntoView({ behavior: "smooth" });
     }
   }, 200);
+}    
+
+function getDailyLoginBonus() {
+  if (streakDays >= 7) return 5;
+  if (streakDays >= 3) return 3;
+  return 1;
+}
+
+function claimDailyLoginBonus() {
+  if (dailyLoginClaimed) {
+    showToast("✅ Daily bonus already claimed today");
+    return;
+  }
+
+  const bonus = getDailyLoginBonus();
+
+  points += bonus;
+  localStorage.setItem("points", points);
+
+  dailyLoginClaimed = true;
+  localStorage.setItem("loginBonusDate", today);
+
+  showToast(`🔥 Daily bonus claimed! +${bonus} ⭐`);
+
+  updateDailyLoginCard();
+  updateUI();
+}
+
+function updateDailyLoginCard() {
+  const text = document.getElementById("dailyLoginText");
+  const btn = document.getElementById("btn-daily-login");
+
+  if (!text || !btn) return;
+
+  const bonus = getDailyLoginBonus();
+
+  if (dailyLoginClaimed) {
+    text.textContent = `Claimed today. Current streak: ${streakDays} days 🔥`;
+    btn.disabled = true;
+    btn.textContent = "Claimed";
+  } else {
+    text.textContent = `Current streak: ${streakDays} days. Today bonus: +${bonus} ⭐`;
+    btn.disabled = false;
+    btn.textContent = "Claim Bonus";
+  }
+}
+
+function openSurpriseBox() {
+  const alreadyOpened = localStorage.getItem("surpriseBoxDate") === today;
+
+  if (alreadyOpened) {
+    showToast("🎁 Surprise box already opened today");
+    return;
+  }
+
+  const rewards = [5, 10, 10, 20, 20, 50];
+  const reward = rewards[Math.floor(Math.random() * rewards.length)];
+
+  points += reward;
+  localStorage.setItem("points", points);
+  localStorage.setItem("surpriseBoxDate", today);
+
+  document.getElementById("surpriseResult").textContent =
+    `🎉 You won +${reward} ⭐`;
+
+  const btn = document.getElementById("btn-surprise");
+  btn.disabled = true;
+  btn.textContent = "Opened";
+
+  showToast(`🎁 Surprise reward! +${reward} ⭐`);
+
+  updateUI();
+}
+
+function updateSurpriseBox() {
+  const card = document.getElementById("surpriseBoxCard");
+  const btn = document.getElementById("btn-surprise");
+  const result = document.getElementById("surpriseResult");
+
+  if (!card || !btn || !result) return;
+
+  const completedCount = Object.values(tasks).filter(Boolean).length;
+  const totalTasks = Object.keys(tasks).length;
+  const alreadyOpened = localStorage.getItem("surpriseBoxDate") === today;
+
+  if (completedCount === totalTasks) {
+    card.style.display = "block";
+
+    if (alreadyOpened) {
+      btn.disabled = true;
+      btn.textContent = "Opened";
+      result.textContent = "Come back tomorrow for a new surprise 🌟";
+    } else {
+      btn.disabled = false;
+      btn.textContent = "Open Surprise Box 🎁";
+      result.textContent = "";
+    }
+  } else {
+    card.style.display = "none";
+  }
 }    
     
 loadQuestion();
