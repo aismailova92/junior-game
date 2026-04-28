@@ -1452,7 +1452,7 @@
   happy: "https://cdn-icons-png.flaticon.com/512/742/742751.png",
   super: "https://cdn-icons-png.flaticon.com/512/616/616430.png"
 };
-    let points = 240;
+    let points = Number(localStorage.getItem("points") || 240);
     let currentQuestionIndex = 0;
     let quizScore = 0;
     let quizCompleted = false;
@@ -1474,9 +1474,7 @@ let lockGame = false;
 
 const savedGameDate = localStorage.getItem("gameDate");
 
-if (savedGameDate === today) {
-  gameCompleted = true;
-}
+
 const savedParentChallengeDate = localStorage.getItem("parentChallengeDate");
     
 const tasks = {
@@ -1485,6 +1483,11 @@ const tasks = {
   parent: false,
   game: false
 };
+
+ if (savedGameDate === today) {
+  gameCompleted = true;
+  tasks.game = true;
+}   
 
 if (savedTaskDate === today) {
   dailyTaskCompleted = true;
@@ -2275,6 +2278,7 @@ function checkGameWin() {
     gameCompleted = true;
     tasks.game = true;
     points += 20;
+    localStorage.setItem("points", points);
 
     localStorage.setItem("gameDate", today);
     gameDays++;
@@ -2286,8 +2290,10 @@ localStorage.setItem("gameDays", gameDays);
     showToast("🎮 Game completed! +20 ⭐");
     reactBear("happy");
 
-    updateGameTaskCard();
-    updateUI();
+   updateGameTaskCard();
+updateHomeDashboard();
+updateRewardsPage();
+updateUI();
   }
 }
 
