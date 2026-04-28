@@ -831,12 +831,16 @@
 }
 
 .tasks-card {
-  background: rgba(255,255,255,0.15);
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
   padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  backdrop-filter: blur(6px);
 }
 
 .tasks-label {
@@ -846,12 +850,15 @@
 
 .tasks-points {
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 800;
+  color: #facc15; /* золотой */
 }
-
 .tasks-icon {
   font-size: 40px;
-}  
+  background: rgba(255,255,255,0.2);
+  padding: 10px;
+  border-radius: 14px;
+}
 }
   </style>
 </head>
