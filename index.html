@@ -1233,10 +1233,16 @@
 
 <div class="home-bonus-row">
   <div class="home-bonus-card">
-    <div class="task-title">🔥 Daily Bonus</div>
-    <div id="dailyLoginText" class="muted">Claim your daily bonus</div>
-    <button id="btn-daily-login" class="small-btn" onclick="claimDailyLoginBonus()">Claim</button>
+  <div class="task-title">🔥 Daily Bonus</div>
+
+  <div id="dailyLoginText" class="muted">Claim your daily bonus</div>
+
+  <button id="btn-daily-login" class="small-btn" onclick="claimDailyLoginBonus()">Claim</button>
+
+  <div id="dailyLoginHint" class="muted" style="margin-top:8px;">
+    Come back every day to increase your bonus 🔥
   </div>
+</div>
 
   <div id="surpriseBoxCard" class="home-bonus-card" style="display:none;">
     <div class="task-title">🎁 Surprise Box</div>
@@ -2633,8 +2639,9 @@ function claimDailyLoginBonus() {
 function updateDailyLoginCard() {
   const text = document.getElementById("dailyLoginText");
   const btn = document.getElementById("btn-daily-login");
+  const hint = document.getElementById("dailyLoginHint");
 
-  if (!text || !btn) return;
+  if (!text || !btn || !hint) return;
 
   const bonus = getDailyLoginBonus();
 
@@ -2642,10 +2649,14 @@ function updateDailyLoginCard() {
     text.textContent = `Claimed today. Current streak: ${streakDays} days 🔥`;
     btn.disabled = true;
     btn.textContent = "Claimed";
+
+    hint.textContent = "Come back tomorrow to grow your streak 🚀";
   } else {
-    text.textContent = `Current streak: ${streakDays} days. Today bonus: +${bonus} ⭐`;
+    text.textContent = `Current streak: ${streakDays} days`;
     btn.disabled = false;
-    btn.textContent = "Claim Bonus";
+    btn.textContent = `+${bonus} ⭐`;
+
+    hint.textContent = "Log in daily to increase your bonus 🔥";
   }
 }
 
