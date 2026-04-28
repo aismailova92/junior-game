@@ -1800,6 +1800,7 @@ function confirmTaskCompletion() {
   dailyTaskCompleted = true;
   tasks.atm = true;
   points += task.reward;
+  localStorage.setItem("points", points);
 
   localStorage.setItem("taskDate", today);
   taskDays++;
@@ -1828,20 +1829,23 @@ function updateUI() {
   if (points >= 300) {
     reactBear("super");
   }
+
   updateRewardsPage();
 
   const tasksPointsEl = document.getElementById("tasksPoints");
-if (tasksPointsEl) {
-const todayTask = getTodayTask();
+  if (tasksPointsEl) {
+    const todayTask = getTodayTask();
 
-const available =
-  (tasks.quiz ? 0 : 50) +
-  (tasks.atm ? 0 : todayTask.reward) +
-  (tasks.parent ? 0 : 25) +
-  (tasks.game ? 0 : 20);
+    const available =
+      (tasks.quiz ? 0 : 50) +
+      (tasks.atm ? 0 : todayTask.reward) +
+      (tasks.parent ? 0 : 25) +
+      (tasks.game ? 0 : 20);
 
-tasksPointsEl.textContent = available + " ⭐";
-}
+    tasksPointsEl.textContent = available + " ⭐";
+  }
+
+  updateHomeDashboard();
 }
     
 function showToast(message) {
@@ -1928,6 +1932,7 @@ const questionData = todayQuiz[currentQuestionIndex];
   if (selectedIndex === questionData.correctIndex) {
     quizScore++;
     points += 10;
+    localStorage.setItem("points", points);
     document.getElementById("quizResult").innerHTML =
       `✅ Correct! +10 ⭐<br><span class="muted">${questionData.explanation}</span>`;
     showToast("🎉 Correct answer! +10 ⭐");
@@ -1964,6 +1969,7 @@ function finishQuiz() {
 
   if (bonus > 0) {
     points += bonus;
+    localStorage.setItem("points", points);
     showToast("🏆 Perfect quiz! Bonus +20 ⭐");
   }
 
@@ -2171,6 +2177,7 @@ function confirmParentChallenge() {
   parentChallengeCompleted = true;
   tasks.parent = true;
   points += rewardByRating[rating];
+  localStorage.setItem("points", points);
 
   localStorage.setItem("parentChallengeDate", today);
   parentDays++;
