@@ -1151,6 +1151,20 @@
   margin-left: 16px;
   margin-right: 16px;
 }    
+
+.home-bonus-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 14px 0 18px;
+}
+
+.home-bonus-card {
+  background: white;
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}    
     
 @media (max-width: 390px) {
   .card-points {
@@ -1200,12 +1214,6 @@
           <span class="home-star">⭐</span>
         </div>
 
-        <div class="card">
-  <div class="task-title">🔥 Daily Login Bonus</div>
-  <div id="dailyLoginText" class="muted">Claim your daily bonus</div>
-  <button id="btn-daily-login" class="small-btn" onclick="claimDailyLoginBonus()">Claim Bonus</button>
-</div>
-
         <div class="home-rank-line">
           <span id="homeRankName">Beginner Explorer</span>
           <span> • </span>
@@ -1223,6 +1231,21 @@
 
   <div class="home-content">
 
+<div class="home-bonus-row">
+  <div class="home-bonus-card">
+    <div class="task-title">🔥 Daily Bonus</div>
+    <div id="dailyLoginText" class="muted">Claim your daily bonus</div>
+    <button id="btn-daily-login" class="small-btn" onclick="claimDailyLoginBonus()">Claim</button>
+  </div>
+
+  <div id="surpriseBoxCard" class="home-bonus-card" style="display:none;">
+    <div class="task-title">🎁 Surprise Box</div>
+    <div class="muted">Complete all missions</div>
+    <button id="btn-surprise" class="small-btn" onclick="openSurpriseBox()">Open</button>
+    <div id="surpriseResult" class="muted" style="margin-top:8px;"></div>
+  </div>
+</div>
+    
     <div class="home-section-row">
       <div>
         <div class="section-label">🎯 Today’s Missions</div>
@@ -1253,13 +1276,6 @@
           <div class="home-mini-status">Not completed</div>
         </div>
       </div>
-
-      <div id="surpriseBoxCard" class="card" style="display:none;">
-  <div class="task-title">🎁 Surprise Box</div>
-  <div class="muted">You completed all missions today. Open your reward!</div>
-  <button id="btn-surprise" class="small-btn" onclick="openSurpriseBox()">Open Surprise Box 🎁</button>
-  <div id="surpriseResult" class="muted" style="margin-top:10px;"></div>
-</div>
 
       <div id="homeDailyStatus" class="home-mini-mission" onclick="openFromHome('task')">
         <div class="home-mini-icon">🌟</div>
