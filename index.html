@@ -2324,12 +2324,14 @@ function checkGameWin() {
   if (allCards.length && allCards.length === matchedCards.length) {
     gameCompleted = true;
     tasks.game = true;
+
     points += 20;
     localStorage.setItem("points", points);
 
     localStorage.setItem("gameDate", today);
+
     gameDays++;
-localStorage.setItem("gameDays", gameDays);
+    localStorage.setItem("gameDays", gameDays);
 
     document.getElementById("gameResult").innerHTML =
       "🎉 You matched all cards! +20 ⭐";
@@ -2337,14 +2339,14 @@ localStorage.setItem("gameDays", gameDays);
     showToast("🎮 Game completed! +20 ⭐");
     reactBear("happy");
 
-   updateGameTaskCard();
-updateHomeDashboard();
-updateRewardsPage();
-updateUI();
+    setTimeout(() => {
+      goToTab("home");
+      updateHomeDashboard();
+    }, 900);
 
-setTimeout(() => {
-  goToTab("home");
-}, 900);    
+    updateGameTaskCard();
+    updateRewardsPage();
+    updateUI();
   }
 }
 
