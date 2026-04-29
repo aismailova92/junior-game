@@ -1251,6 +1251,17 @@
     <div id="surpriseResult" class="muted" style="margin-top:8px;"></div>
   </div>
 </div>
+
+    <div class="card invite-card">
+  <div class="task-title">👯 Invite Friends</div>
+  <div class="muted">Invite your friends and earn rewards</div>
+
+  <button class="small-btn" onclick="inviteFriend()">Invite Friend</button>
+
+  <div id="inviteStats" class="muted" style="margin-top:8px;">
+    Invited: 0 friends
+  </div>
+</div>
     
     <div class="home-section-row">
       <div>
@@ -1500,6 +1511,12 @@
         <div class="badge-name">App Streak</div>
         <div id="streakBadgeLevel" class="badge-level">Wooden</div>
       </div>
+
+      <div class="badge-level-card">
+  <div class="badge-icon">👯</div>
+  <div class="badge-name">Friends Badge</div>
+  <div id="friendsBadgeLevel" class="badge-level">Wooden</div>
+</div>
     </div>
   </div>
 
@@ -1579,7 +1596,8 @@
     let taskDays = Number(localStorage.getItem("taskDays") || 0);
     let parentDays = Number(localStorage.getItem("parentDays") || 0);
     let gameDays = Number(localStorage.getItem("gameDays") || 0);
-  let streakDays = Number(localStorage.getItem("streakDays") || 1);
+    let streakDays = Number(localStorage.getItem("streakDays") || 1);
+    let invitedFriends = Number(localStorage.getItem("invitedFriends") || 0);
 
 const today = new Date().toISOString().slice(0, 10);
 
@@ -2510,13 +2528,15 @@ function updateRewardsPage() {
   const parentBadge = getBadgeLevel(parentDays);
   const gameBadge = getBadgeLevel(gameDays);
   const streakBadge = getBadgeLevel(streakDays);
+  const friendsBadge = getBadgeLevel(invitedFriends);
 
-  const totalRankPoints =
-    quizBadge.points +
-    taskBadge.points +
-    parentBadge.points +
-    gameBadge.points +
-    streakBadge.points;
+ const totalRankPoints =
+  quizBadge.points +
+  taskBadge.points +
+  parentBadge.points +
+  gameBadge.points +
+  streakBadge.points +
+  friendsBadge.points;
 
   const rank = getJuniorRank(totalRankPoints);
 
@@ -2531,6 +2551,8 @@ function updateRewardsPage() {
 
   document.getElementById("nextUpgradeText").textContent =
     "Complete missions on more days to upgrade Wooden → Pearl → Silver → Gold → Diamond.";
+  document.getElementById("friendsBadgeLevel").textContent =
+  `${friendsBadge.name} (${invitedFriends})`;
 }
 
 function updateHomeDashboard() {
@@ -2713,6 +2735,29 @@ function updateSurpriseBox() {
   } else {
     card.style.display = "none";
   }
+}   
+
+function inviteFriend() {
+  const reward = 20;
+
+  invitedFriends++;
+  points += reward;
+
+  localStorage.setItem("invitedFriends", invitedFriends);
+  localStorage.setItem("points", points);
+
+  showToast(`👯 Friend invited! +${reward} ⭐`);
+
+  updateInviteUI();
+  updateRewardsPage();
+  updateUI();
+}
+
+function updateInviteUI() {
+  const stats = document.getElementById("inviteStats");
+  if (!stats) return;
+
+  stats.textContent = `Invited: ${invitedFriends} friends`;
 }    
     
 loadQuestion();
@@ -2727,6 +2772,7 @@ updateGameTaskCard();
 updateRewardsPage();
 updateHomeDashboard();
 updateUI();
+updateInviteUI();
     
   </script>
 </body>
