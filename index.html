@@ -1258,6 +1258,10 @@
 
   <button class="small-btn" onclick="inviteFriend()">Invite Friend</button>
 
+      <button class="small-btn" onclick="simulateInviteSuccess()" style="margin-top:8px;">
+  Simulate Friend Joined
+</button>
+
   <div id="inviteStats" class="muted" style="margin-top:8px;">
     Invited: 0 friends
   </div>
@@ -2738,6 +2742,41 @@ function updateSurpriseBox() {
 }   
 
 function inviteFriend() {
+  const userId = "user_" + Math.floor(Math.random() * 100000);
+const inviteLink = `https://t.me/your_bot_name?start=${userId}`;
+
+  const text = "Join me in Junior Club and earn rewards ⭐";
+
+  // 1. Telegram WebApp (если внутри Telegram)
+  if (window.Telegram && Telegram.WebApp) {
+    const tgLink = `https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(text)}`;
+    window.open(tgLink, "_blank");
+    return;
+  }
+
+  // 2. Если есть стандартный share (мобильные браузеры)
+  if (navigator.share) {
+    navigator.share({
+      title: "Junior Club",
+      text: text,
+      url: inviteLink
+    });
+    return;
+  }
+
+  // 3. fallback — копировать ссылку
+  navigator.clipboard.writeText(inviteLink);
+  showToast("🔗 Link copied! Send it to your friend");
+}
+
+function updateInviteUI() {
+  const stats = document.getElementById("inviteStats");
+  if (!stats) return;
+
+  stats.textContent = `Invited: ${invitedFriends} friends`;
+}    
+
+function simulateInviteSuccess() {
   const reward = 20;
 
   invitedFriends++;
@@ -2746,18 +2785,11 @@ function inviteFriend() {
   localStorage.setItem("invitedFriends", invitedFriends);
   localStorage.setItem("points", points);
 
-  showToast(`👯 Friend invited! +${reward} ⭐`);
+  showToast(`👯 Friend joined! +${reward} ⭐`);
 
   updateInviteUI();
   updateRewardsPage();
   updateUI();
-}
-
-function updateInviteUI() {
-  const stats = document.getElementById("inviteStats");
-  if (!stats) return;
-
-  stats.textContent = `Invited: ${invitedFriends} friends`;
 }    
     
 loadQuestion();
