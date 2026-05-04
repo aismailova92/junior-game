@@ -1307,6 +1307,22 @@
   </div>
 </section>
 
+<section id="login" class="screen register-screen">
+  <div class="register-header">
+    <h1 class="register-title">Welcome back 👋</h1>
+    <p class="register-subtitle">Choose existing profile or create a new one</p>
+  </div>
+
+  <div class="card register-form-card">
+    <div class="task-title">Choose profile</div>
+    <div id="profilesList"></div>
+
+    <button class="small-btn secondary" onclick="showRegisterScreen()">
+      Create New Profile
+    </button>
+  </div>
+</section>  
+
 <!-- HOME -->
 <section id="home" class="screen home-screen">
   <div class="home-hero">
@@ -2963,18 +2979,26 @@ function registerUser() {
 
 function showAppForActiveUser() {
   const registerScreen = document.getElementById("register");
+  const loginScreen = document.getElementById("login");
   const homeScreen = document.getElementById("home");
 
   if (activeUser) {
     registerScreen.classList.remove("active");
+    loginScreen.classList.remove("active");
     homeScreen.classList.add("active");
 
     document.querySelectorAll(".hello-text").forEach(el => {
       el.textContent = `Hello, ${activeUser.firstName}! 👋`;
     });
   } else {
-    registerScreen.classList.add("active");
+    registerScreen.classList.remove("active");
     homeScreen.classList.remove("active");
+
+    if (users.length > 0) {
+      showLoginScreen();
+    } else {
+      registerScreen.classList.add("active");
+    }
   }
 }
 
@@ -2984,15 +3008,62 @@ function logoutUser() {
   activeUserId = null;
   activeUser = null;
 
+  showLoginScreen();
+  showToast("Logged out");
+}
+function showLoginScreen() {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+
+  renderProfilesList();
+  document.getElementById("login").classList.add("active");
+}
+
+function showRegisterScreen() {
   document.querySelectorAll(".screen").forEach(screen => {
     screen.classList.remove("active");
   });
 
   document.getElementById("register").classList.add("active");
-
-  showToast("Logged out");
 }
 
+function renderProfilesList() {
+  const list = document.getElementById("profilesList");
+  if (!list) return;
+
+  list.innerHTML = "";
+
+  if (users.length === 0) {
+    list.innerHTML = '<div class="muted">No profiles yet</div>';
+    return;
+  }
+
+  users.forEach(user => {
+    const btn = document.createElement("button");
+    btn.className = "small-btn secondary";
+    btn.style.width = "100%";
+    btn.style.textAlign = "left";
+    btn.textContent = `${user.firstName} ${user.lastName} • ${user.phone}`;
+    btn.onclick = () => loginUser(user.id);
+    list.appendChild(btn);
+  });
+}
+
+function loginUser(userId) {
+  activeUserId = userId;
+  activeUser = users.find(user => user.id === userId);
+
+  localStorage.setItem("activeJuniorUserId", userId);
+
+  if (activeUser) {
+    points = activeUser.points || points;
+  }
+
+  showAppForActiveUser();
+  updateUI();
+}
+    
 showAppForActiveUser();
 loadQuestion();
 loadGame();
