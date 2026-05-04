@@ -1165,6 +1165,73 @@
   padding: 14px;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
 }    
+
+ .register-screen {
+  padding: 0 0 100px;
+  background: #f3f5f8;
+}
+
+.register-header {
+  background: linear-gradient(180deg, #1e3a8a, #1e40af);
+  padding: 20px;
+  color: white;
+}
+
+.register-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.register-subtitle {
+  font-size: 14px;
+  opacity: 0.8;
+  margin: 4px 0 16px;
+}
+
+.register-card {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  backdrop-filter: blur(6px);
+}
+
+.register-label {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.register-main {
+  font-size: 22px;
+  font-weight: 800;
+  color: #facc15;
+  margin-top: 4px;
+}
+
+.register-icon {
+  font-size: 40px;
+  background: rgba(255,255,255,0.2);
+  padding: 10px;
+  border-radius: 14px;
+}
+
+.register-form-card {
+  margin: 16px;
+}
+
+.register-input {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  margin-top: 10px;
+  font-size: 14px;
+}   
     
 @media (max-width: 390px) {
   .card-points {
@@ -1210,8 +1277,38 @@
 
 <div class="app">
 
+<!-- REGISTER -->
+<section id="register" class="screen active register-screen">
+  <div class="register-header">
+    <h1 class="register-title">Junior Club 👋</h1>
+    <p class="register-subtitle">Create child profile to start the money adventure</p>
+
+    <div class="register-card">
+      <div>
+        <div class="register-label">Welcome</div>
+        <div class="register-main">New Junior Profile</div>
+      </div>
+      <div class="register-icon">🧒</div>
+    </div>
+  </div>
+
+  <div class="card register-form-card">
+    <div class="task-title">Create profile</div>
+
+    <input id="regFirstName" class="register-input" placeholder="First name" />
+
+    <input id="regLastName" class="register-input" placeholder="Last name" />
+
+    <input id="regPhone" class="register-input" placeholder="Phone number" />
+
+    <input id="regBirthDate" class="register-input" type="date" />
+
+    <button class="small-btn" onclick="registerUser()">Start Adventure</button>
+  </div>
+</section>
+
 <!-- HOME -->
-<section id="home" class="screen active home-screen">
+<section id="home" class="screen home-screen">
   <div class="home-hero">
 
     <div class="home-profile-row">
@@ -1622,6 +1719,10 @@
     let invitedFriends = Number(localStorage.getItem("invitedFriends") || 0);
 
 const today = new Date().toISOString().slice(0, 10);
+
+let users = JSON.parse(localStorage.getItem("juniorUsers") || "[]");
+let activeUserId = localStorage.getItem("activeJuniorUserId");
+let activeUser = users.find(user => user.id === activeUserId);
 
 let dailyLoginClaimed = false;
 const savedLoginDate = localStorage.getItem("loginBonusDate");
@@ -2819,7 +2920,59 @@ function simulateInviteSuccess() {
     window.open(url, "_blank");
   }
 }
-    
+
+function registerUser() {
+  const firstName = document.getElementById("regFirstName").value.trim();
+  const lastName = document.getElementById("regLastName").value.trim();
+  const phone = document.getElementById("regPhone").value.trim();
+  const birthDate = document.getElementById("regBirthDate").value;
+
+  if (!firstName || !lastName || !phone || !birthDate) {
+    showToast("Please fill in all fields");
+    return;
+  }
+
+  const newUser = {
+    id: "user_" + Date.now(),
+    firstName,
+    lastName,
+    phone,
+    birthDate,
+    points: 240,
+    createdAt: new Date().toISOString()
+  };
+
+  users.push(newUser);
+
+  localStorage.setItem("juniorUsers", JSON.stringify(users));
+  localStorage.setItem("activeJuniorUserId", newUser.id);
+
+  activeUserId = newUser.id;
+  activeUser = newUser;
+  points = newUser.points;
+
+  showAppForActiveUser();
+  updateUI();
+}
+
+function showAppForActiveUser() {
+  const registerScreen = document.getElementById("register");
+  const homeScreen = document.getElementById("home");
+
+  if (activeUser) {
+    registerScreen.classList.remove("active");
+    homeScreen.classList.add("active");
+
+    document.querySelectorAll(".hello-text").forEach(el => {
+      el.textContent = `Hello, ${activeUser.firstName}! 👋`;
+    });
+  } else {
+    registerScreen.classList.add("active");
+    homeScreen.classList.remove("active");
+  }
+}
+
+showAppForActiveUser();
 loadQuestion();
 loadGame();
 
