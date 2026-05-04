@@ -1329,7 +1329,9 @@
       <div class="cta-subtitle">
         Turn your points into real rewards and start managing your own money like a hero!
       </div>
-      <button class="cta-button" onclick="requestCard()">Request Card Now</button>
+      <button class="small-btn" onclick="openCardLink()">
+  Get Card
+</button>
       <div class="cta-features">• Free Delivery &nbsp;&nbsp; • Parent Controls</div>
     </div>
 
@@ -2791,6 +2793,16 @@ function simulateInviteSuccess() {
   updateRewardsPage();
   updateUI();
 }    
+  function openCardLink() {
+  const url = "https://www.accessbank.az/az/private/cards/mycard/mycard_junior/#sifaris";
+
+  // если внутри Telegram Mini App
+  if (window.Telegram && Telegram.WebApp) {
+    Telegram.WebApp.openLink(url);
+  } else {
+    window.open(url, "_blank");
+  }
+}
     
 loadQuestion();
 loadGame();
