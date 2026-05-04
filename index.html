@@ -1678,6 +1678,12 @@
     <div class="muted">Use this only for demo and testing.</div>
     <button class="confirm-btn" onclick="resetQuiz()">Reset Demo</button>
   </div>
+
+  <div class="card">
+  <div class="task-title">🚪 Log out</div>
+  <div class="muted">Exit current profile and return to registration screen.</div>
+  <button class="confirm-btn" onclick="logoutUser()">Log out</button>
+</div>
 </section>
 
 </div>
@@ -2970,6 +2976,21 @@ function showAppForActiveUser() {
     registerScreen.classList.add("active");
     homeScreen.classList.remove("active");
   }
+}
+
+function logoutUser() {
+  localStorage.removeItem("activeJuniorUserId");
+
+  activeUserId = null;
+  activeUser = null;
+
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+
+  document.getElementById("register").classList.add("active");
+
+  showToast("Logged out");
 }
 
 showAppForActiveUser();
