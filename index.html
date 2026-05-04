@@ -1186,6 +1186,22 @@
   padding: 10px;
   border-radius: 14px;
 }
+
+ .card-btn {
+  background: white;
+  color: #1e40af; /* красивый банковский синий */
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-btn:active {
+  transform: scale(0.96);
+} 
 }
   </style>
 </head>
@@ -1329,7 +1345,7 @@
       <div class="cta-subtitle">
         Turn your points into real rewards and start managing your own money like a hero!
       </div>
-      <button class="small-btn" onclick="openCardLink()">
+     <button class="card-btn" onclick="openCardLink()">
   Get Card
 </button>
       <div class="cta-features">• Free Delivery &nbsp;&nbsp; • Parent Controls</div>
