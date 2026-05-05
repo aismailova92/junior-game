@@ -1232,7 +1232,9 @@
   margin-top: 10px;
   font-size: 14px;
 }   
-    
+  .bottom-nav.hidden {
+  display: none;
+}    
 @media (max-width: 390px) {
   .card-points {
     font-size: 48px;
@@ -1269,9 +1271,7 @@
 .card-btn:active {
   transform: scale(0.96);
 } 
-  .bottom-nav.hidden {
-  display: none;
-}
+
 }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -1728,8 +1728,8 @@
   </nav>
 
   <script>
-    const supabaseUrl = "PASTE_YOUR_URL_HERE";
-const supabaseKey = "PASTE_YOUR_ANON_KEY_HERE";
+    const supabaseUrl = "https://mxhfuzwhrnyygatjgmkp.supabase.co";
+const supabaseKey = "sb_publishable_ooX-Y_JpqBFGicBhX18XCQ_Mj1u0fH7";
 
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     const bearStates = {
@@ -3007,8 +3007,23 @@ async function registerUser() {
 
   activeUserId = userId;
 
-  showToast("Profile created!");
-  showAppForActiveUser();
+activeUser = {
+  id: userId,
+  firstName,
+  lastName,
+  phone,
+  birthDate,
+  points: 0
+};
+
+users.push(activeUser);
+localStorage.setItem("juniorUsers", JSON.stringify(users));
+
+points = 0;
+
+showToast("Profile created!");
+showAppForActiveUser();
+updateUI();
 }
 
 function showAppForActiveUser() {
