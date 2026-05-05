@@ -1732,7 +1732,7 @@
   happy: "https://cdn-icons-png.flaticon.com/512/742/742751.png",
   super: "https://cdn-icons-png.flaticon.com/512/616/616430.png"
 };
-    let points = Number(localStorage.getItem("points") || 240);
+    let points = Number(localStorage.getItem("points") || 0);
     let currentQuestionIndex = 0;
     let quizScore = 0;
     let quizCompleted = false;
@@ -2973,7 +2973,7 @@ function registerUser() {
     lastName,
     phone,
     birthDate,
-    points: 240,
+    points: 0,
     createdAt: new Date().toISOString()
   };
 
