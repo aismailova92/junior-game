@@ -2991,6 +2991,34 @@ async function registerUser() {
   activeUserId = userId;
   points = 0;
 
+  quizCompleted = false;
+dailyTaskCompleted = false;
+parentChallengeCompleted = false;
+gameCompleted = false;
+
+tasks.quiz = false;
+tasks.atm = false;
+tasks.parent = false;
+tasks.game = false;
+
+quizScore = 0;
+currentQuestionIndex = 0;
+
+localStorage.removeItem("quizDate");
+localStorage.removeItem("taskDate");
+localStorage.removeItem("gameDate");
+localStorage.removeItem("parentChallengeDate");
+localStorage.removeItem("loginBonusDate");
+localStorage.removeItem("surpriseBoxDate");
+
+  loadQuestion();
+loadGame();
+updateQuizTaskCard();
+updateATMTaskCard();
+updateParentChallengeCard();
+updateGameTaskCard();
+updateUI();
+
   users.push(activeUser);
 
   localStorage.setItem("juniorUsers", JSON.stringify(users));
