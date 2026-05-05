@@ -2332,76 +2332,33 @@ function resetQuiz() {
   quizScore = 0;
   currentQuestionIndex = 0;
 
-localStorage.removeItem("quizDate");
-localStorage.removeItem("taskDate");
-localStorage.removeItem("gameDate");
-localStorage.removeItem("loginBonusDate");
-localStorage.removeItem("surpriseBoxDate");
-dailyLoginClaimed = false;
+  dailyTaskCompleted = false;
+  parentChallengeCompleted = false;
+  gameCompleted = false;
 
-  // 🔄 RESET REWARDS
-
-localStorage.removeItem("points");
-points = 240;
-
-localStorage.removeItem("quizDays");
-localStorage.removeItem("taskDays");
-localStorage.removeItem("parentDays");
-localStorage.removeItem("gameDays");
-localStorage.removeItem("streakDays");
-
-quizDays = 0;
-taskDays = 0;
-parentDays = 0;
-gameDays = 0;
-streakDays = 1;
-  
-gameCompleted = false;
-tasks.game = false;
-firstCard = null;
-lockGame = false;
-localStorage.removeItem("parentChallengeDate");
-localStorage.removeItem("parentChallengeAnswer");
-localStorage.removeItem("parentChallengeRating");
-parentChallengeCompleted = false;
-tasks.parent = false;
-dailyTaskCompleted = false;
-tasks.atm = false;
-
-  // сброс задания
   tasks.quiz = false;
+  tasks.atm = false;
+  tasks.parent = false;
+  tasks.game = false;
 
-  const quizButton = document.getElementById("btn-quiz");
-  const quizStatus = document.getElementById("status-quiz");
-  const quizCard = document.getElementById("task-quiz");
+  points = 0;
 
-  if (quizButton) {
-    quizButton.disabled = false;
-    quizButton.textContent = "Start";
-  }
+  quizDays = 0;
+  taskDays = 0;
+  parentDays = 0;
+  gameDays = 0;
+  streakDays = 1;
 
-  if (quizStatus) {
-    quizStatus.innerHTML = "";
-  }
+  firstCard = null;
+  lockGame = false;
 
-  if (quizCard) {
-    quizCard.classList.remove("completed");
-  }
+  updateQuizTaskCard();
+  updateATMTaskCard();
+  updateParentChallengeCard();
+  updateGameTaskCard();
+  updateUI();
 
-  showToast("🔄 Quiz reset");
-
-loadQuestion();
-loadGame();
-
-updateHomeQuizCard();
-updateQuizTaskCard();
-updateATMTaskCard();
-updateParentChallengeCard();
-updateGameTaskCard();
-
-updateRewardsPage();
-updateHomeDashboard();
-updateUI();
+  showToast("Demo reset!");
 }
 
     function getTodayTask() {
