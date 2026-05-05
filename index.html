@@ -1998,7 +1998,6 @@ function startQuizFromTasks() {
   reactBear("happy");
 
   updateATMTaskCard();
-  updateUI();
 }
 
 function updateATMTaskCard() {
@@ -2974,6 +2973,27 @@ async function registerUser() {
 
   let userId = "local_" + Date.now();
 
+  activeUser = {
+    id: userId,
+    firstName,
+    lastName,
+    phone,
+    birthDate,
+    points: 0
+  };
+
+  activeUserId = userId;
+  users.push(activeUser);
+
+  localStorage.setItem("juniorUsers", JSON.stringify(users));
+  localStorage.setItem("activeJuniorUserId", userId);
+
+  points = 0;
+
+  showAppForActiveUser();
+  updateUI();
+  showToast("Profile created!");
+
   try {
     const { data, error } = await supabase
       .from("junior_users")
@@ -2988,39 +3008,23 @@ async function registerUser() {
 
     if (error) {
       console.error("Supabase user error:", error);
-      showToast("Saved locally. Supabase error.");
-    } else {
-      userId = data.id;
-
-      await supabase.from("user_progress").insert({
-        user_id: userId,
-        points: 0
-      });
+      return;
     }
+
+    await supabase.from("user_progress").insert({
+      user_id: data.id,
+      points: 0
+    });
+
+    activeUser.id = data.id;
+    activeUserId = data.id;
+    localStorage.setItem("activeJuniorUserId", data.id);
+    localStorage.setItem("juniorUsers", JSON.stringify(users));
+
+    console.log("Saved to Supabase:", data);
   } catch (err) {
     console.error("Supabase connection error:", err);
-    showToast("Saved locally. Database not connected.");
   }
-
-  activeUserId = userId;
-
-  activeUser = {
-    id: userId,
-    firstName,
-    lastName,
-    phone,
-    birthDate,
-    points: 0
-  };
-
-  users.push(activeUser);
-  localStorage.setItem("juniorUsers", JSON.stringify(users));
-  localStorage.setItem("activeJuniorUserId", userId);
-
-  points = 0;
-
-  showAppForActiveUser();
-  updateUI();
 }
 
 function showAppForActiveUser() {
