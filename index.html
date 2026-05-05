@@ -1274,6 +1274,7 @@
 }
 }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
   <div id="toast" class="toast">Done</div>
@@ -1727,6 +1728,10 @@
   </nav>
 
   <script>
+    const supabaseUrl = "PASTE_YOUR_URL_HERE";
+const supabaseKey = "PASTE_YOUR_ANON_KEY_HERE";
+
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     const bearStates = {
   normal: "https://cdn-icons-png.flaticon.com/512/616/616408.png",
   happy: "https://cdn-icons-png.flaticon.com/512/742/742751.png",
@@ -2956,7 +2961,7 @@ function simulateInviteSuccess() {
   }
 }
 
-function registerUser() {
+async function registerUser() {
   const firstName = document.getElementById("regFirstName").value.trim();
   const lastName = document.getElementById("regLastName").value.trim();
   const phone = document.getElementById("regPhone").value.trim();
@@ -2967,27 +2972,43 @@ function registerUser() {
     return;
   }
 
-  const newUser = {
-    id: "user_" + Date.now(),
-    firstName,
-    lastName,
-    phone,
-    birthDate,
-    points: 0,
-    createdAt: new Date().toISOString()
-  };
+  // 1. создаём пользователя
+  const { data, error } = await supabase
+    .from("junior_users")
+    .insert([
+      {
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+        birth_date: birthDate
+      }
+    ])
+    .select()
+    .single();
 
-  users.push(newUser);
+  if (error) {
+    console.error(error);
+    showToast("Error creating user");
+    return;
+  }
 
-  localStorage.setItem("juniorUsers", JSON.stringify(users));
-  localStorage.setItem("activeJuniorUserId", newUser.id);
+  const userId = data.id;
 
-  activeUserId = newUser.id;
-  activeUser = newUser;
-  points = newUser.points;
+  // 2. создаём прогресс
+  await supabase.from("user_progress").insert([
+    {
+      user_id: userId,
+      points: 0
+    }
+  ]);
 
+  // 3. сохраняем активного пользователя локально (пока)
+  localStorage.setItem("activeJuniorUserId", userId);
+
+  activeUserId = userId;
+
+  showToast("Profile created!");
   showAppForActiveUser();
-  updateUI();
 }
 
 function showAppForActiveUser() {
