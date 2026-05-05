@@ -1728,10 +1728,16 @@
   </nav>
 
   <script>
-    const supabaseUrl = "https://mxhfuzwhrnyygatjgmkp.supabase.co";
+   const supabaseUrl = "https://mxhfuzwhrnyygatjgmkp.supabase.co";
 const supabaseKey = "sb_publishable_ooX-Y_JpqBFGicBhX18XCQ_Mj1u0fH7";
 
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+let supabase = null;
+
+if (window.supabase) {
+  supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+} else {
+  console.warn("Supabase library not loaded. App will work locally.");
+}
     const bearStates = {
   normal: "https://cdn-icons-png.flaticon.com/512/616/616408.png",
   happy: "https://cdn-icons-png.flaticon.com/512/742/742751.png",
@@ -2159,7 +2165,6 @@ function reactBear(state) {
   }, 1200);
 }
 
-    updateUI();
 
 function loadQuestion() {
   // 👇 ЕСЛИ КВИЗ УЖЕ ПРОЙДЕН СЕГОДНЯ
@@ -2994,6 +2999,8 @@ async function registerUser() {
   updateUI();
   showToast("Profile created!");
 
+  if (!supabase) return;
+
   try {
     const { data, error } = await supabase
       .from("junior_users")
@@ -3018,6 +3025,7 @@ async function registerUser() {
 
     activeUser.id = data.id;
     activeUserId = data.id;
+
     localStorage.setItem("activeJuniorUserId", data.id);
     localStorage.setItem("juniorUsers", JSON.stringify(users));
 
