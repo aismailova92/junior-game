@@ -3149,15 +3149,54 @@ function renderProfilesList() {
   }
 
   users.forEach(user => {
-    const btn = document.createElement("button");
-    btn.className = "small-btn secondary";
-    btn.style.width = "100%";
-    btn.style.textAlign = "left";
-    btn.textContent = `${user.firstName} ${user.lastName} • ${user.phone}`;
-    btn.onclick = () => loginUser(user.id);
-    list.appendChild(btn);
+    const row = document.createElement("div");
+    row.style.display = "flex";
+    row.style.gap = "8px";
+    row.style.alignItems = "center";
+    row.style.marginTop = "10px";
+
+    const enterBtn = document.createElement("button");
+    enterBtn.className = "small-btn secondary";
+    enterBtn.style.flex = "1";
+    enterBtn.style.textAlign = "left";
+    enterBtn.textContent = `${user.firstName} ${user.lastName} • ${user.phone}`;
+    enterBtn.onclick = () => loginUser(user.id);
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "small-btn";
+    deleteBtn.style.background = "#ef4444";
+    deleteBtn.textContent = "Delete";
+    deleteBtn.onclick = () => deleteLocalUser(user.id);
+
+    row.appendChild(enterBtn);
+    row.appendChild(deleteBtn);
+
+    list.appendChild(row);
   });
 }
+
+function deleteLocalUser(userId) {
+  const confirmed = confirm("Delete this profile from this device?");
+
+  if (!confirmed) return;
+
+  users = users.filter(user => user.id !== userId);
+  localStorage.setItem("juniorUsers", JSON.stringify(users));
+
+  if (activeUserId === userId) {
+    localStorage.removeItem("activeJuniorUserId");
+    activeUserId = null;
+    activeUser = null;
+  }
+
+  renderProfilesList();
+
+  if (users.length === 0) {
+    showRegisterScreen();
+  }
+
+  showToast("Profile deleted locally");
+}    
 
 function loginUser(userId) {
   activeUserId = userId;
