@@ -3075,12 +3075,20 @@ async function registerUser() {
         return;
       }
 
-      await supabaseClient.from("user_progress").insert({
-        user_id: data.id,
-        points: 0
-      });
+await supabaseClient.from("user_progress").insert({
+  user_id: data.id,
+  points: 0
+});
 
-      console.log("User saved to Supabase:", data);
+activeUser.dbId = data.id;
+
+users = users.map(user =>
+  user.id === activeUser.id ? activeUser : user
+);
+
+localStorage.setItem("juniorUsers", JSON.stringify(users));
+
+console.log("User saved to Supabase:", data);
       activeUser.dbId = data.id;
 localStorage.setItem("juniorUsers", JSON.stringify(users));
     } catch (err) {
@@ -3240,6 +3248,10 @@ async function loginUser(userId) {
 
     if (!error && data) {
       points = data.points || 0;
+      quizDays = data.quiz_days || 0;
+      taskDays = data.task_days || 0;
+      gameDays = data.game_days || 0;
+      parentDays = data.parent_days || 0;
 
       quizCompleted = data.quiz_date === today;
       dailyTaskCompleted = data.task_date === today;
@@ -3279,6 +3291,10 @@ async function saveProgressToDatabase() {
       task_date: dailyTaskCompleted ? today : null,
       game_date: gameCompleted ? today : null,
       parent_challenge_date: parentChallengeCompleted ? today : null
+      quiz_days: quizDays,
+    task_days: taskDays,
+    game_days: gameDays,
+    parent_days: parentDays,
     })
     .eq("user_id", activeUser.dbId);
 
