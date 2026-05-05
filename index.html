@@ -1744,7 +1744,7 @@ if (window.supabase) {
   happy: "https://cdn-icons-png.flaticon.com/512/742/742751.png",
   super: "https://cdn-icons-png.flaticon.com/512/616/616430.png"
 };
-    let points = Number(localStorage.getItem("points") || 0);
+    let points = 0;
     let currentQuestionIndex = 0;
     let quizScore = 0;
     let quizCompleted = false;
@@ -1788,25 +1788,6 @@ const tasks = {
   game: false
 };
 
- if (savedGameDate === today) {
-  gameCompleted = true;
-  tasks.game = true;
-}   
-
-if (savedTaskDate === today) {
-  dailyTaskCompleted = true;
-  tasks.atm = true;
-}
-
-if (savedQuizDate === today) {
-  quizCompleted = true;
-  tasks.quiz = true;
-}
-
-if (savedParentChallengeDate === today) {
-  parentChallengeCompleted = true;
-  tasks.parent = true;
-}    
     const quizQuestions = [
   {
     question: "What should you NEVER share with anyone?",
@@ -2093,9 +2074,7 @@ function confirmTaskCompletion() {
   dailyTaskCompleted = true;
   tasks.atm = true;
   points += task.reward;
-  localStorage.setItem("points", points);
 
-  localStorage.setItem("taskDate", today);
   taskDays++;
 localStorage.setItem("taskDays", taskDays);
   localStorage.setItem("taskAnswer", answer);
@@ -2227,7 +2206,6 @@ const questionData = todayQuiz[currentQuestionIndex];
   if (selectedIndex === questionData.correctIndex) {
     quizScore++;
     points += 10;
-    localStorage.setItem("points", points);
     document.getElementById("quizResult").innerHTML =
       `✅ Correct! +10 ⭐<br><span class="muted">${questionData.explanation}</span>`;
     showToast("🎉 Correct answer! +10 ⭐");
@@ -2255,7 +2233,6 @@ function finishQuiz() {
   if (quizCompleted) return;
 
   quizCompleted = true;
-  localStorage.setItem("quizDate", today);
 
   quizDays++;
   localStorage.setItem("quizDays", quizDays);
@@ -2264,7 +2241,6 @@ function finishQuiz() {
 
   if (bonus > 0) {
     points += bonus;
-    localStorage.setItem("points", points);
     showToast("🏆 Perfect quiz! Bonus +20 ⭐");
   }
 
@@ -2479,7 +2455,6 @@ function confirmParentChallenge() {
   points += rewardByRating[rating];
   localStorage.setItem("points", points);
 
-  localStorage.setItem("parentChallengeDate", today);
   parentDays++;
 localStorage.setItem("parentDays", parentDays);
   localStorage.setItem("parentChallengeAnswer", answer);
@@ -2628,8 +2603,6 @@ function checkGameWin() {
 
     points += 20;
     localStorage.setItem("points", points);
-
-    localStorage.setItem("gameDate", today);
 
     gameDays++;
     localStorage.setItem("gameDays", gameDays);
