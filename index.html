@@ -2962,8 +2962,6 @@ function simulateInviteSuccess() {
 }
 
 async function registerUser() {
-  console.log("Register started");
-
   const firstName = document.getElementById("regFirstName").value.trim();
   const lastName = document.getElementById("regLastName").value.trim();
   const phone = document.getElementById("regPhone").value.trim();
@@ -2974,43 +2972,40 @@ async function registerUser() {
     return;
   }
 
-  const { data, error } = await supabase
-    .from("junior_users")
-    .insert({
-      first_name: firstName,
-      last_name: lastName,
-      phone: phone,
-      birth_date: birthDate
-    })
-    .select("*")
-    .single();
+  let userId = "local_" + Date.now();
 
-  console.log("User insert result:", data);
-  console.log("User insert error:", error);
+  try {
+    const { data, error } = await supabase
+      .from("junior_users")
+      .insert({
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+        birth_date: birthDate
+      })
+      .select("*")
+      .single();
 
-  if (error) {
-    alert("Supabase error: " + error.message);
-    return;
+    if (error) {
+      console.error("Supabase user error:", error);
+      showToast("Saved locally. Supabase error.");
+    } else {
+      userId = data.id;
+
+      await supabase.from("user_progress").insert({
+        user_id: userId,
+        points: 0
+      });
+    }
+  } catch (err) {
+    console.error("Supabase connection error:", err);
+    showToast("Saved locally. Database not connected.");
   }
 
-  const { error: progressError } = await supabase
-    .from("user_progress")
-    .insert({
-      user_id: data.id,
-      points: 0
-    });
-
-  console.log("Progress insert error:", progressError);
-
-  if (progressError) {
-    alert("Progress error: " + progressError.message);
-    return;
-  }
-
-  activeUserId = data.id;
+  activeUserId = userId;
 
   activeUser = {
-    id: data.id,
+    id: userId,
     firstName,
     lastName,
     phone,
@@ -3020,11 +3015,10 @@ async function registerUser() {
 
   users.push(activeUser);
   localStorage.setItem("juniorUsers", JSON.stringify(users));
-  localStorage.setItem("activeJuniorUserId", data.id);
+  localStorage.setItem("activeJuniorUserId", userId);
 
   points = 0;
 
-  showToast("Profile created!");
   showAppForActiveUser();
   updateUI();
 }
