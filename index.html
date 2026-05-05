@@ -2966,7 +2966,7 @@ function simulateInviteSuccess() {
   }
 }
 
-function registerUser() {
+async function registerUser() {
   const firstName = document.getElementById("regFirstName").value.trim();
   const lastName = document.getElementById("regLastName").value.trim();
   const phone = document.getElementById("regPhone").value.trim();
@@ -3000,6 +3000,36 @@ function registerUser() {
   showAppForActiveUser();
   updateUI();
   showToast("Profile created!");
+
+  // 👉 отправка в Supabase (тихо, без влияния на UI)
+if (supabaseClient) {
+  try {
+    const { data, error } = await supabaseClient
+      .from("junior_users")
+      .insert({
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+        birth_date: birthDate
+      })
+      .select("*")
+      .single();
+
+    if (error) {
+      console.error("Supabase insert error:", error);
+    } else {
+      console.log("User saved to Supabase:", data);
+
+      // создаём progress
+      await supabaseClient.from("user_progress").insert({
+        user_id: data.id,
+        points: 0
+      });
+    }
+  } catch (err) {
+    console.error("Supabase connection error:", err);
+  }
+}
 }
 
 function showAppForActiveUser() {
