@@ -2103,6 +2103,7 @@ localStorage.setItem("taskDays", taskDays);
   showToast(`🎉 Task completed! +${task.reward} ⭐`);
   reactBear("happy");
 
+  saveProgressToDatabase();
   updateATMTaskCard();
   updateUI();
 }
@@ -2291,6 +2292,8 @@ function finishQuiz() {
     quizStatus.innerHTML = '<span class="status">✅ Completed today</span>';
     quizCard.classList.add("completed");
   }
+  
+  saveProgressToDatabase();
 
 updateHomeQuizCard();
 updateQuizTaskCard();
@@ -2485,6 +2488,7 @@ localStorage.setItem("parentDays", parentDays);
   showToast(`🎉 Parent challenge completed! +${rewardByRating[rating]} ⭐`);
   reactBear("happy");
 
+  saveProgressToDatabase();
   updateParentChallengeCard();
   updateUI();
 }
@@ -2641,6 +2645,7 @@ function checkGameWin() {
       updateHomeDashboard();
     }, 900);
 
+    saveProgressToDatabase();
     updateGameTaskCard();
     updateRewardsPage();
     updateUI();
@@ -2822,6 +2827,7 @@ function claimDailyLoginBonus() {
 
   showToast(`🔥 Daily bonus claimed! +${bonus} ⭐`);
 
+  saveProgressToDatabase();
   updateDailyLoginCard();
   updateUI();
 }
@@ -3260,6 +3266,27 @@ async function loginUser(userId) {
   updateHomeDashboard();
   updateUI();
   updateInviteUI();
+}
+
+async function saveProgressToDatabase() {
+  if (!supabaseClient || !activeUser || !activeUser.dbId) return;
+
+  const { error } = await supabaseClient
+    .from("user_progress")
+    .update({
+      points: points,
+      quiz_date: quizCompleted ? today : null,
+      task_date: dailyTaskCompleted ? today : null,
+      game_date: gameCompleted ? today : null,
+      parent_challenge_date: parentChallengeCompleted ? today : null
+    })
+    .eq("user_id", activeUser.dbId);
+
+  if (error) {
+    console.error("Progress save error:", error);
+  } else {
+    console.log("Progress saved:", activeUser.firstName, points);
+  }
 }
     
 showAppForActiveUser();
