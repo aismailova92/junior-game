@@ -2966,6 +2966,45 @@ function simulateInviteSuccess() {
   }
 }
 
+function resetProgressForNewUser() {
+  points = 0;
+
+  quizCompleted = false;
+  dailyTaskCompleted = false;
+  parentChallengeCompleted = false;
+  gameCompleted = false;
+  dailyLoginClaimed = false;
+
+  tasks.quiz = false;
+  tasks.atm = false;
+  tasks.parent = false;
+  tasks.game = false;
+
+  quizScore = 0;
+  currentQuestionIndex = 0;
+
+  localStorage.setItem("points", 0);
+
+  localStorage.removeItem("quizDate");
+  localStorage.removeItem("taskDate");
+  localStorage.removeItem("gameDate");
+  localStorage.removeItem("parentChallengeDate");
+  localStorage.removeItem("loginBonusDate");
+  localStorage.removeItem("surpriseBoxDate");
+
+  localStorage.removeItem("quizDays");
+  localStorage.removeItem("taskDays");
+  localStorage.removeItem("parentDays");
+  localStorage.removeItem("gameDays");
+  localStorage.removeItem("invitedFriends");
+
+  quizDays = 0;
+  taskDays = 0;
+  parentDays = 0;
+  gameDays = 0;
+  invitedFriends = 0;
+}
+
 async function registerUser() {
   const firstName = document.getElementById("regFirstName").value.trim();
   const lastName = document.getElementById("regLastName").value.trim();
@@ -2979,6 +3018,8 @@ async function registerUser() {
 
   const userId = "user_" + Date.now();
 
+  activeUserId = userId;
+
   activeUser = {
     id: userId,
     firstName,
@@ -2988,104 +3029,55 @@ async function registerUser() {
     points: 0
   };
 
-  activeUserId = userId;
-  points = 0;
-
-  quizCompleted = false;
-dailyTaskCompleted = false;
-parentChallengeCompleted = false;
-gameCompleted = false;
-
-tasks.quiz = false;
-tasks.atm = false;
-tasks.parent = false;
-tasks.game = false;
-
-quizScore = 0;
-currentQuestionIndex = 0;
-
-localStorage.setItem("points", 0);
-
-localStorage.removeItem("quizDate");
-localStorage.removeItem("taskDate");
-localStorage.removeItem("gameDate");
-localStorage.removeItem("parentChallengeDate");
-localStorage.removeItem("loginBonusDate");
-localStorage.removeItem("surpriseBoxDate");
-
-  quizCompleted = false;
-dailyTaskCompleted = false;
-parentChallengeCompleted = false;
-gameCompleted = false;
-
-tasks.quiz = false;
-tasks.atm = false;
-tasks.parent = false;
-tasks.game = false;
-
-quizScore = 0;
-currentQuestionIndex = 0;
-
-localStorage.removeItem("quizDate");
-localStorage.removeItem("taskDate");
-localStorage.removeItem("gameDate");
-localStorage.removeItem("parentChallengeDate");
-localStorage.removeItem("loginBonusDate");
-localStorage.removeItem("surpriseBoxDate");
-
-  loadQuestion();
-loadGame();
-updateQuizTaskCard();
-updateATMTaskCard();
-updateParentChallengeCard();
-updateGameTaskCard();
-updateUI();
+  resetProgressForNewUser();
 
   users.push(activeUser);
 
   localStorage.setItem("juniorUsers", JSON.stringify(users));
   localStorage.setItem("activeJuniorUserId", userId);
-  localStorage.setItem("points", points);
 
   showAppForActiveUser();
-  updateUI();
-  showToast("Profile created!");
 
   loadQuestion();
-loadGame();
-updateQuizTaskCard();
-updateATMTaskCard();
-updateParentChallengeCard();
-updateGameTaskCard();
-updateHomeDashboard();
+  loadGame();
+  updateQuizTaskCard();
+  updateATMTaskCard();
+  updateParentChallengeCard();
+  updateGameTaskCard();
+  updateHomeDashboard();
+  updateUI();
+  updateInviteUI();
 
-  // 👉 отправка в Supabase (тихо, без влияния на UI)
-if (supabaseClient) {
-  try {
-    const { data, error } = await supabaseClient
-      .from("junior_users")
-      .insert({
-        first_name: firstName,
-        last_name: lastName,
-        phone: phone,
-        birth_date: birthDate
-      })
-      .select("*")
-      .single();
+  showToast("Profile created!");
 
-    if (error) {
-      console.error("Supabase insert error:", error);
-    } else {
-      console.log("User saved to Supabase:", data);
+  // Save user to Supabase quietly
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from("junior_users")
+        .insert({
+          first_name: firstName,
+          last_name: lastName,
+          phone: phone,
+          birth_date: birthDate
+        })
+        .select("*")
+        .single();
 
-      // создаём progress
+      if (error) {
+        console.error("Supabase insert error:", error);
+        return;
+      }
+
       await supabaseClient.from("user_progress").insert({
         user_id: data.id,
         points: 0
       });
+
+      console.log("User saved to Supabase:", data);
+    } catch (err) {
+      console.error("Supabase connection error:", err);
     }
-  } catch (err) {
-    console.error("Supabase connection error:", err);
   }
 }
 }
