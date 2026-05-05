@@ -3208,6 +3208,23 @@ async function loginUser(userId) {
 
   if (!activeUser) return;
 
+  // Сначала очищаем прогресс на экране
+  points = 0;
+
+  quizCompleted = false;
+  dailyTaskCompleted = false;
+  parentChallengeCompleted = false;
+  gameCompleted = false;
+
+  tasks.quiz = false;
+  tasks.atm = false;
+  tasks.parent = false;
+  tasks.game = false;
+
+  quizScore = 0;
+  currentQuestionIndex = 0;
+
+  // Потом пробуем загрузить прогресс из базы
   if (supabaseClient && activeUser.dbId) {
     const { data, error } = await supabaseClient
       .from("user_progress")
@@ -3234,10 +3251,12 @@ async function loginUser(userId) {
 
   loadQuestion();
   loadGame();
+
   updateQuizTaskCard();
   updateATMTaskCard();
   updateParentChallengeCard();
   updateGameTaskCard();
+
   updateHomeDashboard();
   updateUI();
   updateInviteUI();
