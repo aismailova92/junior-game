@@ -2995,79 +2995,96 @@ async function registerUser() {
     return;
   }
 
-  const userId = "user_" + Date.now();
-
-  activeUserId = userId;
-
-  activeUser = {
-    id: userId,
-    firstName,
-    lastName,
-    phone,
-    birthDate,
-    points: 0
-  };
-
-  resetProgressForNewUser();
-
-  users.push(activeUser);
-
-  localStorage.setItem("juniorUsers", JSON.stringify(users));
-  localStorage.setItem("activeJuniorUserId", userId);
-
-  showAppForActiveUser();
-
-  loadQuestion();
-  loadGame();
-  updateQuizTaskCard();
-  updateATMTaskCard();
-  updateParentChallengeCard();
-  updateGameTaskCard();
-  updateHomeDashboard();
-  updateUI();
-  updateInviteUI();
-
-  showToast("Profile created!");
-
-  // Save user to Supabase quietly
-  if (supabaseClient) {
-    try {
-      const { data, error } = await supabaseClient
-        .from("junior_users")
-        .insert({
-          first_name: firstName,
-          last_name: lastName,
-          phone: phone,
-          birth_date: birthDate
-        })
-        .select("*")
-        .single();
-
-      if (error) {
-        console.error("Supabase insert error:", error);
-        return;
-      }
-
-await supabaseClient.from("user_progress").insert({
-  user_id: data.id,
-  points: 0
-});
-
-activeUser.dbId = data.id;
-
-users = users.map(user =>
-  user.id === activeUser.id ? activeUser : user
-);
-
-localStorage.setItem("juniorUsers", JSON.stringify(users));
-
-console.log("User saved to Supabase:", data);
-      activeUser.dbId = data.id;
-localStorage.setItem("juniorUsers", JSON.stringify(users));
-    } catch (err) {
-      console.error("Supabase connection error:", err);
-    }
+  if (!supabaseClient) {
+    showToast("Database not connected");
+    return;
   }
+
+  try {
+    // 1. Ищем пользователя по номеру телефона
+    const { data: existingUser, error: searchError } = await supabaseClient
+      .from("junior_users")
+      .select("*")
+      .eq("phone", phone)
+      .maybeSingle();
+
+    if (searchError) {
+      console.error("User search error:", searchError);
+      showToast("Search error");
+      return;
+    }
+
+    // 2. Если пользователь уже есть — заходим в его профиль
+    if (existingUser) {
+      const existingProfile = {
+        id: existingUser.id,
+        dbId: existingUser.id,
+        firstName: existingUser.first_name,
+        lastName: existingUser.last_name,
+        phone: existingUser.phone,
+        birthDate: existingUser.birth_date,
+        points: 0
+      };
+
+      users = users.filter(user => user.dbId !== existingUser.id && user.id !== existingUser.id);
+      users.push(existingProfile);
+
+      localStorage.setItem("juniorUsers", JSON.stringify(users));
+      localStorage.setItem("activeJuniorUserId", existingUser.id);
+
+      await loginUser(existingUser.id);
+
+      showToast("Existing profile loaded!");
+      return;
+    }
+
+    // 3. Если пользователя нет — создаём нового
+    const { data: newUser, error: insertError } = await supabaseClient
+      .from("junior_users")
+      .insert({
+        first_name: firstName,
+        last_name: lastName,
+        phone: phone,
+        birth_date: birthDate
+      })
+      .select("*")
+      .single();
+
+    if (insertError) {
+      console.error("User insert error:", insertError);
+      showToast("Registration error");
+      return;
+    }
+
+    await supabaseClient.from("user_progress").insert({
+      user_id: newUser.id,
+      points: 0
+    });
+
+    const newProfile = {
+      id: newUser.id,
+      dbId: newUser.id,
+      firstName,
+      lastName,
+      phone,
+      birthDate,
+      points: 0
+    };
+
+    resetProgressForNewUser();
+
+    users.push(newProfile);
+    localStorage.setItem("juniorUsers", JSON.stringify(users));
+    localStorage.setItem("activeJuniorUserId", newUser.id);
+
+    await loginUser(newUser.id);
+
+    showToast("New profile created!");
+  } catch (err) {
+    console.error("Registration error:", err);
+    showToast("Registration failed");
+  }
+}
 }
     
 function showAppForActiveUser() {
