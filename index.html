@@ -1269,6 +1269,9 @@
 .card-btn:active {
   transform: scale(0.96);
 } 
+  .bottom-nav.hidden {
+  display: none;
+}
 }
   </style>
 </head>
@@ -1924,6 +1927,11 @@ const parentTasksList = [
 ];
     
     function showTab(tabId, button) {
+      if (!activeUser) {
+  showToast("Please choose or create a profile first");
+  showLoginScreen();
+  return;
+}
       const screens = document.querySelectorAll('.screen');
       const buttons = document.querySelectorAll('.nav-btn');
 
@@ -1934,6 +1942,11 @@ const parentTasksList = [
       button.classList.add('active');
     }
     function goToTab(tabId) {
+      if (!activeUser && tabId !== "register" && tabId !== "login") {
+  showToast("Please choose or create a profile first");
+  showLoginScreen();
+  return;
+}
   const screens = document.querySelectorAll('.screen');
   const buttons = document.querySelectorAll('.nav-btn');
 
@@ -2981,8 +2994,11 @@ function showAppForActiveUser() {
   const registerScreen = document.getElementById("register");
   const loginScreen = document.getElementById("login");
   const homeScreen = document.getElementById("home");
+  const bottomNav = document.querySelector(".bottom-nav");
 
   if (activeUser) {
+    bottomNav.classList.remove("hidden");
+    
     registerScreen.classList.remove("active");
     loginScreen.classList.remove("active");
     homeScreen.classList.add("active");
@@ -2991,6 +3007,8 @@ function showAppForActiveUser() {
       el.textContent = `Hello, ${activeUser.firstName}! 👋`;
     });
   } else {
+    bottomNav.classList.add("hidden");
+    
     registerScreen.classList.remove("active");
     homeScreen.classList.remove("active");
 
