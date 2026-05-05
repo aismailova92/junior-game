@@ -1274,6 +1274,7 @@
 
 }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
   <div id="toast" class="toast">Done</div>
@@ -1727,6 +1728,17 @@
   </nav>
 
   <script>
+    const supabaseUrl = "https://mxhfuzwhrnyygatjgmkp.supabase.co";
+const supabaseKey = "sb_publishable_ooX-Y_JpqBFGicBhX18XCQ_Mj1u0fH7";
+
+let supabaseClient = null;
+
+if (window.supabase) {
+  supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+  console.log("Supabase connected");
+} else {
+  console.warn("Supabase library not loaded");
+}
     const bearStates = {
   normal: "https://cdn-icons-png.flaticon.com/512/616/616408.png",
   happy: "https://cdn-icons-png.flaticon.com/512/742/742751.png",
