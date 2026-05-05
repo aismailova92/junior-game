@@ -1274,7 +1274,6 @@
 
 }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
   <div id="toast" class="toast">Done</div>
@@ -1728,16 +1727,6 @@
   </nav>
 
   <script>
-   const supabaseUrl = "https://mxhfuzwhrnyygatjgmkp.supabase.co";
-const supabaseKey = "sb_publishable_ooX-Y_JpqBFGicBhX18XCQ_Mj1u0fH7";
-
-let supabase = null;
-
-if (window.supabase) {
-  supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-} else {
-  console.warn("Supabase library not loaded. App will work locally.");
-}
     const bearStates = {
   normal: "https://cdn-icons-png.flaticon.com/512/616/616408.png",
   happy: "https://cdn-icons-png.flaticon.com/512/742/742751.png",
@@ -2965,7 +2954,7 @@ function simulateInviteSuccess() {
   }
 }
 
-async function registerUser() {
+function registerUser() {
   const firstName = document.getElementById("regFirstName").value.trim();
   const lastName = document.getElementById("regLastName").value.trim();
   const phone = document.getElementById("regPhone").value.trim();
@@ -2976,7 +2965,7 @@ async function registerUser() {
     return;
   }
 
-  let userId = "local_" + Date.now();
+  const userId = "user_" + Date.now();
 
   activeUser = {
     id: userId,
@@ -2988,51 +2977,17 @@ async function registerUser() {
   };
 
   activeUserId = userId;
+  points = 0;
+
   users.push(activeUser);
 
   localStorage.setItem("juniorUsers", JSON.stringify(users));
   localStorage.setItem("activeJuniorUserId", userId);
-
-  points = 0;
+  localStorage.setItem("points", points);
 
   showAppForActiveUser();
   updateUI();
   showToast("Profile created!");
-
-  if (!supabase) return;
-
-  try {
-    const { data, error } = await supabase
-      .from("junior_users")
-      .insert({
-        first_name: firstName,
-        last_name: lastName,
-        phone: phone,
-        birth_date: birthDate
-      })
-      .select("*")
-      .single();
-
-    if (error) {
-      console.error("Supabase user error:", error);
-      return;
-    }
-
-    await supabase.from("user_progress").insert({
-      user_id: data.id,
-      points: 0
-    });
-
-    activeUser.id = data.id;
-    activeUserId = data.id;
-
-    localStorage.setItem("activeJuniorUserId", data.id);
-    localStorage.setItem("juniorUsers", JSON.stringify(users));
-
-    console.log("Saved to Supabase:", data);
-  } catch (err) {
-    console.error("Supabase connection error:", err);
-  }
 }
 
 function showAppForActiveUser() {
@@ -3128,19 +3083,22 @@ function loginUser(userId) {
 }
     
 showAppForActiveUser();
-loadQuestion();
-loadGame();
 
-updateHomeQuizCard();
-updateQuizTaskCard();
-updateATMTaskCard();
-updateParentChallengeCard();
-updateGameTaskCard();
+if (activeUser) {
+  loadQuestion();
+  loadGame();
 
-updateRewardsPage();
-updateHomeDashboard();
-updateUI();
-updateInviteUI();
+  updateHomeQuizCard();
+  updateQuizTaskCard();
+  updateATMTaskCard();
+  updateParentChallengeCard();
+  updateGameTaskCard();
+
+  updateRewardsPage();
+  updateHomeDashboard();
+  updateUI();
+  updateInviteUI();
+}
     
   </script>
 </body>
