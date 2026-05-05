@@ -2962,6 +2962,8 @@ function simulateInviteSuccess() {
 }
 
 async function registerUser() {
+  console.log("Register started");
+
   const firstName = document.getElementById("regFirstName").value.trim();
   const lastName = document.getElementById("regLastName").value.trim();
   const phone = document.getElementById("regPhone").value.trim();
@@ -2972,58 +2974,59 @@ async function registerUser() {
     return;
   }
 
-  // 1. создаём пользователя
   const { data, error } = await supabase
     .from("junior_users")
-    .insert([
-      {
-        first_name: firstName,
-        last_name: lastName,
-        phone: phone,
-        birth_date: birthDate
-      }
-    ])
-    .select()
+    .insert({
+      first_name: firstName,
+      last_name: lastName,
+      phone: phone,
+      birth_date: birthDate
+    })
+    .select("*")
     .single();
 
+  console.log("User insert result:", data);
+  console.log("User insert error:", error);
+
   if (error) {
-    console.error(error);
-    showToast("Error creating user");
+    alert("Supabase error: " + error.message);
     return;
   }
 
-  const userId = data.id;
-
-  // 2. создаём прогресс
-  await supabase.from("user_progress").insert([
-    {
-      user_id: userId,
+  const { error: progressError } = await supabase
+    .from("user_progress")
+    .insert({
+      user_id: data.id,
       points: 0
-    }
-  ]);
+    });
 
-  // 3. сохраняем активного пользователя локально (пока)
-  localStorage.setItem("activeJuniorUserId", userId);
+  console.log("Progress insert error:", progressError);
 
-  activeUserId = userId;
+  if (progressError) {
+    alert("Progress error: " + progressError.message);
+    return;
+  }
 
-activeUser = {
-  id: userId,
-  firstName,
-  lastName,
-  phone,
-  birthDate,
-  points: 0
-};
+  activeUserId = data.id;
 
-users.push(activeUser);
-localStorage.setItem("juniorUsers", JSON.stringify(users));
+  activeUser = {
+    id: data.id,
+    firstName,
+    lastName,
+    phone,
+    birthDate,
+    points: 0
+  };
 
-points = 0;
+  users.push(activeUser);
+  localStorage.setItem("juniorUsers", JSON.stringify(users));
+  localStorage.setItem("activeJuniorUserId", data.id);
 
-showToast("Profile created!");
-showAppForActiveUser();
-updateUI();
+  points = 0;
+
+  showToast("Profile created!");
+  showAppForActiveUser();
+  updateUI();
 }
 
 function showAppForActiveUser() {
