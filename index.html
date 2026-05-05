@@ -3075,6 +3075,8 @@ async function registerUser() {
       });
 
       console.log("User saved to Supabase:", data);
+      activeUser.dbId = data.id;
+localStorage.setItem("juniorUsers", JSON.stringify(users));
     } catch (err) {
       console.error("Supabase connection error:", err);
     }
@@ -3198,18 +3200,47 @@ function deleteLocalUser(userId) {
   showToast("Profile deleted locally");
 }    
 
-function loginUser(userId) {
+async function loginUser(userId) {
   activeUserId = userId;
   activeUser = users.find(user => user.id === userId);
 
   localStorage.setItem("activeJuniorUserId", userId);
 
-  if (activeUser) {
-    points = activeUser.points || points;
+  if (!activeUser) return;
+
+  if (supabaseClient && activeUser.dbId) {
+    const { data, error } = await supabaseClient
+      .from("user_progress")
+      .select("*")
+      .eq("user_id", activeUser.dbId)
+      .single();
+
+    if (!error && data) {
+      points = data.points || 0;
+
+      quizCompleted = data.quiz_date === today;
+      dailyTaskCompleted = data.task_date === today;
+      gameCompleted = data.game_date === today;
+      parentChallengeCompleted = data.parent_challenge_date === today;
+
+      tasks.quiz = quizCompleted;
+      tasks.atm = dailyTaskCompleted;
+      tasks.game = gameCompleted;
+      tasks.parent = parentChallengeCompleted;
+    }
   }
 
   showAppForActiveUser();
+
+  loadQuestion();
+  loadGame();
+  updateQuizTaskCard();
+  updateATMTaskCard();
+  updateParentChallengeCard();
+  updateGameTaskCard();
+  updateHomeDashboard();
   updateUI();
+  updateInviteUI();
 }
     
 showAppForActiveUser();
