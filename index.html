@@ -2952,7 +2952,6 @@ function normalizePhone(phone) {
 async function registerUser() {
   const firstName = document.getElementById("regFirstName").value.trim();
   const lastName = document.getElementById("regLastName").value.trim();
-  const rawPhone = document.getElementById("regPhone").value.trim();
 const rawPhone = document.getElementById("regPhone").value.trim();
 const phone = normalizePhone(rawPhone);
   const birthDate = document.getElementById("regBirthDate").value;
