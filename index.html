@@ -1294,6 +1294,26 @@
   transform: scale(0.96);
 } 
 
+    .get-card-btn {
+  background: white;
+  color: #1e5eff;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  transition: all 0.2s ease;
+}
+
+.get-card-btn:hover {
+  transform: translateY(-2px);
+}
+
+.get-card-btn:active {
+  transform: scale(0.98);
 }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -1488,9 +1508,9 @@
       <div class="cta-subtitle">
         Turn your points into real rewards and start managing your own money like a hero!
       </div>
-         <button class="card-btn" onclick="openCardLink()">
-            Get Card
-          </button>
+        <button class="get-card-btn" onclick="window.open('https://www.accessbank.az/az/private/cards/mycard/mycard_junior/#sifaris', '_blank')">
+  Get Card
+</button>
       <div class="cta-features">• Free Delivery &nbsp;&nbsp; • Parent Controls</div>
     </div>
 
