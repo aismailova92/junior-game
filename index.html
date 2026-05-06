@@ -1303,7 +1303,7 @@
 
     <input id="regLastName" class="register-input" placeholder="Last name" />
 
-    <input id="regPhone" class="register-input" placeholder="Phone number" />
+    <input id="regPhone" placeholder="994501112233">
 
     <input id="regBirthDate" class="register-input" type="date" />
 
@@ -2949,13 +2949,19 @@ async function registerUser() {
   const firstName = document.getElementById("regFirstName").value.trim();
   const lastName = document.getElementById("regLastName").value.trim();
   const rawPhone = document.getElementById("regPhone").value.trim();
-  const phone = normalizePhone(rawPhone);
+const rawPhone = document.getElementById("regPhone").value.trim();
+const phone = normalizePhone(rawPhone);
   const birthDate = document.getElementById("regBirthDate").value;
 
   if (!firstName || !lastName || !phone || !birthDate) {
     showToast("Please fill in all fields");
     return;
   }
+
+  if (!/^994\d{9}$/.test(phone)) {
+  showToast("Enter phone in format: 994501112233");
+  return;
+}
 
   if (!supabaseClient) {
     showToast("Database not connected");
@@ -3263,8 +3269,14 @@ if (activeUser) {
   updateHomeDashboard();
   updateUI();
   updateInviteUI();
-}
-    
+}    
+const phoneInput = document.getElementById("regPhone");
+
+if (phoneInput) {
+  phoneInput.addEventListener("input", function () {
+    this.value = this.value.replace(/\D/g, "");
+  });
+}    
   </script>
 </body>
 </html>
